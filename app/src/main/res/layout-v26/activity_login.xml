@@ -12,6 +12,7 @@
         android:layout_width="330dp"
         android:layout_height="50dp"
         android:layout_marginBottom="12dp"
+        android:autofillHints=""
         android:background="@color/colorTextBoxBeck"
         android:drawableEnd="@drawable/ic_person_outline_white_24dp"
         android:hint="@string/workerNum"
@@ -25,14 +26,14 @@
         app:layout_constraintBottom_toTopOf="@+id/loginPassNumber"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.53"
-        app:layout_constraintStart_toStartOf="parent"
-        android:drawableRight="@drawable/ic_person_outline_white_24dp" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/loginPassNumber"
         android:layout_width="330dp"
         android:layout_height="50dp"
         android:layout_marginBottom="84dp"
+        android:autofillHints=""
 
         android:background="@color/colorTextBoxBeck"
         android:drawableEnd="@drawable/ic_lock_white_24dp"
@@ -47,15 +48,13 @@
         app:layout_constraintBottom_toTopOf="@+id/loginConnectionButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.53"
-        app:layout_constraintStart_toStartOf="parent"
-        android:drawableRight="@drawable/ic_lock_white_24dp" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/loginConnectionButton"
         android:layout_width="330dp"
         android:layout_height="50dp"
         android:layout_marginStart="4dp"
-        android:layout_marginEnd="4dp"
         android:layout_marginBottom="104dp"
         android:background="@drawable/login_button_back"
         android:text="@string/msg"
@@ -64,7 +63,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.506"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginEnd="4dp" />
 
     <ImageView
         android:id="@+id/loginImageView"
