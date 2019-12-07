@@ -21,4 +21,5 @@
     <string name="workerNum">מספר עובד</string>
     <string name="personPic">personPic</string>
     <string name="workerNumber">מספר עובד</string>
+    <string name="welcome_string">Welcome!</string>
 </resources>
