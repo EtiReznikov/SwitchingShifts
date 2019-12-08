@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+<<<<<<< HEAD
     android:background="@drawable/back_gradient"
     tools:context=".ChangePass">
 
@@ -71,4 +72,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.566"
         app:layout_constraintStart_toStartOf="parent" />
+=======
+    tools:context=".ChangePass">
+
+>>>>>>> d13b7035958a04c34502f0a8d030712ce9752e3f
 </androidx.constraintlayout.widget.ConstraintLayout>

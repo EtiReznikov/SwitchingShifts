@@ -78,4 +78,18 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_person_black_24dp"
         tools:ignore="VectorDrawableCompat" />
+<<<<<<< HEAD
 </androidx.constraintlayout.widget.ConstraintLayout>
+=======
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+
+
+
+
+
+>>>>>>> d13b7035958a04c34502f0a8d030712ce9752e3f

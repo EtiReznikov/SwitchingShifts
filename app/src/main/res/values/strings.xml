@@ -17,13 +17,20 @@
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="msg">התחבר</string>
+<<<<<<< HEAD
     <string name="pass">סיסמא</string>
+=======
+    <string name="pass">סיסמה</string>
+>>>>>>> d13b7035958a04c34502f0a8d030712ce9752e3f
     <string name="workerNum">מספר עובד</string>
     <string name="personPic">personPic</string>
     <string name="workerNumber">מספר עובד</string>
     <string name="welcome_string">Welcome!</string>
+<<<<<<< HEAD
     <string name="NewPess">איפוס סיסמא</string>
     <string name="firstNewPess">הזן סיסמא חדשה</string>
     <string name="secondNewPess">אשר את הסיסמא החדשה</string>
     <string name="button">אישור</string>
+=======
+>>>>>>> d13b7035958a04c34502f0a8d030712ce9752e3f
 </resources>
