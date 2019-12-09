@@ -10,7 +10,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".Settings"></activity>
-        <activity android:name=".MangerMessages" />
         <activity android:name=".Shifts" />
         <activity android:name=".AddWorker" />
         <activity android:name=".DeleteShift" />
