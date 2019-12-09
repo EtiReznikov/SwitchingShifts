@@ -15,8 +15,7 @@
         <activity android:name=".AddWorker" />
         <activity android:name=".DeleteShift" />
         <activity android:name=".AddShift" />
-        <activity android:name=".MangerScreen" />
-        <activity android:name=".WorkersMessages" />
+        <activity android:name=".Messages" />
         <activity android:name=".MyShifts" />
         <activity android:name=".PersonalDetails" />
         <activity android:name=".WorkerScreen" />
