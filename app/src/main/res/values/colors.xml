@@ -5,7 +5,11 @@
     <color name="colorTextBoxBeck">#0A5D5B</color>
 
     <color name="colorAccent">#D81B60</color>
+<<<<<<< HEAD
+    <color name="colorHint">#C3ACACAC</color>
+=======
     <color name="colorHint">#C3acacac</color>
+>>>>>>> d13b7035958a04c34502f0a8d030712ce9752e3f
     <color name="colorLoginButton">#FFFFFF</color>
     <color name="colorInput">#FFFFFF</color>
 </resources>
