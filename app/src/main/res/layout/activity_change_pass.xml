@@ -19,6 +19,7 @@
         android:textColorLink="#00180101"
         android:textSize="40sp"
         android:textStyle="bold"
+        android:textColor="@color/colorInput"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -30,7 +31,6 @@
         android:drawableEnd="@drawable/ic_lock_white_24dp"
         android:drawableRight="@drawable/ic_lock_white_24dp"
         android:gravity="end"
-
         android:hint="@string/firstNewPess"
         android:inputType="numberPassword"
         android:padding="10dp"
@@ -64,7 +64,7 @@
         android:layout_marginRight="212dp"
         android:layout_marginBottom="28dp"
         android:background="@drawable/login_button_back"
-        android:text="@string/button"
+        android:text="@string/OKbutton"
         android:textColor="@color/colorInput"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
