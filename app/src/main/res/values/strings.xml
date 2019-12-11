@@ -40,9 +40,14 @@
     <string name="shift">משמרת</string>
     <string name="role">תפקיד</string>
     <string name="worker">עובד</string>
-
+    <string name="morning">בוקר</string>
+    <string name="evening">ערב</string>
     <string name="date">dd/mm/yyyy</string>
 
+    <string-array name="shift_type">
+        <item>@string/morning</item>
+        <item>@string/evening</item>
+    </string-array>
 
 
 </resources>

@@ -3,8 +3,12 @@ package com.example.switchingshifts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.Toast;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.view.View;
 import android.app.DatePickerDialog;
@@ -16,13 +20,34 @@ public class AddShift extends AppCompatActivity {
     Button selectDate;
     Calendar c;
     DatePickerDialog dpd;
+
+    Spinner s_shift_type;
+    ArrayAdapter<CharSequence> adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_shift);
 
+        s_shift_type= (Spinner)findViewById(R.id.spinner_shift_type);
+        adapter= ArrayAdapter.createFromResource(this,R.array.shift_type,android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        s_shift_type.setAdapter(adapter);
+        s_shift_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getBaseContext(), parent.getItemAtPosition(position)+"selected", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
         selectDate = (Button)findViewById(R.id.button_day);
         date = (TextView) findViewById(R.id.txt_date);
+
 
         selectDate.setOnClickListener(new View.OnClickListener() {
             @Override

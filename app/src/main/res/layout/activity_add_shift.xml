@@ -89,19 +89,35 @@
 
     <TextView
         android:id="@+id/txt_date"
-        android:layout_width="130dp"
-        android:layout_height="41dp"
+        android:layout_width="173dp"
+        android:layout_height="45dp"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="30dp"
         android:layout_weight=".5"
         android:text="@string/date"
-        android:textSize="20sp"
+        android:textSize="25sp"
         app:layout_constraintBottom_toTopOf="@+id/text_shift"
         app:layout_constraintEnd_toStartOf="@+id/button_day"
         app:layout_constraintTop_toBottomOf="@+id/Add_shift_title"
         app:layout_constraintVertical_bias="1.0" />
+
+    <Spinner
+        android:id="@+id/spinner_shift_type"
+        android:layout_width="154dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="30dp"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/text_role"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.186"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_date"
+        app:layout_constraintVertical_bias="0.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
