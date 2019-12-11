@@ -62,7 +62,7 @@ public class AddShift extends AppCompatActivity {
         });
 
 
-        selectDate = (Button)findViewById(R.id.button_day_A);
+        selectDate = (Button)findViewById(R.id.button_day);
         date = (TextView) findViewById(R.id.txt_date);
 
 
