@@ -31,10 +31,31 @@
     <string name="OKbutton">אישור</string>
 
     <string name="hello">שלום</string>
-    <string name="AddShiftButton">הוסף משמרת</string>
-    <string name="RemoveShiftButton">מחק משמרת</string>
-    <string name="AddWorkerButton">הוסף עובד</string>
-    <string name="RemoveWorkerButton">מחק עובד</string>
+    <string name="addShift">הוסף משמרת</string>
+    <string name="removeShift">מחק משמרת</string>
+    <string name="addWorker">הוסף עובד</string>
+    <string name="removeWorker">מחק עובד</string>
 
+    <string name="day">בחר תאריך</string>
+    <string name="shift">משמרת</string>
+    <string name="role">תפקיד</string>
+    <string name="worker">עובד</string>
+    <string name="morning">בוקר</string>
+    <string name="evening">ערב</string>
+    <string name="waiter">מלצר</string>
+    <string name="barista">ברמן</string>
+    <string name="chef">טבח</string>
+    <string name="date">dd/mm/yyyy</string>
+
+    <string-array name="shift_type">
+        <item>@string/morning</item>
+        <item>@string/evening</item>
+    </string-array>
+
+    <string-array name="role_type">
+        <item>@string/waiter</item>
+        <item>@string/barista</item>
+        <item>@string/chef</item>
+    </string-array>
 
 </resources>
