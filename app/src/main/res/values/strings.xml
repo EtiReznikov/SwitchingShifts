@@ -58,4 +58,11 @@
         <item>@string/chef</item>
     </string-array>
 
+    <string name="first_name">שם פרטי</string>
+    <string name="last_name">שם משפחה</string>
+    <string name="mail">מייל</string>
+    <string name="workername">שם עובד</string>
+
+    <string name="delete_worker_for_sure">אני בטוח רוצה למחוק את העובד</string>
+
 </resources>
