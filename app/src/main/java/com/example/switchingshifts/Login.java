@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 public class Login extends AppCompatActivity {
-    private static int SPLASH_TIME_OUT = 5000;
+    private static int SPLASH_TIME_OUT = 3000;
 
 
     @Override
@@ -19,7 +19,7 @@ public class Login extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent loginIntent = new Intent(Login.this, ChangePass.class);
+                Intent loginIntent = new Intent(Login.this, MangerScreen.class);
                 startActivity(loginIntent);
                 finish();
             }

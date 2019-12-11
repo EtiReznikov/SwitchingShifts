@@ -31,10 +31,18 @@
     <string name="OKbutton">אישור</string>
 
     <string name="hello">שלום</string>
-    <string name="AddShiftButton">הוסף משמרת</string>
-    <string name="RemoveShiftButton">מחק משמרת</string>
-    <string name="AddWorkerButton">הוסף עובד</string>
-    <string name="RemoveWorkerButton">מחק עובד</string>
+    <string name="addShift">הוסף משמרת</string>
+    <string name="removeShift">מחק משמרת</string>
+    <string name="addWorker">הוסף עובד</string>
+    <string name="removeWorker">מחק עובד</string>
+
+    <string name="day">בחר תאריך</string>
+    <string name="shift">משמרת</string>
+    <string name="role">תפקיד</string>
+    <string name="worker">עובד</string>
+
+    <string name="date">dd/mm/yyyy</string>
+
 
 
 </resources>
