@@ -13,6 +13,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 
 public class AddWorker extends AppCompatActivity {
@@ -24,11 +26,14 @@ public class AddWorker extends AppCompatActivity {
     private TextView error;
     Spinner s_worker_type;
     ArrayAdapter<CharSequence> adapter_worker_type;
+    DatabaseReference database_reff;
+    Worker worker;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        database_reff = FirebaseDatabase.getInstance().getReference("worker");
         setContentView(R.layout.activity_add_worker);
 
         error=(TextView)findViewById(R.id.textError);
