@@ -62,9 +62,25 @@
     <string name="last_name">שם משפחה</string>
     <string name="mail">מייל</string>
     <string name="workername">שם עובד</string>
+    <string name="ShiftSwap">בחר משמרת שברצונך להחליף</string>
+    <string name="Choice">בחר</string>
+    <string name="ShiftSwap1">בחר משמרת אליה תרצה לעבור</string>
+    <string name="MyShift">המשמרות שלי</string>
+    <string name="PersonalInformation">פרטים אישיים</string>
+    <string name="Messages">הודעות</string>
+    <string name="PName">שם פרטי</string>
+    <string name="LName">שם משפחה</string>
+    <string name="EmployeeNumber">מספר עובד</string>
+    <string name="Mail">מייל</string>
+    <string name="Birthday">יום הולדת</string>
+    <string name="Home">בית</string>
+    <string name="MyMessages">ההודעות שלי</string>
+    <string name="Shift">משמרות</string>
 
     <string name="delete_worker_for_sure">אני בטוח שאני רוצה למחוק</string>
     <string name="invaild_mail">כתובת מייל לא תקינה</string>
     <string name="empty_input">אנא מלא את כל הפרטים</string>
+
+    <string name="saved">שמור</string>
 
 </resources>

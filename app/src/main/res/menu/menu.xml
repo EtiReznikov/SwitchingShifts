@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+    android:title="@string/Shift"
+    android:id="@+id/myShift"/>
+    <item
+        android:title="@string/PersonalInformation"
+        android:id="@+id/personalInfo"/>
+    <item
+        android:title="@string/Messages"
+        android:id="@+id/messages" />
+    <item
+        android:title="@string/Home"
+        android:id="@+id/homePage"
+        android:icon="@drawable/ic_home_black_24dp"
+        app:showAsAction="always"/>
+</menu>
