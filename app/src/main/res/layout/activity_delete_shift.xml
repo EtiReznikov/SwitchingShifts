@@ -7,7 +7,13 @@
     android:background="@drawable/back_gradient"
     tools:context=".DeleteShift">
 
-    <include layout="@layout/delete_add_shift"/>
+    <include
+        android:id="@+id/include"
+        layout="@layout/delete_add_shift"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/Add_delete_title"
@@ -22,6 +28,19 @@
         android:textColorLink="#00180101"
         android:textSize="40sp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <CheckBox
+        android:id="@+id/checkBox2"
+        android:layout_width="336dp"
+        android:layout_height="31dp"
+        android:layout_marginTop="456dp"
+        android:layout_marginEnd="36dp"
+        android:layout_marginRight="36dp"
+        android:text="@string/delete_worker_for_sure"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

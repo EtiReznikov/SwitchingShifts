@@ -77,7 +77,7 @@ public class AddShift extends AppCompatActivity {
                 dpd=new DatePickerDialog(AddShift.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int mDay, int mMonth, int mYear) {
-                        date.setText(mDay + "/" + mMonth + "/"+ mYear);
+                        date.setText(mYear + "/" + mMonth + "/"+ mDay);
                     }
                 },year, month, day);;
                 dpd.getDatePicker().setMinDate(System.currentTimeMillis());
