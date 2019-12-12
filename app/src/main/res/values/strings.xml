@@ -63,6 +63,8 @@
     <string name="mail">מייל</string>
     <string name="workername">שם עובד</string>
 
-    <string name="delete_worker_for_sure">אני בטוח רוצה למחוק את העובד</string>
+    <string name="delete_worker_for_sure">אני בטוח שאני רוצה למחוק</string>
+    <string name="invaild_mail">כתובת מייל לא תקינה</string>
+    <string name="empty_input">אנא מלא את כל הפרטים</string>
 
 </resources>
