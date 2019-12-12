@@ -61,10 +61,10 @@ public class AddWorker extends AppCompatActivity {
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                first_name = textInputFirstName.getText().toString();
-                last_name = textInputLastName.getText().toString();
-                email = textInputEmail.getText().toString();
-                role=s_worker_type.getSelectedItem().toString();
+                first_name = textInputFirstName.getText().toString().trim();
+                last_name = textInputLastName.getText().toString().trim();
+                email = textInputEmail.getText().toString().trim();
+                role=s_worker_type.getSelectedItem().toString().trim();
 
                 if (vaildateText(first_name) | vaildateText(last_name) | vaildateText(email) | vaildateText(role)){
                     error.setText(R.string.empty_input);
@@ -72,7 +72,9 @@ public class AddWorker extends AppCompatActivity {
                 else if (validateEmail(email))
                     error.setText(R.string.invaild_mail);
                 else{
-                    ///add worker to database.
+                    worker = new Worker(first_name, last_name, role, email);
+                    database_reff.push().setValue(worker);
+//                    Toast.makeText();
                 }
 
 
