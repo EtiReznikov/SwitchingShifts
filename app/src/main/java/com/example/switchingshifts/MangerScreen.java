@@ -48,10 +48,10 @@ public class MangerScreen extends AppCompatActivity {
         });
     }
 
-   private void openActivityAddWorker(){
+    private void openActivityAddWorker(){
         Intent intent=new Intent(this, AddWorker.class);
         startActivity(intent);
-   }
+    }
     private void openActivityRemoveWorker(){
         Intent intent=new Intent(this,RemoveWorker.class);
         startActivity(intent);
@@ -67,4 +67,3 @@ public class MangerScreen extends AppCompatActivity {
 
 
 }
-

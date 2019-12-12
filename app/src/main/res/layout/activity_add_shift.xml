@@ -9,6 +9,8 @@
 
     <include layout="@layout/delete_add_shift"/>
 
+
+
     <TextView
         android:id="@+id/Add_shift_title"
         android:layout_width="309dp"

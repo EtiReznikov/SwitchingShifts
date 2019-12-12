@@ -7,6 +7,15 @@
     android:background="@drawable/back_gradient"
     tools:context=".ChangePass">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/back_gradient"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleMarginStart="40dp"></androidx.appcompat.widget.Toolbar>
+
     <TextView
         android:id="@+id/New_pess_title"
         android:layout_width="309dp"
@@ -24,7 +33,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/New_Pess"
+        android:id="@+id/firstPess"
         android:layout_width="486dp"
         android:layout_height="59dp"
         android:layout_marginTop="104dp"
@@ -37,10 +46,11 @@
         android:textColor="@color/colorInput"
         android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/New_pess_title" />
+        app:layout_constraintTop_toBottomOf="@+id/New_pess_title"
+        android:autofillHints="" />
 
     <EditText
-        android:id="@+id/New_Pess_2"
+        android:id="@+id/secondPess"
         android:layout_width="486dp"
         android:layout_height="59dp"
         android:layout_marginTop="48dp"
@@ -54,7 +64,7 @@
 
         android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/New_Pess" />
+        app:layout_constraintTop_toBottomOf="@+id/firstPess" />
 
     <Button
         android:id="@+id/button"
