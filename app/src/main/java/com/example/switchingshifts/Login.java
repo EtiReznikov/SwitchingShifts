@@ -11,6 +11,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 
 public class Login extends AppCompatActivity {
@@ -32,6 +33,7 @@ public class Login extends AppCompatActivity {
 
         loginWorkerNumber.addTextChangedListener(loginTextWatcher);
         loginPassNumber.addTextChangedListener(loginTextWatcher);
+        Toast.makeText(Login.this, "Firebase Connection Success", Toast.LENGTH_LONG).show();
 
     }
 
