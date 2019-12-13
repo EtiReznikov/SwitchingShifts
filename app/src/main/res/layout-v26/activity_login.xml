@@ -8,7 +8,7 @@
     tools:context=".Login">
 
     <EditText
-        android:id="@+id/loginWorkerNumber"
+        android:id="@+id/login_email"
         android:layout_width="330dp"
         android:layout_height="50dp"
         android:layout_marginBottom="12dp"
@@ -16,20 +16,21 @@
         android:background="@color/colorTextBoxBeck"
         android:drawableEnd="@drawable/ic_person_outline_white_24dp"
         android:gravity="start"
-        android:hint="@string/workerNum"
-        android:inputType="number"
+        android:hint="@string/login_email"
+        android:inputType="textEmailAddress"
         android:padding="10dp"
 
         android:textColor="@color/colorInput"
         android:textColorHint="@color/colorHint"
         android:textSize="22sp"
-        app:layout_constraintBottom_toTopOf="@+id/loginPassNumber"
+        app:layout_constraintBottom_toTopOf="@+id/login_password"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.53"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="TextFields" />
 
     <EditText
-        android:id="@+id/loginPassNumber"
+        android:id="@+id/login_password"
         android:layout_width="330dp"
         android:layout_height="50dp"
         android:layout_marginBottom="84dp"
@@ -37,9 +38,9 @@
 
         android:background="@color/colorTextBoxBeck"
         android:drawableEnd="@drawable/ic_lock_white_24dp"
-        android:gravity="end"
+        android:gravity="start"
         android:hint="@string/pass"
-        android:inputType="numberPassword"
+        android:inputType="textEmailAddress"
         android:padding="10dp"
         android:textColor="@color/colorInput"
 
@@ -71,7 +72,7 @@
         android:layout_width="153dp"
         android:layout_height="145dp"
         android:contentDescription="@string/personPic"
-        app:layout_constraintBottom_toTopOf="@+id/loginWorkerNumber"
+        app:layout_constraintBottom_toTopOf="@+id/login_email"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

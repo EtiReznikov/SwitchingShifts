@@ -82,5 +82,6 @@
     <string name="empty_input">אנא מלא את כל הפרטים</string>
 
     <string name="saved">שמור</string>
+    <string name="login_email">מייל</string>
 
 </resources>

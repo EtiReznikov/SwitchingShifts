@@ -8,7 +8,7 @@
     tools:context=".Login">
 
     <EditText
-        android:id="@+id/loginWorkerNumber"
+        android:id="@+id/login_email"
         android:layout_width="330dp"
         android:layout_height="50dp"
         android:layout_marginBottom="12dp"
@@ -22,7 +22,7 @@
         android:textColor="@color/colorInput"
         android:textColorHint="@color/colorHint"
         android:textSize="22sp"
-        app:layout_constraintBottom_toTopOf="@+id/loginPassNumber"
+        app:layout_constraintBottom_toTopOf="@+id/login_password"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.53"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,7 +30,7 @@
         android:autofillHints="" />
 
     <EditText
-        android:id="@+id/loginPassNumber"
+        android:id="@+id/login_password"
         android:layout_width="330dp"
         android:layout_height="50dp"
         android:layout_marginBottom="84dp"
@@ -72,7 +72,7 @@
         android:layout_width="153dp"
         android:layout_height="145dp"
         android:contentDescription="@string/personPic"
-        app:layout_constraintBottom_toTopOf="@+id/loginWorkerNumber"
+        app:layout_constraintBottom_toTopOf="@+id/login_email"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
