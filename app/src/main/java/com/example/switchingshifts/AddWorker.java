@@ -28,12 +28,15 @@ public class AddWorker extends AppCompatActivity {
     ArrayAdapter<CharSequence> adapter_worker_type;
     DatabaseReference database_reff;
     Worker worker;
+//    private FirebaseAuth mAuth;
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        database_reff = FirebaseDatabase.getInstance().getReference("worker");
+        database_reff = FirebaseDatabase.getInstance().getReference().child("worker");
+        // Initialize Firebase Auth
+//        mAuth = FirebaseAuth.getInstance();
         setContentView(R.layout.activity_add_worker);
 
         error=(TextView)findViewById(R.id.textError);
@@ -72,9 +75,11 @@ public class AddWorker extends AppCompatActivity {
                 else if (validateEmail(email))
                     error.setText(R.string.invaild_mail);
                 else{
+                    Toast.makeText(AddWorker.this, "המידע הוכנס באופן תקין", Toast.LENGTH_SHORT).show();
                     worker = new Worker(first_name, last_name, role, email);
-                    database_reff.push().setValue(worker);
-//                    Toast.makeText();
+                    worker.setId(database_reff.push().getKey());
+                    database_reff.child("workers").child(String.valueOf(worker.getWorker_number())).setValue(worker);
+                    Toast.makeText(AddWorker.this, worker.getFirst_name() + " " + worker.getLast_name() + " Added seccesfully", Toast.LENGTH_SHORT).show();
                 }
 
 

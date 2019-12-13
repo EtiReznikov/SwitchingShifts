@@ -9,10 +9,18 @@ public class Worker {
     private long worker_number;
     private String birthday;
     private static long id_counter = 1;
+    private String id;
 
 
-        /* default constructor */
-    public Worker(){}
+    /* default constructor */
+    public Worker(){
+        this.first_name = "";
+        this.last_name = "";
+        this.role = "";
+        this.email = "";
+        this.worker_number = id_counter++;
+        this.birthday = "";
+    }
 
     public Worker(String first_name, String last_name, String role, String email){
             this.first_name = first_name;
@@ -48,6 +56,10 @@ public class Worker {
         return birthday;
     }
 
+    public String getId() {
+        return id;
+    }
+
     public void setFirst_name(String first_name) {
         this.first_name = first_name;
     }
@@ -66,5 +78,9 @@ public class Worker {
 
     public void setBirthday(String birthday) {
         this.birthday = birthday;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }
