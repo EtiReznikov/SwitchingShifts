@@ -1,5 +1,6 @@
 package com.example.switchingshifts;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -13,12 +14,16 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 
 public class AddWorker extends AppCompatActivity {
-    private String first_name, last_name, email, role;
+    private String first_name, last_name, email, role, password;
     private EditText textInputEmail;
     private EditText textInputFirstName;
     private EditText textInputLastName;
@@ -26,17 +31,14 @@ public class AddWorker extends AppCompatActivity {
     private TextView error;
     Spinner s_worker_type;
     ArrayAdapter<CharSequence> adapter_worker_type;
-    DatabaseReference database_reff;
     Worker worker;
-//    private FirebaseAuth mAuth;
-
+   private FirebaseAuth firebase_auth;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        database_reff = FirebaseDatabase.getInstance().getReference().child("worker");
-        // Initialize Firebase Auth
-//        mAuth = FirebaseAuth.getInstance();
+        /* Initialize Firebase Auth */
+        firebase_auth = FirebaseAuth.getInstance();
         setContentView(R.layout.activity_add_worker);
 
         error=(TextView)findViewById(R.id.textError);
@@ -68,6 +70,7 @@ public class AddWorker extends AppCompatActivity {
                 last_name = textInputLastName.getText().toString().trim();
                 email = textInputEmail.getText().toString().trim();
                 role=s_worker_type.getSelectedItem().toString().trim();
+                password = new String(email);
 
                 if (vaildateText(first_name) | vaildateText(last_name) | vaildateText(email) | vaildateText(role)){
                     error.setText(R.string.empty_input);
@@ -76,10 +79,37 @@ public class AddWorker extends AppCompatActivity {
                     error.setText(R.string.invaild_mail);
                 else{
                     Toast.makeText(AddWorker.this, "המידע הוכנס באופן תקין", Toast.LENGTH_SHORT).show();
-                    worker = new Worker(first_name, last_name, role, email);
-                    worker.setId(database_reff.push().getKey());
-                    database_reff.child("workers").child(String.valueOf(worker.getWorker_number())).setValue(worker);
-                    Toast.makeText(AddWorker.this, worker.getFirst_name() + " " + worker.getLast_name() + " Added seccesfully", Toast.LENGTH_SHORT).show();
+//                    worker = new Worker(first_name, last_name, role, email);
+//                    worker.setId(database_reff.push().getKey());
+//                    database_reff.child("workers").child(String.valueOf(worker.getWorker_number())).setValue(worker);
+//                    Toast.makeText(AddWorker.this, worker.getFirst_name() + " " + worker.getLast_name() + " Added seccesfully", Toast.LENGTH_SHORT).show();
+
+                  firebase_auth.createUserWithEmailAndPassword(email, password)
+                          .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                              @Override
+                              public void onComplete(@NonNull Task<AuthResult> task) {
+                                  if(task.isSuccessful()){
+                                      worker = new Worker(first_name, last_name, role, email);
+                                      FirebaseDatabase.getInstance().getReference("worker")
+                                              .child(FirebaseAuth.getInstance().getCurrentUser().getEmail())
+                                              .setValue(worker).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                          @Override
+                                          public void onComplete(@NonNull Task<Void> task) {
+                                              if(task.isSuccessful()){
+                                                  Toast.makeText(AddWorker.this, worker.getFirst_name() + " " + worker.getLast_name() + " Added seccesfully", Toast.LENGTH_LONG).show();
+                                              }else{
+                                                  Toast.makeText(AddWorker.this, task.getException().getMessage(),Toast.LENGTH_LONG).show();
+                                              }
+
+                                          }
+                                      });
+
+
+                                  }else{
+                                      Toast.makeText(AddWorker.this, task.getException().getMessage(),Toast.LENGTH_LONG).show();
+                                  }
+                              }
+                          });
                 }
 
 
@@ -90,6 +120,8 @@ public class AddWorker extends AppCompatActivity {
 
 
     }
+
+
 
     private boolean validateEmail(String mail) {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
