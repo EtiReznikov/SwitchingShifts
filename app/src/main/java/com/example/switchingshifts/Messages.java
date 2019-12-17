@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 public class Messages extends AppCompatActivity {
+    private Worker worker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,20 +27,21 @@ public class Messages extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
         if(id == R.id.myShift){
-            Intent intent = new Intent(Messages.this, MyShifts.class);
-            startActivity(intent);
+            startActivity(new Intent(Messages.this, MyShifts.class));
         }
         if(id == R.id.messages){
-            Intent intent = new Intent(Messages.this, Messages.class);
-            startActivity(intent);
+            startActivity(new Intent(Messages.this, Messages.class));
         }
         if(id == R.id.personalInfo){
-            Intent intent = new Intent(Messages.this, PersonalDetails.class);
-            startActivity(intent);
+            startActivity(new Intent(Messages.this, PersonalDetails.class));
         }
         if(id == R.id.homePage){
-            Intent intent = new Intent(Messages.this, WorkerScreen.class);
-            startActivity(intent);
+            if(worker.getEmail().equals("admin@gmail.com")){
+                startActivity(new Intent(Messages.this, MangerScreen.class));
+            }
+            else {
+                startActivity(new Intent(Messages.this, WorkerScreen.class));
+            }
         }
         return true;
     }

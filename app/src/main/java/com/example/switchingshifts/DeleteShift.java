@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -20,6 +21,9 @@ public class DeleteShift extends AppCompatActivity {
     Button selectDate;
     Calendar c;
     DatePickerDialog dpd;
+    private Button ok;
+    private String inputDate, role, shift, workerNumber;
+
 
     Spinner s_shift_type;
     ArrayAdapter<CharSequence> adapter_shift_type;
@@ -31,6 +35,7 @@ public class DeleteShift extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delete_shift);
 
+
         s_shift_type= (Spinner)findViewById(R.id.spinner_shift_type);
         adapter_shift_type= ArrayAdapter.createFromResource(this,R.array.shift_type,android.R.layout.simple_spinner_item);
         adapter_shift_type.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -38,7 +43,11 @@ public class DeleteShift extends AppCompatActivity {
         s_shift_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getBaseContext(), parent.getItemAtPosition(position)+"selected", Toast.LENGTH_LONG).show();
+                if (parent.getItemAtPosition(position).equals("בחר משמרת")) {}
+                else {
+                    shift = parent.getItemAtPosition(position).toString();
+                    Toast.makeText(getBaseContext(), parent.getItemAtPosition(position) + "selected", Toast.LENGTH_LONG).show();
+                }
             }
 
             @Override
@@ -54,7 +63,11 @@ public class DeleteShift extends AppCompatActivity {
         s_worker_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getBaseContext(), parent.getItemAtPosition(position)+"selected", Toast.LENGTH_LONG).show();
+                if (parent.getItemAtPosition(position).equals("בחר תפקיד")) {}
+                else {
+                    role = parent.getItemAtPosition(position).toString();
+                    Toast.makeText(getBaseContext(), parent.getItemAtPosition(position) + "selected", Toast.LENGTH_LONG).show();
+                }
             }
 
             @Override
@@ -62,8 +75,6 @@ public class DeleteShift extends AppCompatActivity {
 
             }
         });
-
-
         selectDate = (Button)findViewById(R.id.button_day);
         date = (TextView) findViewById(R.id.txt_date);
 
@@ -87,6 +98,8 @@ public class DeleteShift extends AppCompatActivity {
 
             }
         });
+
+
 
     }
 }
