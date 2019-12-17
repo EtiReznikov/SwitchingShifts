@@ -28,29 +28,29 @@ public class WorkerScreen extends AppCompatActivity {
 
 
 
-//    public boolean onCreateOptionsMenu(Menu menu){
-//
-//        getMenuInflater().inflate(R.menu.menu, menu);
-//        return true;
-//    }
-//    public boolean onOptionsItemSelected(MenuItem item){
-//        int id = item.getItemId();
-//        if(id == R.id.myShift){
-//            Intent intent = new Intent(WorkerScreen.this, MyShifts.class);
-//            startActivity(intent);
-//        }
-//        if(id == R.id.messages){
-//            Intent intent = new Intent(WorkerScreen.this, Messages.class);
-//            startActivity(intent);
-//        }
-//        if(id == R.id.personalInfo){
-//            Intent intent = new Intent(WorkerScreen.this, PersonalDetails.class);
-//            startActivity(intent);
-//        }
-//        if(id == R.id.homePage){
-//            Intent intent = new Intent(WorkerScreen.this, WorkerScreen.class);
-//            startActivity(intent);
-//        }
-//        return true;
-//    }
+    public boolean onCreateOptionsMenu(Menu menu){
+
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+    public boolean onOptionsItemSelected(MenuItem item){
+        int id = item.getItemId();
+        if(id == R.id.myShift){
+            Intent intent = new Intent(WorkerScreen.this, MyShifts.class);
+            startActivity(intent);
+        }
+        if(id == R.id.messages){
+            Intent intent = new Intent(WorkerScreen.this, Messages.class);
+            startActivity(intent);
+        }
+        if(id == R.id.personalInfo){
+            Intent intent = new Intent(WorkerScreen.this, PersonalDetails.class);
+            startActivity(intent);
+        }
+        if(id == R.id.homePage){
+            Intent intent = new Intent(WorkerScreen.this, WorkerScreen.class);
+            startActivity(intent);
+        }
+        return true;
+    }
 }

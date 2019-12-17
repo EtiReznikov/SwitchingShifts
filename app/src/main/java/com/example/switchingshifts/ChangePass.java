@@ -10,6 +10,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
 
 public class ChangePass extends AppCompatActivity implements View.OnClickListener {
 
@@ -41,6 +43,7 @@ public class ChangePass extends AppCompatActivity implements View.OnClickListene
                 secondPess.setError("הסיסמאות לא שוות");
             }
             else{
+                Toast.makeText(ChangePass.this,"הסיסמא שונתה בהצלחה", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(ChangePass.this, WorkerScreen.class));
             }
         }

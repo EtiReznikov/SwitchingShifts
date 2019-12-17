@@ -81,7 +81,7 @@
     <string name="invaild_mail">כתובת מייל לא תקינה</string>
     <string name="empty_input">אנא מלא את כל הפרטים</string>
 
-    <string name="saved">שמור</string>
+    <string name="save">שמור</string>
     <string name="login_email">מייל</string>
 
 </resources>
