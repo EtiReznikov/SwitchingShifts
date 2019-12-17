@@ -10,6 +10,7 @@ public class Worker {
     private String birthday;
     private static long id_counter = 1;
     private String id;
+    private boolean first_login;
 
 
     /* default constructor */
@@ -20,15 +21,17 @@ public class Worker {
         this.email = "";
         this.worker_number = id_counter++;
         this.birthday = "";
+        this.first_login = true;
     }
 
     public Worker(String first_name, String last_name, String role, String email){
-            this.first_name = first_name;
-            this.last_name = last_name;
-            this.role = role;
-            this.email = email;
-            this.worker_number = id_counter++;
-            this.birthday = "";
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.role = role;
+        this.email = email;
+        this.worker_number = id_counter++;
+        this.birthday = "";
+        this.first_login = true;
     }
 
     /* Getters & Setters */
@@ -56,9 +59,7 @@ public class Worker {
         return birthday;
     }
 
-    public String getId() {
-        return id;
-    }
+    public String getId() { return id; }
 
     public void setFirst_name(String first_name) {
         this.first_name = first_name;

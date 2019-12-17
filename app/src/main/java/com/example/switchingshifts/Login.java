@@ -74,7 +74,7 @@ public class Login extends AppCompatActivity {
                                             startActivity(new Intent(Login.this, WorkerScreen.class));
                                         }
                                     }else{
-                                        Toast.makeText(Login.this,"האימייל או הסיסמא אינם תקינים", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(Login.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });

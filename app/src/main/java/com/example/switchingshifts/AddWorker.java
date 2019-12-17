@@ -35,7 +35,7 @@ public class AddWorker extends AppCompatActivity {
     Spinner s_worker_type;
     ArrayAdapter<CharSequence> adapter_worker_type;
     Worker worker;
-   private FirebaseAuth firebase_auth;
+    private FirebaseAuth firebase_auth;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -101,7 +101,6 @@ public class AddWorker extends AppCompatActivity {
                 }
 
                 if(!flag){
-                    Toast.makeText(AddWorker.this, "המידע הוכנס באופן תקין", Toast.LENGTH_SHORT).show();
 //                    worker = new Worker(first_name, last_name, role, email);
 //                    worker.setId(database_reff.push().getKey());
 //                    database_reff.child("workers").child(String.valueOf(worker.getWorker_number())).setValue(worker);
@@ -112,28 +111,13 @@ public class AddWorker extends AppCompatActivity {
                               @Override
                               public void onComplete(@NonNull Task<AuthResult> task) {
                                   if(task.isSuccessful()){
-                                      worker = new Worker(first_name, last_name, role, email);
-                                      FirebaseDatabase.getInstance().getReference("worker")
-                                              .child(FirebaseAuth.getInstance().getCurrentUser().getEmail())
-                                              .setValue(worker).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                          @Override
-                                          public void onComplete(@NonNull Task<Void> task) {
-                                              if(task.isSuccessful()){
-                                                  Toast.makeText(AddWorker.this, worker.getFirst_name() + " " + worker.getLast_name() + " Added seccesfully", Toast.LENGTH_LONG).show();
-                                              }else{
-                                                  Toast.makeText(AddWorker.this, task.getException().getMessage(),Toast.LENGTH_LONG).show();
-                                              }
-
-                                          }
-                                      });
-
-
+                                      Toast.makeText(AddWorker.this," העובד נקלט בהצלחה במערכת", Toast.LENGTH_LONG).show();
+                                      startActivity(new Intent(getApplicationContext(), MangerScreen.class));
                                   }else{
                                       Toast.makeText(AddWorker.this, task.getException().getMessage(),Toast.LENGTH_LONG).show();
                                   }
                               }
                           });
-                    startActivity(new Intent(AddWorker.this, MangerScreen.class));
                 }
 
 
