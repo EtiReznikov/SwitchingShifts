@@ -82,25 +82,22 @@ public class Login extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if(task.isSuccessful()){
                                         user_id = firebase_auth.getCurrentUser().getUid();
-
-                                        DocumentReference documentReference = db.collection("workers").document(user_id);
-                                        documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                                            @Override
-                                            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                                  Worker worker = documentSnapshot .toObject(Worker.class);
-                                                  String first_name = worker.getFirst_name();
-                                                  String last_name = worker.getLast_name();
-                                                  Toast.makeText(Login.this, " התחברת בהצלחה "+ first_name + " " + last_name, Toast.LENGTH_LONG).show();
-                                            }
-                                        });
-
-                                        /* if the current unique id equal to maneger unique id go to maneger else worker */
-                                        if(firebase_auth.getCurrentUser().getUid().equals("agRJExNLmWUhUdbosK7SgiSAKUA3")) {
+                                        if(!user_id.equals("agRJExNLmWUhUdbosK7SgiSAKUA3")){
+                                            DocumentReference documentReference = db.collection("workers").document(user_id);
+                                            documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                                @Override
+                                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                                    String first_name = documentSnapshot.getString("first_name");
+                                                    String last_name = documentSnapshot.getString("last_name");
+                                                    Toast.makeText(Login.this, " התחברת בהצלחה "+ first_name + " " + last_name, Toast.LENGTH_LONG).show();
+                                                    startActivity(new Intent(Login.this, WorkerScreen.class));
+                                                }
+                                            });
+                                        }else {
+                                            Toast.makeText(Login.this, "מנהל, התחברת בהצלחה ", Toast.LENGTH_LONG).show();
                                             startActivity(new Intent(Login.this, MangerScreen.class));
-                                            }
-                                        else{
-                                            startActivity(new Intent(Login.this, WorkerScreen.class));
                                         }
+
                                     }else{
                                         Toast.makeText(Login.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                     }
