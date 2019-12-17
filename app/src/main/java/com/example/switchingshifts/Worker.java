@@ -81,7 +81,9 @@ public class Worker {
         this.birthday = birthday;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
+    public void setId(String id) { this.id = id; }
+
+    public boolean isFirst_login() { return first_login; }
+
+    public void setFirst_login(boolean first_login) { this.first_login = first_login; }
 }

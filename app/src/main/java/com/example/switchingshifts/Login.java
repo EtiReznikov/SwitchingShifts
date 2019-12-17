@@ -67,7 +67,8 @@ public class Login extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if(task.isSuccessful()){
                                         Toast.makeText(Login.this,"התחברת בהצלחה", Toast.LENGTH_SHORT).show();
-                                        if(login_email.equals("admin@gmail.com")) {
+                                        /* if the current unique id equal to maneger unique id go to maneger else worker */
+                                        if(firebase_auth.getCurrentUser().getUid().equals("agRJExNLmWUhUdbosK7SgiSAKUA3")) {
                                             startActivity(new Intent(Login.this, MangerScreen.class));
                                             }
                                         else{

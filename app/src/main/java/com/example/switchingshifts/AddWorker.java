@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,11 +19,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import io.opencensus.tags.Tag;
 
 
 public class AddWorker extends AppCompatActivity {
@@ -34,14 +39,17 @@ public class AddWorker extends AppCompatActivity {
     private TextView error;
     Spinner s_worker_type;
     ArrayAdapter<CharSequence> adapter_worker_type;
-    Worker worker;
+    private Worker worker;
     private FirebaseAuth firebase_auth;
+    private FirebaseFirestore db;
+    private String user_id;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         /* Initialize Firebase Auth */
         firebase_auth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
         setContentView(R.layout.activity_add_worker);
 
         error=(TextView)findViewById(R.id.textError);
@@ -101,17 +109,29 @@ public class AddWorker extends AppCompatActivity {
                 }
 
                 if(!flag){
-//                    worker = new Worker(first_name, last_name, role, email);
-//                    worker.setId(database_reff.push().getKey());
-//                    database_reff.child("workers").child(String.valueOf(worker.getWorker_number())).setValue(worker);
-//                    Toast.makeText(AddWorker.this, worker.getFirst_name() + " " + worker.getLast_name() + " Added seccesfully", Toast.LENGTH_SHORT).show();
 
+                    /* register the worker to firebase */
                   firebase_auth.createUserWithEmailAndPassword(email, password)
                           .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                               @Override
                               public void onComplete(@NonNull Task<AuthResult> task) {
                                   if(task.isSuccessful()){
-                                      Toast.makeText(AddWorker.this," העובד נקלט בהצלחה במערכת", Toast.LENGTH_LONG).show();
+                                      user_id = firebase_auth.getCurrentUser().getUid();
+                                      worker = new Worker(first_name, last_name, role, email);
+                                      db.collection("workers").document(user_id).set(worker).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                          @Override
+                                          public void onSuccess(Void aVoid) {
+                                              Toast.makeText(AddWorker.this, worker.getFirst_name() + " " + worker.getLast_name() + " נוסף בהצלחה למערכת ", Toast.LENGTH_LONG).show();
+
+                                          }
+                                      }).addOnFailureListener(new OnFailureListener() {
+                                          @Override
+                                          public void onFailure(@NonNull Exception e) {
+                                              Toast.makeText(AddWorker.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                                          }
+                                      });
+
+
                                       startActivity(new Intent(getApplicationContext(), MangerScreen.class));
                                   }else{
                                       Toast.makeText(AddWorker.this, task.getException().getMessage(),Toast.LENGTH_LONG).show();
