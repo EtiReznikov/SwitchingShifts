@@ -36,6 +36,9 @@
     <string name="addWorker">הוסף עובד</string>
     <string name="removeWorker">מחק עובד</string>
 
+
+    <string name="chooseRole">בחר תפקיד</string>
+    <string name="chooseShift">בחר משמרת</string>
     <string name="day">בחר תאריך</string>
     <string name="shift">משמרת</string>
     <string name="role">תפקיד</string>
@@ -48,11 +51,13 @@
     <string name="date">dd/mm/yyyy</string>
 
     <string-array name="shift_type">
+        <item>@string/chooseShift</item>
         <item>@string/morning</item>
         <item>@string/evening</item>
     </string-array>
 
     <string-array name="role_type">
+        <item>@string/chooseRole</item>
         <item>@string/waiter</item>
         <item>@string/barista</item>
         <item>@string/chef</item>

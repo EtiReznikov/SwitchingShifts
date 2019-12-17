@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +19,7 @@ public class PersonalDetails extends AppCompatActivity implements View.OnClickLi
 
     private EditText personalName, lastlName, mail, birthday;
     private Button savedButton;
+    private  Worker worker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +64,9 @@ public class PersonalDetails extends AppCompatActivity implements View.OnClickLi
                 mail.setError("חובה למלא שדה זה");
                 flag = true;
             }
+            else if(!Patterns.EMAIL_ADDRESS.matcher(mailString).matches()){
+                mail.setError("כתובת המייל לא תקינה");
+            }
             if(TextUtils.isEmpty(birthdayString)) {
                 birthday.setError("חובה למלא שדה זה");
                 flag = true;
@@ -81,20 +86,21 @@ public class PersonalDetails extends AppCompatActivity implements View.OnClickLi
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
         if(id == R.id.myShift){
-            Intent intent = new Intent(PersonalDetails.this, MyShifts.class);
-            startActivity(intent);
+            startActivity(new Intent(PersonalDetails.this, MyShifts.class));
         }
         if(id == R.id.messages){
-            Intent intent = new Intent(PersonalDetails.this, Messages.class);
-            startActivity(intent);
+            startActivity(new Intent(PersonalDetails.this, Messages.class));
         }
         if(id == R.id.personalInfo){
-            Intent intent = new Intent(PersonalDetails.this, PersonalDetails.class);
-            startActivity(intent);
+            startActivity(new Intent(PersonalDetails.this, PersonalDetails.class));
         }
         if(id == R.id.homePage){
-            Intent intent = new Intent(PersonalDetails.this, WorkerScreen.class);
-            startActivity(intent);
+            if(worker.getEmail().equals("admin@gmail.com")){
+                startActivity(new Intent(PersonalDetails.this, MangerScreen.class));
+            }
+            else {
+                startActivity(new Intent(PersonalDetails.this, WorkerScreen.class));
+            }
         }
         return true;
     }

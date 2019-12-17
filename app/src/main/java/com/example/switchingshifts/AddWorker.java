@@ -3,8 +3,11 @@ package com.example.switchingshifts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -50,7 +53,11 @@ public class AddWorker extends AppCompatActivity {
         s_worker_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getBaseContext(), parent.getItemAtPosition(position) + "selected", Toast.LENGTH_LONG).show();
+                if (parent.getItemAtPosition(position).equals("בחר תפקיד")) {
+                } else {
+                    role = parent.getItemAtPosition(position).toString();
+                    Toast.makeText(getBaseContext(), parent.getItemAtPosition(position) + "selected", Toast.LENGTH_LONG).show();
+                }
             }
 
             @Override
@@ -69,15 +76,31 @@ public class AddWorker extends AppCompatActivity {
                 first_name = textInputFirstName.getText().toString().trim();
                 last_name = textInputLastName.getText().toString().trim();
                 email = textInputEmail.getText().toString().trim();
-                role=s_worker_type.getSelectedItem().toString().trim();
                 password = new String(email);
+                boolean flag = false;
 
-                if (vaildateText(first_name) | vaildateText(last_name) | vaildateText(email) | vaildateText(role)){
-                    error.setText(R.string.empty_input);
+                if(TextUtils.isEmpty(first_name)){
+                    textInputFirstName.setError("חובה למלא שדה זה");
+                    flag = true;
                 }
-                else if (validateEmail(email))
-                    error.setText(R.string.invaild_mail);
-                else{
+                if(TextUtils.isEmpty(last_name)){
+                    textInputLastName.setError("חובה למלא שדה זה");
+                    flag = true;
+                }
+                if(TextUtils.isEmpty(email)){
+                    textInputEmail.setError("חובה למלא שדה זה");
+                    flag = true;
+                }
+                else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+                    textInputEmail.setError("כתובת המייל לא תקינה");
+                    flag = true;
+                }
+                if(TextUtils.isEmpty(role)){
+                    ((TextView)s_worker_type.getSelectedView()).setError("חובה למלא שדה זה");
+                    flag = true;
+                }
+
+                if(!flag){
                     Toast.makeText(AddWorker.this, "המידע הוכנס באופן תקין", Toast.LENGTH_SHORT).show();
 //                    worker = new Worker(first_name, last_name, role, email);
 //                    worker.setId(database_reff.push().getKey());
@@ -110,6 +133,7 @@ public class AddWorker extends AppCompatActivity {
                                   }
                               }
                           });
+                    startActivity(new Intent(AddWorker.this, MangerScreen.class));
                 }
 
 

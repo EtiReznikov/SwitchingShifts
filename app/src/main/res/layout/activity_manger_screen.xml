@@ -7,6 +7,16 @@
     android:background="@drawable/back_gradient"
     tools:context=".MangerScreen">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/back_gradient"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleMarginStart="40dp"></androidx.appcompat.widget.Toolbar>
+
     <TextView
         android:id="@+id/hello_title"
         android:layout_width="309dp"

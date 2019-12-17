@@ -1,8 +1,12 @@
 package com.example.switchingshifts;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -28,6 +32,8 @@ public class AddShift extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_shift);
+        Toolbar toolbar = findViewById(R.id.app_bar);
+        setSupportActionBar(toolbar);
 
         s_shift_type= (Spinner)findViewById(R.id.spinner_shift_type);
         adapter_shift_type= ArrayAdapter.createFromResource(this,R.array.shift_type,android.R.layout.simple_spinner_item);
@@ -36,7 +42,10 @@ public class AddShift extends AppCompatActivity {
         s_shift_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getBaseContext(), parent.getItemAtPosition(position)+"selected", Toast.LENGTH_LONG).show();
+                if (parent.getItemAtPosition(position).equals("בחר משמרת")) {}
+                else {
+                    Toast.makeText(getBaseContext(), parent.getItemAtPosition(position) + "selected", Toast.LENGTH_LONG).show();
+                }
             }
 
             @Override
@@ -52,7 +61,10 @@ public class AddShift extends AppCompatActivity {
         s_worker_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getBaseContext(), parent.getItemAtPosition(position)+"selected", Toast.LENGTH_LONG).show();
+                if (parent.getItemAtPosition(position).equals("בחר תפקיד")) {}
+                else {
+                    Toast.makeText(getBaseContext(), parent.getItemAtPosition(position) + "selected", Toast.LENGTH_LONG).show();
+                }
             }
 
             @Override
@@ -86,5 +98,30 @@ public class AddShift extends AppCompatActivity {
             }
         });
 
+    }
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item){
+        int id = item.getItemId();
+        if(id == R.id.myShift){
+            Intent intent = new Intent(AddShift.this, MyShifts.class);
+            startActivity(intent);
+        }
+        if(id == R.id.messages){
+            Intent intent = new Intent(AddShift.this, Messages.class);
+            startActivity(intent);
+        }
+        if(id == R.id.personalInfo){
+            Intent intent = new Intent(AddShift.this, PersonalDetails.class);
+            startActivity(intent);
+        }
+        if(id == R.id.homePage){
+            Intent intent = new Intent(AddShift.this, MangerScreen.class);
+            startActivity(intent);
+        }
+        return true;
     }
 }

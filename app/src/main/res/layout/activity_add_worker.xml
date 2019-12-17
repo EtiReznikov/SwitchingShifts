@@ -7,6 +7,16 @@
     android:background="@drawable/back_gradient"
     tools:context=".AddWorker">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/back_gradient"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleMarginStart="40dp"></androidx.appcompat.widget.Toolbar>
+
     <TextView
         android:id="@+id/Add_delete_title"
         android:layout_width="309dp"
@@ -170,7 +180,6 @@
         android:layout_marginTop="30dp"
         android:layout_marginEnd="45dp"
         android:layout_marginRight="45dp"
-        android:text="TextView"
         android:textSize="25sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tview_role" />
