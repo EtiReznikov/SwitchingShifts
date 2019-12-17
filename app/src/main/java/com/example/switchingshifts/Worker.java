@@ -6,10 +6,7 @@ public class Worker {
     private String last_name;
     private String role;
     private String email;
-    private long worker_number;
     private String birthday;
-    private static long id_counter = 1;
-    private String id;
     private boolean first_login;
 
 
@@ -19,7 +16,6 @@ public class Worker {
         this.last_name = "";
         this.role = "";
         this.email = "";
-        this.worker_number = id_counter++;
         this.birthday = "";
         this.first_login = true;
     }
@@ -29,7 +25,6 @@ public class Worker {
         this.last_name = last_name;
         this.role = role;
         this.email = email;
-        this.worker_number = id_counter++;
         this.birthday = "";
         this.first_login = true;
     }
@@ -51,15 +46,9 @@ public class Worker {
         return email;
     }
 
-    public long getWorker_number() {
-        return worker_number;
-    }
-
     public String getBirthday() {
         return birthday;
     }
-
-    public String getId() { return id; }
 
     public void setFirst_name(String first_name) {
         this.first_name = first_name;
@@ -80,8 +69,6 @@ public class Worker {
     public void setBirthday(String birthday) {
         this.birthday = birthday;
     }
-
-    public void setId(String id) { this.id = id; }
 
     public boolean isFirst_login() { return first_login; }
 

@@ -15,15 +15,31 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+
+import javax.annotation.Nullable;
+
 public class PersonalDetails extends AppCompatActivity implements View.OnClickListener {
 
-    private EditText personalName, lastlName, mail, birthday;
-    private Button savedButton;
-    private  Worker worker;
+    private EditText first_name, last_name, email, birthday;
+    private Button save_button;
+    private FirebaseAuth firebase_auth;
+    private FirebaseFirestore db;
+    private String user_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        /* Initialize Firebase Auth  and firestore*/
+        firebase_auth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+
         setContentView(R.layout.activity_personal_details);
         Toolbar toolbar = findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
@@ -37,35 +53,48 @@ public class PersonalDetails extends AppCompatActivity implements View.OnClickLi
                 }
         );
 
-        personalName = findViewById(R.id.personalName);
-        lastlName = findViewById(R.id.lastlName);
-        mail = findViewById(R.id.mail);
+        first_name = findViewById(R.id.personalName);
+        last_name = findViewById(R.id.lastlName);
+        email = findViewById(R.id.mail);
         birthday = findViewById(R.id.birthday);
-        savedButton = findViewById(R.id.saveButton);
-        savedButton.setOnClickListener(this);
+        save_button = findViewById(R.id.saveButton);
+        save_button.setOnClickListener(this);
+        user_id = firebase_auth.getCurrentUser().getUid();
+
+        DocumentReference documentReference = db.collection("workers").document(user_id);
+        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                first_name.setText(documentSnapshot.getString("first_name"));
+                last_name.setText(documentSnapshot.getString("last_name"));
+                email.setText(documentSnapshot.getString("mail"));
+                birthday.setText(documentSnapshot.getString("birthday"));
+
+            }
+        });
     }
     @Override
     public void onClick(View view){
         if(view.getId() == R.id.saveButton){
-            String pName = personalName.getText().toString().trim();
-            String lName = lastlName.getText().toString().trim();
-            String mailString = mail.getText().toString().trim();
+            String pName = first_name.getText().toString().trim();
+            String lName = last_name.getText().toString().trim();
+            String mailString = email.getText().toString().trim();
             String birthdayString = birthday.getText().toString().trim();
             boolean flag = false;
             if(TextUtils.isEmpty(pName)) {
-                personalName.setError("חובה למלא שדה זה");
+                first_name.setError("חובה למלא שדה זה");
                 flag = true;
             }
             if(TextUtils.isEmpty(lName)) {
-                lastlName.setError("חובה למלא שדה זה");
+                last_name.setError("חובה למלא שדה זה");
                 flag = true;
             }
             if(TextUtils.isEmpty(mailString)) {
-                mail.setError("חובה למלא שדה זה");
+                email.setError("חובה למלא שדה זה");
                 flag = true;
             }
             else if(!Patterns.EMAIL_ADDRESS.matcher(mailString).matches()){
-                mail.setError("כתובת המייל לא תקינה");
+                email.setError("כתובת המייל לא תקינה");
             }
             if(TextUtils.isEmpty(birthdayString)) {
                 birthday.setError("חובה למלא שדה זה");
@@ -95,7 +124,8 @@ public class PersonalDetails extends AppCompatActivity implements View.OnClickLi
             startActivity(new Intent(PersonalDetails.this, PersonalDetails.class));
         }
         if(id == R.id.homePage){
-            if(worker.getEmail().equals("admin@gmail.com")){
+            /* if the current unique id equal to maneger unique id go to maneger else worker */
+            if(firebase_auth.getCurrentUser().getUid().equals("agRJExNLmWUhUdbosK7SgiSAKUA3")){
                 startActivity(new Intent(PersonalDetails.this, MangerScreen.class));
             }
             else {

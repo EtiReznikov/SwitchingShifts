@@ -24,10 +24,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import io.opencensus.tags.Tag;
 
 
 public class AddWorker extends AppCompatActivity {
@@ -47,7 +45,7 @@ public class AddWorker extends AppCompatActivity {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /* Initialize Firebase Auth */
+        /* Initialize Firebase Auth  and firestore*/
         firebase_auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         setContentView(R.layout.activity_add_worker);
@@ -121,7 +119,7 @@ public class AddWorker extends AppCompatActivity {
                                       db.collection("workers").document(user_id).set(worker).addOnSuccessListener(new OnSuccessListener<Void>() {
                                           @Override
                                           public void onSuccess(Void aVoid) {
-                                              Toast.makeText(AddWorker.this, worker.getFirst_name() + " " + worker.getLast_name() + " נוסף בהצלחה למערכת ", Toast.LENGTH_LONG).show();
+                                              Toast.makeText(AddWorker.this, " נוסף בהצלחה למערכת " + worker.getFirst_name() + " " + worker.getLast_name(), Toast.LENGTH_LONG).show();
 
                                           }
                                       }).addOnFailureListener(new OnFailureListener() {

@@ -14,25 +14,40 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+
+import javax.annotation.Nullable;
 
 
 public class Login extends AppCompatActivity {
 
     private EditText login_email_text, login_password_text;
     private Button login_connection_button;
-    private FirebaseAuth firebase_auth;
     private String login_email;
     private String login_password;
+    private FirebaseAuth firebase_auth;
+    private FirebaseFirestore db;
+    private String user_id;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        /* Initialize Firebase Auth  and firestore*/
         firebase_auth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+
 
         login_email_text = findViewById(R.id.login_email);
         login_password_text = findViewById(R.id.login_password);
@@ -42,7 +57,7 @@ public class Login extends AppCompatActivity {
 
         login_email_text.addTextChangedListener(loginTextWatcher);
         login_password_text.addTextChangedListener(loginTextWatcher);
-        Toast.makeText(Login.this, "Firebase Connection Success", Toast.LENGTH_LONG).show();
+        Toast.makeText(Login.this, "Firebase Connection Success", Toast.LENGTH_SHORT).show();
 
     }
 
@@ -66,7 +81,19 @@ public class Login extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if(task.isSuccessful()){
-                                        Toast.makeText(Login.this,"התחברת בהצלחה", Toast.LENGTH_SHORT).show();
+                                        user_id = firebase_auth.getCurrentUser().getUid();
+
+                                        DocumentReference documentReference = db.collection("workers").document(user_id);
+                                        documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                                  Worker worker = documentSnapshot .toObject(Worker.class);
+                                                  String first_name = worker.getFirst_name();
+                                                  String last_name = worker.getLast_name();
+                                                  Toast.makeText(Login.this, " התחברת בהצלחה "+ first_name + " " + last_name, Toast.LENGTH_LONG).show();
+                                            }
+                                        });
+
                                         /* if the current unique id equal to maneger unique id go to maneger else worker */
                                         if(firebase_auth.getCurrentUser().getUid().equals("agRJExNLmWUhUdbosK7SgiSAKUA3")) {
                                             startActivity(new Intent(Login.this, MangerScreen.class));
