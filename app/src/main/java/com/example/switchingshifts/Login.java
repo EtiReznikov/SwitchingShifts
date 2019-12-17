@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -60,13 +61,18 @@ public class Login extends AppCompatActivity {
             login_connection_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                     firebase_auth.signInWithEmailAndPassword(login_email, login_password)
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if(task.isSuccessful()){
                                         Toast.makeText(Login.this,"התחברת בהצלחה", Toast.LENGTH_SHORT).show();
+                                        if(login_email.equals("admin@gmail.com")) {
+                                            startActivity(new Intent(Login.this, MangerScreen.class));
+                                            }
+                                        else{
+                                            startActivity(new Intent(Login.this, WorkerScreen.class));
+                                        }
                                     }else{
                                         Toast.makeText(Login.this,"האימייל או הסיסמא אינם תקינים", Toast.LENGTH_SHORT).show();
                                     }

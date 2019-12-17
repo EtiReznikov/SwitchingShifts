@@ -12,11 +12,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class PersonalDetails extends AppCompatActivity implements View.OnClickListener {
 
     private EditText personalName, lastlName, mail, birthday;
-    private TextView output;
     private Button savedButton;
 
     @Override
@@ -39,44 +39,37 @@ public class PersonalDetails extends AppCompatActivity implements View.OnClickLi
         lastlName = findViewById(R.id.lastlName);
         mail = findViewById(R.id.mail);
         birthday = findViewById(R.id.birthday);
-        output = findViewById(R.id.output);
-        savedButton = findViewById(R.id.savedButton);
-
+        savedButton = findViewById(R.id.saveButton);
         savedButton.setOnClickListener(this);
     }
     @Override
     public void onClick(View view){
-        if(view.getId() == R.id.savedButton){
+        if(view.getId() == R.id.saveButton){
             String pName = personalName.getText().toString().trim();
             String lName = lastlName.getText().toString().trim();
             String mailString = mail.getText().toString().trim();
             String birthdayString = birthday.getText().toString().trim();
-
-        boolean flag = false;
-        if(TextUtils.isEmpty(pName)) {
-            personalName.setError("חובה למלא שדה זה");
-            flag = true;
-        }
-        if(TextUtils.isEmpty(lName)) {
-            lastlName.setError("חובה למלא שדה זה");
-            flag = true;
-        }
-        if(TextUtils.isEmpty(mailString)) {
-            mail.setError("חובה למלא שדה זה");
-            flag = true;
-        }
-        if(TextUtils.isEmpty(birthdayString)) {
-            birthday.setError("חובה למלא שדה זה");
-            flag = true;
-        }
-        if(!flag){
-            StringBuilder sb = new StringBuilder();
-            sb.append("personal name" + " " + pName)
-                    .append(" last name" + " " + lName)
-                    .append(" email" + " " + mailString)
-                    .append(" birthday" + " " + birthdayString);
-            output.setText(sb.toString());
-        }
+            boolean flag = false;
+            if(TextUtils.isEmpty(pName)) {
+                personalName.setError("חובה למלא שדה זה");
+                flag = true;
+            }
+            if(TextUtils.isEmpty(lName)) {
+                lastlName.setError("חובה למלא שדה זה");
+                flag = true;
+            }
+            if(TextUtils.isEmpty(mailString)) {
+                mail.setError("חובה למלא שדה זה");
+                flag = true;
+            }
+            if(TextUtils.isEmpty(birthdayString)) {
+                birthday.setError("חובה למלא שדה זה");
+                flag = true;
+            }
+            if(!flag){
+                Toast.makeText(PersonalDetails.this,"הנתונים נשמרו", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(PersonalDetails.this, WorkerScreen.class));
+            }
         }
     }
 
