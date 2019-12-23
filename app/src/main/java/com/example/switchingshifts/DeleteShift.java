@@ -18,8 +18,8 @@ import java.util.Calendar;
 
 public class DeleteShift extends AppCompatActivity {
     TextView date;
-    Button selectDate;
-    Calendar c;
+    Button select_date;
+    Calendar calendar;
     DatePickerDialog dpd;
     private Button ok;
     private String inputDate, role, shift, workerNumber;
@@ -36,8 +36,8 @@ public class DeleteShift extends AppCompatActivity {
         setContentView(R.layout.activity_delete_shift);
 
 
-        s_shift_type= (Spinner)findViewById(R.id.spinner_shift_type);
-        adapter_shift_type= ArrayAdapter.createFromResource(this,R.array.shift_type,android.R.layout.simple_spinner_item);
+        s_shift_type = (Spinner)findViewById(R.id.spinner_shift_type);
+        adapter_shift_type = ArrayAdapter.createFromResource(this,R.array.shift_type,android.R.layout.simple_spinner_item);
         adapter_shift_type.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         s_shift_type.setAdapter(adapter_shift_type);
         s_shift_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -75,19 +75,19 @@ public class DeleteShift extends AppCompatActivity {
 
             }
         });
-        selectDate = (Button)findViewById(R.id.button_day);
+        select_date = (Button)findViewById(R.id.button_day);
         date = (TextView) findViewById(R.id.txt_date);
 
 
-        selectDate.setOnClickListener(new View.OnClickListener() {
+        select_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                c= Calendar.getInstance();
-                int day= c.get(Calendar.DAY_OF_MONTH);
-                int month= c.get(Calendar.MONTH);
-                int year= c.get(Calendar.YEAR);
+                calendar = Calendar.getInstance();
+                int day= calendar.get(Calendar.DAY_OF_MONTH);
+                int month= calendar.get(Calendar.MONTH);
+                int year= calendar.get(Calendar.YEAR);
 
-                dpd=new DatePickerDialog(DeleteShift.this, new DatePickerDialog.OnDateSetListener() {
+                dpd = new DatePickerDialog(DeleteShift.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int mDay, int mMonth, int mYear) {
                         date.setText(mYear + "/" + mMonth + "/"+ mDay);

@@ -29,16 +29,16 @@ public class MyShifts extends AppCompatActivity {
     }
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
-        if(id == R.id.myShift){
+        if(id == R.id.my_shift){
             startActivity(new Intent(MyShifts.this, MyShifts.class));
         }
         if(id == R.id.messages){
             startActivity(new Intent(MyShifts.this, Messages.class));
         }
-        if(id == R.id.personalInfo){
+        if(id == R.id.personal_info){
             startActivity(new Intent(MyShifts.this, PersonalDetails.class));
         }
-        if(id == R.id.homePage){
+        if(id == R.id.home_page){
             if(worker.getEmail().equals("admin@gmail.com")){
                 startActivity(new Intent(MyShifts.this, MangerScreen.class));
             }

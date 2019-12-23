@@ -14,7 +14,7 @@
         android:layout_marginBottom="12dp"
         android:background="@color/colorTextBoxBeck"
         android:drawableEnd="@drawable/ic_person_outline_white_24dp"
-        android:hint="@string/workerNum"
+        android:hint="@string/worker_number"
         android:gravity="start"
         android:inputType="number"
         android:padding="10dp"
