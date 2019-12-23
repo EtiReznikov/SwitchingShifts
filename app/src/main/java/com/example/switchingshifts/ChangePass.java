@@ -59,16 +59,16 @@ public class ChangePass extends AppCompatActivity implements View.OnClickListene
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if(id == R.id.myShift){
+        if(id == R.id.my_shift){
             startActivity(new Intent(ChangePass.this, MyShifts.class));
         }
         if(id == R.id.messages){
             startActivity(new Intent(ChangePass.this, Messages.class));
         }
-        if(id == R.id.personalInfo){
+        if(id == R.id.personal_info){
             startActivity(new Intent(ChangePass.this, PersonalDetails.class));
         }
-        if(id == R.id.homePage){
+        if(id == R.id.home_page){
             startActivity(new Intent(ChangePass.this, WorkerScreen.class));
         }
         return true;

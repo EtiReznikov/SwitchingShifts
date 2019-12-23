@@ -114,16 +114,16 @@ public class PersonalDetails extends AppCompatActivity implements View.OnClickLi
 
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
-        if(id == R.id.myShift){
+        if(id == R.id.my_shift){
             startActivity(new Intent(PersonalDetails.this, MyShifts.class));
         }
         if(id == R.id.messages){
             startActivity(new Intent(PersonalDetails.this, Messages.class));
         }
-        if(id == R.id.personalInfo){
+        if(id == R.id.personal_info){
             startActivity(new Intent(PersonalDetails.this, PersonalDetails.class));
         }
-        if(id == R.id.homePage){
+        if(id == R.id.home_page){
             /* if the current unique id equal to maneger unique id go to maneger else worker */
             if(firebase_auth.getCurrentUser().getUid().equals("agRJExNLmWUhUdbosK7SgiSAKUA3")){
                 startActivity(new Intent(PersonalDetails.this, MangerScreen.class));

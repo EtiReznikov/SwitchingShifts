@@ -35,7 +35,7 @@ public class WorkerScreen extends AppCompatActivity {
     }
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
-        if(id == R.id.myShift){
+        if(id == R.id.my_shift){
             Intent intent = new Intent(WorkerScreen.this, MyShifts.class);
             startActivity(intent);
         }
@@ -43,11 +43,11 @@ public class WorkerScreen extends AppCompatActivity {
             Intent intent = new Intent(WorkerScreen.this, Messages.class);
             startActivity(intent);
         }
-        if(id == R.id.personalInfo){
+        if(id == R.id.personal_info){
             Intent intent = new Intent(WorkerScreen.this, PersonalDetails.class);
             startActivity(intent);
         }
-        if(id == R.id.homePage){
+        if(id == R.id.home_page){
             Intent intent = new Intent(WorkerScreen.this, WorkerScreen.class);
             startActivity(intent);
         }

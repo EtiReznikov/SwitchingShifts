@@ -4,16 +4,16 @@
 
     <item
     android:title="@string/shift"
-    android:id="@+id/myShift"/>
+    android:id="@+id/my_shift"/>
     <item
         android:title="@string/personal_information"
-        android:id="@+id/personalInfo"/>
+        android:id="@+id/personal_info"/>
     <item
         android:title="@string/messages"
         android:id="@+id/messages" />
     <item
         android:title="@string/home"
-        android:id="@+id/homePage"
+        android:id="@+id/home_page"
         android:icon="@drawable/ic_home_black_24dp"
         app:showAsAction="always"/>
 </menu>

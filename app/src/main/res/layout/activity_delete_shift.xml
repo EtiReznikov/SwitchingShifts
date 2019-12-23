@@ -22,7 +22,7 @@
         android:layout_marginTop="60dp"
         android:layout_marginEnd="72dp"
         android:layout_marginRight="72dp"
-        android:text="@string/removeShift"
+        android:text="@string/remove_shift"
         android:textColor="@color/colorInput"
         android:textColorHighlight="#000F0101"
         android:textColorLink="#00180101"
