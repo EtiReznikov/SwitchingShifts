@@ -37,12 +37,12 @@
 
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/choose_shift_to_swap"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="148dp"
         android:padding="16dp"
-        android:text="@string/ShiftSwap"
+        android:text="@string/shift_swap"
         android:textColor="@android:color/white"
         android:textColorLink="@color/colorAccent"
         android:textSize="16sp"
@@ -58,14 +58,15 @@
         android:layout_marginEnd="1dp"
         android:layout_marginRight="1dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/choose_shift_to_swap" />
 
     <TextView
+        android:id="@+id/choose_shift_to_swap1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="284dp"
         android:padding="16dp"
-        android:text="@string/ShiftSwap1"
+        android:text="@string/shift_swap1"
         android:textColor="@android:color/white"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -78,7 +79,7 @@
         android:layout_height="46dp"
         android:layout_marginTop="160dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/choose_shift_to_swap" />
 
     <Button
         android:id="@+id/button1"
@@ -88,7 +89,7 @@
         android:layout_marginRight="212dp"
         android:layout_marginBottom="108dp"
         android:background="@drawable/login_button_back"
-        android:text="@string/OKbutton"
+        android:text="@string/OK_button"
         android:textColor="@color/colorInput"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"

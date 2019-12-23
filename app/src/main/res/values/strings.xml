@@ -25,10 +25,10 @@
     <string name="workerNumber">מספר עובד</string>
     <string name="welcome_string">!ברוכים הבאים</string>
 
-    <string name="NewPess">איפוס סיסמא</string>
-    <string name="firstNewPess">הזן סיסמא חדשה</string>
-    <string name="secondNewPess">אשר את הסיסמא החדשה</string>
-    <string name="OKbutton">אישור</string>
+    <string name="new_pess">איפוס סיסמא</string>
+    <string name="first_new_pess">הזן סיסמא חדשה</string>
+    <string name="second_new_pess">אשר את הסיסמא החדשה</string>
+    <string name="OK_button">אישור</string>
 
     <string name="hello">שלום</string>
     <string name="addShift">הוסף משמרת</string>
@@ -65,17 +65,17 @@
 
     <string name="first_name">שם פרטי</string>
     <string name="last_name">שם משפחה</string>
-    <string name="workername">שם עובד</string>
-    <string name="ShiftSwap">בחר משמרת שברצונך להחליף</string>
-    <string name="Choice">בחר</string>
-    <string name="ShiftSwap1">בחר משמרת אליה תרצה לעבור</string>
-    <string name="MyShift">המשמרות שלי</string>
-    <string name="PersonalInformation">פרטים אישיים</string>
-    <string name="Messages">הודעות</string>
-    <string name="Birthday">יום הולדת</string>
-    <string name="Home">בית</string>
-    <string name="MyMessages">ההודעות שלי</string>
-    <string name="Shift">משמרות</string>
+    <string name="worker_name">שם עובד</string>
+    <string name="shift_swap">בחר משמרת שברצונך להחליף</string>
+    <string name="choice">בחר</string>
+    <string name="shift_swap1">בחר משמרת אליה תרצה לעבור</string>
+    <string name="my_shift">המשמרות שלי</string>
+    <string name="personal_information">פרטים אישיים</string>
+    <string name="messages">הודעות</string>
+    <string name="birthday">יום הולדת</string>
+    <string name="home">בית</string>
+    <string name="my_messages">ההודעות שלי</string>
+    <string name="shifts">משמרות</string>
 
     <string name="delete_worker_for_sure">אני בטוח שאני רוצה למחוק</string>
     <string name="invaild_mail">כתובת מייל לא תקינה</string>
