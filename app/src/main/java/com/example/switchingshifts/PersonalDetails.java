@@ -76,27 +76,27 @@ public class PersonalDetails extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View view){
         if(view.getId() == R.id.saveButton){
-            String pName = first_name.getText().toString().trim();
-            String lName = last_name.getText().toString().trim();
-            String mailString = email.getText().toString().trim();
-            String birthdayString = birthday.getText().toString().trim();
+            String f_name = first_name.getText().toString().trim();
+            String l_name = last_name.getText().toString().trim();
+            String mail_string = email.getText().toString().trim();
+            String birthday_string = birthday.getText().toString().trim();
             boolean flag = false;
-            if(TextUtils.isEmpty(pName)) {
+            if(TextUtils.isEmpty(f_name)) {
                 first_name.setError("חובה למלא שדה זה");
                 flag = true;
             }
-            if(TextUtils.isEmpty(lName)) {
+            if(TextUtils.isEmpty(l_name)) {
                 last_name.setError("חובה למלא שדה זה");
                 flag = true;
             }
-            if(TextUtils.isEmpty(mailString)) {
+            if(TextUtils.isEmpty(mail_string)) {
                 email.setError("חובה למלא שדה זה");
                 flag = true;
             }
-            else if(!Patterns.EMAIL_ADDRESS.matcher(mailString).matches()){
+            else if(!Patterns.EMAIL_ADDRESS.matcher(mail_string).matches()){
                 email.setError("כתובת המייל לא תקינה");
             }
-            if(TextUtils.isEmpty(birthdayString)) {
+            if(TextUtils.isEmpty(birthday_string)) {
                 birthday.setError("חובה למלא שדה זה");
                 flag = true;
             }
