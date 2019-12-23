@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 public class ChangePass extends AppCompatActivity implements View.OnClickListener {
 
-    private EditText firstPess, secondPess;
+    private EditText first_pess, second_pess;
     private Button button;
 
     @Override
@@ -26,8 +26,8 @@ public class ChangePass extends AppCompatActivity implements View.OnClickListene
         Toolbar toolbar = findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
 
-        firstPess = findViewById(R.id.firstPess);
-        secondPess = findViewById(R.id.secondPess);
+        first_pess = findViewById(R.id.first_pess);
+        second_pess = findViewById(R.id.second_pess);
         button = findViewById(R.id.button);
 
         button.setOnClickListener(this);
@@ -35,12 +35,12 @@ public class ChangePass extends AppCompatActivity implements View.OnClickListene
     }
     public void onClick(View view){
         if(view.getId() == R.id.button){
-            String firstPessInput = firstPess.getText().toString().trim();
-            String secondPessInput = secondPess.getText().toString().trim();
+            String first_pess_input = first_pess.getText().toString().trim();
+            String second_pess_input = second_pess.getText().toString().trim();
 
-            if(!firstPessInput.equals(secondPessInput)){
-                firstPess.setError("הסיסמאות לא שוות");
-                secondPess.setError("הסיסמאות לא שוות");
+            if(!first_pess_input.equals(second_pess_input)){
+                first_pess.setError("הסיסמאות לא שוות");
+                second_pess.setError("הסיסמאות לא שוות");
             }
             else{
                 Toast.makeText(ChangePass.this,"הסיסמא שונתה בהצלחה", Toast.LENGTH_SHORT).show();
