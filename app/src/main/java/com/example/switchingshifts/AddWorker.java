@@ -30,9 +30,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class AddWorker extends AppCompatActivity {
     private String first_name, last_name, email, role, password;
-    private EditText textInputEmail;
-    private EditText textInputFirstName;
-    private EditText textInputLastName;
+    private EditText text_input_email;
+    private EditText text_input_first_name;
+    private EditText text_input_last_name;
     private Button ok;
     private TextView error;
     Spinner s_worker_type;
@@ -72,33 +72,33 @@ public class AddWorker extends AppCompatActivity {
             }
         });
 
-        textInputFirstName = (EditText) findViewById(R.id.Etext_first_name);
-        textInputLastName = (EditText) findViewById(R.id.Etext_last_name);
-        textInputEmail = (EditText) findViewById(R.id.Etext_mail);
+        text_input_first_name = (EditText) findViewById(R.id.Etext_first_name);
+        text_input_last_name = (EditText) findViewById(R.id.Etext_last_name);
+        text_input_email = (EditText) findViewById(R.id.Etext_mail);
         ok = (Button) findViewById(R.id.button_ok);
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                first_name = textInputFirstName.getText().toString().trim();
-                last_name = textInputLastName.getText().toString().trim();
-                email = textInputEmail.getText().toString().trim();
+                first_name = text_input_first_name.getText().toString().trim();
+                last_name = text_input_last_name.getText().toString().trim();
+                email = text_input_email.getText().toString().trim();
                 password = new String(email);
                 boolean flag = false;
 
                 if(TextUtils.isEmpty(first_name)){
-                    textInputFirstName.setError("חובה למלא שדה זה");
+                    text_input_first_name.setError("חובה למלא שדה זה");
                     flag = true;
                 }
                 if(TextUtils.isEmpty(last_name)){
-                    textInputLastName.setError("חובה למלא שדה זה");
+                    text_input_last_name.setError("חובה למלא שדה זה");
                     flag = true;
                 }
                 if(TextUtils.isEmpty(email)){
-                    textInputEmail.setError("חובה למלא שדה זה");
+                    text_input_email.setError("חובה למלא שדה זה");
                     flag = true;
                 }
                 else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-                    textInputEmail.setError("כתובת המייל לא תקינה");
+                    text_input_email.setError("כתובת המייל לא תקינה");
                     flag = true;
                 }
                 if(TextUtils.isEmpty(role)){

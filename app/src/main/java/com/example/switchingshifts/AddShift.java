@@ -20,8 +20,8 @@ import java.util.Calendar;
 
 public class AddShift extends AppCompatActivity {
     TextView date;
-    Button selectDate;
-    Calendar c;
+    Button select_date;
+    Calendar calendar;
     DatePickerDialog dpd;
 
     Spinner s_shift_type;
@@ -74,17 +74,17 @@ public class AddShift extends AppCompatActivity {
         });
 
 
-        selectDate = (Button)findViewById(R.id.button_day);
-        date = (TextView) findViewById(R.id.txt_date);
+        select_date = findViewById(R.id.button_day);
+        date = findViewById(R.id.txt_date);
 
 
-        selectDate.setOnClickListener(new View.OnClickListener() {
+        select_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                c= Calendar.getInstance();
-                int day= c.get(Calendar.DAY_OF_MONTH);
-                int month= c.get(Calendar.MONTH);
-                int year= c.get(Calendar.YEAR);
+                calendar = Calendar.getInstance();
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
+                int month = calendar.get(Calendar.MONTH);
+                int year = calendar.get(Calendar.YEAR);
 
                 dpd=new DatePickerDialog(AddShift.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
@@ -106,7 +106,7 @@ public class AddShift extends AppCompatActivity {
 
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
-        if(id == R.id.myShift){
+        if(id == R.id.my_shift){
             Intent intent = new Intent(AddShift.this, MyShifts.class);
             startActivity(intent);
         }
@@ -114,11 +114,11 @@ public class AddShift extends AppCompatActivity {
             Intent intent = new Intent(AddShift.this, Messages.class);
             startActivity(intent);
         }
-        if(id == R.id.personalInfo){
+        if(id == R.id.personal_info){
             Intent intent = new Intent(AddShift.this, PersonalDetails.class);
             startActivity(intent);
         }
-        if(id == R.id.homePage){
+        if(id == R.id.home_page){
             Intent intent = new Intent(AddShift.this, MangerScreen.class);
             startActivity(intent);
         }

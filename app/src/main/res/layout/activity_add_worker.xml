@@ -24,7 +24,7 @@
         android:layout_marginTop="60dp"
         android:layout_marginEnd="72dp"
         android:layout_marginRight="72dp"
-        android:text="@string/addWorker"
+        android:text="@string/add_worker"
         android:textColor="@color/colorInput"
         android:textColorHighlight="#000F0101"
         android:textColorLink="#00180101"

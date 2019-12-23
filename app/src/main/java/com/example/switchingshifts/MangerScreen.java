@@ -24,28 +24,28 @@ public class MangerScreen extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 
-        add_worker= (Button)findViewById(R.id.button_add_worker);
+        add_worker = (Button)findViewById(R.id.button_add_worker);
         add_worker.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick( View v){
                 openActivityAddWorker();
             }
         });
-        remove_worker= (Button)findViewById(R.id.button_remove_worker);
+        remove_worker = (Button)findViewById(R.id.button_remove_worker);
         remove_worker.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick( View v){
                 openActivityRemoveWorker();
             }
         });
-        remove_shift= (Button)findViewById(R.id.button_remove_shift);
+        remove_shift = (Button)findViewById(R.id.button_remove_shift);
         remove_shift.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick( View v){
                 openActivityRemoveShift();
             }
         });
-        add_shift= (Button)findViewById(R.id.button_add_shift);
+        add_shift = (Button)findViewById(R.id.button_add_shift);
         add_shift.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick( View v){
@@ -55,19 +55,19 @@ public class MangerScreen extends AppCompatActivity {
     }
 
     private void openActivityAddWorker(){
-        Intent intent=new Intent(this, AddWorker.class);
+        Intent intent = new Intent(this, AddWorker.class);
         startActivity(intent);
     }
     private void openActivityRemoveWorker(){
-        Intent intent=new Intent(this,RemoveWorker.class);
+        Intent intent = new Intent(this,RemoveWorker.class);
         startActivity(intent);
     }
     private void openActivityAddShift(){
-        Intent intent=new Intent(this, AddShift.class);
+        Intent intent = new Intent(this, AddShift.class);
         startActivity(intent);
     }
     private void openActivityRemoveShift(){
-        Intent intent=new Intent(this,DeleteShift.class);
+        Intent intent = new Intent(this,DeleteShift.class);
         startActivity(intent);
     }
 
@@ -78,7 +78,7 @@ public class MangerScreen extends AppCompatActivity {
 
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
-        if(id == R.id.myShift){
+        if(id == R.id.my_shift){
             Intent intent = new Intent(MangerScreen.this, MyShifts.class);
             startActivity(intent);
         }
@@ -86,11 +86,11 @@ public class MangerScreen extends AppCompatActivity {
             Intent intent = new Intent(MangerScreen.this, Messages.class);
             startActivity(intent);
         }
-        if(id == R.id.personalInfo){
+        if(id == R.id.personal_info){
             Intent intent = new Intent(MangerScreen.this, PersonalDetails.class);
             startActivity(intent);
         }
-        if(id == R.id.homePage){
+        if(id == R.id.home_page){
             Intent intent = new Intent(MangerScreen.this, MangerScreen.class);
             startActivity(intent);
         }
