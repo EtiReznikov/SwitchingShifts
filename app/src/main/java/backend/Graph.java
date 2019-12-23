@@ -7,27 +7,27 @@ import java.util.List;
 import java.util.LinkedList;
 import java.util.Map;
 
-class Graph<T> {
+class Graph {
 
 
-    private List<Vetrex<T>> graph;
+    private List<Vetrex> graph;
 
     public Graph() {
-        graph = new ArrayList<Vetrex<T>>();
+        graph = new ArrayList<Vetrex>();
 
     }
 
     public Graph(Graph g) {
         graph = new ArrayList<>();
-        for (Vetrex<T> v: g.graph){
+        for (Vetrex v: g.getGraph()){
             graph.add(v);
-            for(Vetrex<T> n: v.neg){
+            for(Vetrex n: v.neg){
                 v.addEdge(n);
             }
         }
 
     }
-    public List<Vetrex<T>> getGraph(){
+    public List<Vetrex> getGraph(){
         return graph;
     }
 
@@ -43,54 +43,76 @@ class Graph<T> {
         }
         return false;
     }
-    public void addEdge(Vetrex W, Vetrex R){
-        graph.add(W);
-        graph.add(R);
-        R.addEdge(W);
-        // if has no circle:
-        for (Vetrex<T> v:  graph){
-            if (v.equals(W)){
-                R.addEdge(v);
-                for (Vetrex<T> n: v.neg){
-                    W.addEdge(n);
-                }
-            }
-            else if (v.equals(R)){
-                v.addEdge(W);
-                for (Vetrex<T> n: v.neg){
-                    R.addEdge(n);
-                }
-            }
-            else{
-                for (Vetrex<T> n: v.neg){
-                    if (n.equals(W)){
-                        R.addEdge(n);
-                        v.addEdge(W);
-                    }
-                    else if (n.equals(R)){
-                        v.addEdge(R);
-                        n.addEdge(W);
-                    }
-                }
-            }
-
+    public int get_vetrex_index(Vetrex v){
+        for (int i = 0; i < graph.size(); i++) {
+            if (graph.get(i).equals(v))
+                return i;
         }
+        return -1;
+    }
+    public void addEdge(Vetrex shift_reg, Vetrex worker, Vetrex shift_wanted){
+        graph.add(shift_reg);
+        graph.add(worker);
+        graph.add(shift_wanted);
+
+       int worker_index=get_vetrex_index(worker);
+       int shift_reg_index=get_vetrex_index(shift_reg);
+       if (v1_index!=-1){
+
+       }
+        if (!contains_vetrex(V2))
+            graph.add(V2);
+
+//        R.addEdge(W);
+//        // if has no circle:
+//        for (Vetrex<T> v:  graph){
+//            if (v.equals(W)){
+//                R.addEdge(v);
+//                for (Vetrex<T> n: v.neg){
+//                    W.addEdge(n);
+//                }
+//            }
+//            else if (v.equals(R)){
+//                v.addEdge(W);
+//                for (Vetrex<T> n: v.neg){
+//                    R.addEdge(n);
+//                }
+//            }
+//            else{
+//                for (Vetrex<T> n: v.neg){
+//                    if (n.equals(W)){
+//                        R.addEdge(n);
+//                        v.addEdge(W);
+//                    }
+//                    else if (n.equals(R)){
+//                        v.addEdge(R);
+//                        n.addEdge(W);
+//                    }
+//                }
+//            }
+//
+//        }
     }
 
 }
-class Vetrex<T>{
+class Vetrex{
 
     String userid;
+
+    boolean is_user;
 
 
     String date;
     String shift_type;
 
-    boolean flag;
-    LinkedList<Vetrex<T>> neg;
+
+    LinkedList<Vetrex> neg;
+
+    //const user
+
+    //const shift
     public Vetrex(String data_type, String email){
-        this.date_type=data_type;
-        this.email=email;
+
         neg= new LinkedList<>();
     }
 
@@ -105,7 +127,7 @@ class Vetrex<T>{
                 return true;
         return false;
     }
-    public  LinkedList<Vetrex<T>> getNeg(){
+    public  LinkedList<Vetrex> getNeg(){
         return neg;
     }
 }

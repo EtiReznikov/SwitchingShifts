@@ -82,6 +82,7 @@ public class Login extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if(task.isSuccessful()){
                                         user_id = firebase_auth.getCurrentUser().getUid();
+////Change
                                         if(!user_id.equals("agRJExNLmWUhUdbosK7SgiSAKUA3")){
                                             DocumentReference documentReference = db.collection("workers").document(user_id);
                                             documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
