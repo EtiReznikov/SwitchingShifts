@@ -65,7 +65,6 @@
 
     <string name="first_name">שם פרטי</string>
     <string name="last_name">שם משפחה</string>
-    <string name="mail">מייל</string>
     <string name="workername">שם עובד</string>
     <string name="ShiftSwap">בחר משמרת שברצונך להחליף</string>
     <string name="Choice">בחר</string>
@@ -73,10 +72,6 @@
     <string name="MyShift">המשמרות שלי</string>
     <string name="PersonalInformation">פרטים אישיים</string>
     <string name="Messages">הודעות</string>
-    <string name="PName">שם פרטי</string>
-    <string name="LName">שם משפחה</string>
-    <string name="EmployeeNumber">מספר עובד</string>
-    <string name="Mail">מייל</string>
     <string name="Birthday">יום הולדת</string>
     <string name="Home">בית</string>
     <string name="MyMessages">ההודעות שלי</string>
