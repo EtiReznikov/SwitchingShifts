@@ -1,4 +1,4 @@
-package com.example.switchingshifts;
+package backend;
 
 public class User {
     private  long worker_number;

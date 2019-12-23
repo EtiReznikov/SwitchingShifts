@@ -15,7 +15,6 @@
         <activity android:name=".MangerScreen" />
         <activity android:name=".Settings" />
         <activity android:name=".Shifts" />
-        <activity android:name=".AddWorker" />
         <activity android:name=".DeleteShift" />
         <activity android:name=".AddShift" />
         <activity android:name=".Messages" />
