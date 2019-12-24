@@ -71,34 +71,34 @@ public class MangerScreen extends AppCompatActivity {
         startActivity(intent);
     }
     /*tool bar*/
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return true;
-    }
-
-    /*
-    When press one of the items in the toolbar we will go to the required screen.
-     */
-    public boolean onOptionsItemSelected(MenuItem item){
-        int id = item.getItemId();
-        if(id == R.id.my_shift){
-            Intent intent = new Intent(MangerScreen.this, MyShifts.class);
-            startActivity(intent);
-        }
-        if(id == R.id.messages){
-            Intent intent = new Intent(MangerScreen.this, Messages.class);
-            startActivity(intent);
-        }
-        if(id == R.id.personal_info){
-            Intent intent = new Intent(MangerScreen.this, PersonalDetails.class);
-            startActivity(intent);
-        }
-        if(id == R.id.home_page){
-            Intent intent = new Intent(MangerScreen.this, MangerScreen.class);
-            startActivity(intent);
-        }
-        return true;
-    }
+//    public boolean onCreateOptionsMenu(Menu menu){
+//        getMenuInflater().inflate(R.menu.menu, menu);
+//        return true;
+//    }
+//
+//    /*
+//    When press one of the items in the toolbar we will go to the required screen.
+//     */
+//    public boolean onOptionsItemSelected(MenuItem item){
+//        int id = item.getItemId();
+//        if(id == R.id.my_shift){
+//            Intent intent = new Intent(MangerScreen.this, MyShifts.class);
+//            startActivity(intent);
+//        }
+//        if(id == R.id.messages){
+//            Intent intent = new Intent(MangerScreen.this, Messages.class);
+//            startActivity(intent);
+//        }
+//        if(id == R.id.personal_info){
+//            Intent intent = new Intent(MangerScreen.this, PersonalDetails.class);
+//            startActivity(intent);
+//        }
+//        if(id == R.id.home_page){
+//            Intent intent = new Intent(MangerScreen.this, MangerScreen.class);
+//            startActivity(intent);
+//        }
+//        return true;
+//    }
 
 
 }

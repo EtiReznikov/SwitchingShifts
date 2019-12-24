@@ -145,19 +145,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Etext_last_name" />
 
+
     <Spinner
         android:id="@+id/spinner_worker_type"
         android:layout_width="173dp"
         android:layout_height="45dp"
         android:layout_marginStart="51dp"
-        android:layout_marginLeft="51dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="3228dp"
         android:layout_marginEnd="196dp"
-        android:layout_marginRight="196dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.303"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Etext_mail" />
-
 
     <Button
         android:id="@+id/button_ok"
