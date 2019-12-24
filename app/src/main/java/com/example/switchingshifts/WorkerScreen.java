@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 
 public class WorkerScreen extends AppCompatActivity {
@@ -22,6 +24,7 @@ public class WorkerScreen extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
+
 
     }
 
