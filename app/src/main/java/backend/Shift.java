@@ -5,6 +5,7 @@ public class Shift {
     private String date;
     private String role;
 
+    /*constructors */
     public Shift() {
         this.date="";
         this.role="";
