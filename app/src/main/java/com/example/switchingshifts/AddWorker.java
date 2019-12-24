@@ -46,10 +46,11 @@ public class AddWorker extends AppCompatActivity {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_add_worker);
         /* Initialize Firebase Auth  and firestore*/
         firebase_auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
-        setContentView(R.layout.activity_add_worker);
+
 
         error=(TextView)findViewById(R.id.textError);
 
