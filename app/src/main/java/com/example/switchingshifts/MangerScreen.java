@@ -53,7 +53,7 @@ public class MangerScreen extends AppCompatActivity {
             }
         });
     }
-    /*tool bar*/
+
     private void openActivityAddWorker(){
         Intent intent = new Intent(this, AddWorker.class);
         startActivity(intent);
@@ -70,7 +70,7 @@ public class MangerScreen extends AppCompatActivity {
         Intent intent = new Intent(this,DeleteShift.class);
         startActivity(intent);
     }
-
+    /*tool bar*/
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.menu, menu);
         return true;
