@@ -53,10 +53,11 @@ class Graph {
         }
         return -1;
     }
-    public void addEdge(Vetrex shift_reg, Vetrex worker, Vetrex shift_wanted){
+    public void add_edge(Vetrex shift_reg, Vetrex worker, Vetrex shift_wanted){
         add_vetrex(shift_reg);
         add_vetrex(worker);
         add_vetrex(shift_wanted);
+
 
        int worker_index=get_vetrex_index(worker);
        int shift_reg_index=get_vetrex_index(shift_reg);
@@ -64,6 +65,12 @@ class Graph {
        graph.get(shift_reg_index).addEdge(worker);
        graph.get(worker_index).addEdge(shift_wanted);
     }
+    public void remove_edge(Vetrex v, Vetrex u){
+        int v_index=get_vetrex_index(v);
+        int u_index=get_vetrex_index(u);
+        graph.get(v_index).remove_edge(u);
+    }
+
     public void printGraph(){
         for (Vetrex v: graph){
             System.out.print(v.id+" : ");
@@ -101,6 +108,12 @@ class Vetrex{
             if (neg.get(i).equals(v))
                 return true;
         return false;
+    }
+
+    public void remove_edge(Vetrex v){
+        for (int i=0; i<this.neg.size(); i++)
+            if (neg.get(i).equals(v))
+                neg.remove(i);
     }
     public  LinkedList<Vetrex> getNeg(){
         return neg;
