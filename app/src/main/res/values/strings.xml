@@ -49,7 +49,7 @@
     <string name="chef">טבח</string>
     <string name="date">dd/mm/yyyy</string>
 
-    
+
     <string-array name="shift_type">
         <item>@string/choose_shift</item>
         <item>@string/morning</item>

@@ -45,6 +45,7 @@ public class PersonalDetails extends AppCompatActivity implements View.OnClickLi
         setSupportActionBar(toolbar);
 
         Button button = findViewById(R.id.buttonNewPess);
+        /* When press the change password button we will go to the change password screen. */
         button.setOnClickListener(
                 new Button.OnClickListener(){
                     public void onClick(View view){
@@ -61,6 +62,7 @@ public class PersonalDetails extends AppCompatActivity implements View.OnClickLi
         save_button.setOnClickListener(this);
         user_id = firebase_auth.getCurrentUser().getUid();
 
+        /* Pulling the personal details from the data base. */
         DocumentReference documentReference = db.collection("workers").document(user_id);
         documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
             @Override
@@ -73,6 +75,7 @@ public class PersonalDetails extends AppCompatActivity implements View.OnClickLi
             }
         });
     }
+    /* Checking if all fields are filled correctly */
     @Override
     public void onClick(View view){
         if(view.getId() == R.id.saveButton){
@@ -112,6 +115,7 @@ public class PersonalDetails extends AppCompatActivity implements View.OnClickLi
         return true;
     }
 
+    /*When press one of the items in the toolbar we will go to the required screen.*/
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
         if(id == R.id.my_shift){

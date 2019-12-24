@@ -10,10 +10,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
 
-
+/*The worker main screen */
 public class WorkerScreen extends AppCompatActivity {
 
 
@@ -28,14 +26,11 @@ public class WorkerScreen extends AppCompatActivity {
 
     }
 
-
-
-
     public boolean onCreateOptionsMenu(Menu menu){
-
         getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
+    /* When press one of the items in the toolbar we will go to the required screen. */
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
         if(id == R.id.my_shift){
