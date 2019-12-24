@@ -25,7 +25,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import javax.annotation.Nullable;
 
 public class PersonalDetails extends AppCompatActivity implements View.OnClickListener {
-
+    /* private data members */
     private EditText first_name, last_name, email, birthday;
     private Button save_button;
     private FirebaseAuth firebase_auth;
@@ -67,6 +67,7 @@ public class PersonalDetails extends AppCompatActivity implements View.OnClickLi
         documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                /* update the text view */
                 first_name.setText(documentSnapshot.getString("first_name"));
                 last_name.setText(documentSnapshot.getString("last_name"));
                 email.setText(documentSnapshot.getString("mail"));

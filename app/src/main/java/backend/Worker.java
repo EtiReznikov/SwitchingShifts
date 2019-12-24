@@ -11,14 +11,14 @@ public class Worker {
 
 
     /* default constructor */
-    public Worker(){
-        this.first_name = "";
+    public Worker(){}
+       /* this.first_name = "";
         this.last_name = "";
         this.role = "";
         this.email = "";
         this.birthday = "";
-        this.first_login = true;
-    }
+        this.first_login = true;*/
+
 
     public Worker(String first_name, String last_name, String role, String email){
         this.first_name = first_name;

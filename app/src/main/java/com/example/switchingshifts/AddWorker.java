@@ -29,6 +29,7 @@ import backend.Worker;
 
 
 public class AddWorker extends AppCompatActivity {
+    /* private data members */
     private String first_name, last_name, email, role, password;
     private EditText text_input_email;
     private EditText text_input_first_name;

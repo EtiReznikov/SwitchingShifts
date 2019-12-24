@@ -26,9 +26,11 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import javax.annotation.Nullable;
 
+import backend.Worker;
+
 
 public class Login extends AppCompatActivity {
-
+    /* private data members */
     private EditText login_email_text, login_password_text;
     private Button login_connection_button;
     private String login_email;
@@ -36,7 +38,6 @@ public class Login extends AppCompatActivity {
     private FirebaseAuth firebase_auth;
     private FirebaseFirestore db;
     private String user_id;
-
 
 
     @Override
@@ -52,9 +53,7 @@ public class Login extends AppCompatActivity {
         login_email_text = findViewById(R.id.login_email);
         login_password_text = findViewById(R.id.login_password);
         login_connection_button = findViewById(R.id.loginConnectionButton);
-
         login_connection_button.setEnabled(false);
-
         login_email_text.addTextChangedListener(loginTextWatcher);
         login_password_text.addTextChangedListener(loginTextWatcher);
         Toast.makeText(Login.this, "Firebase Connection Success", Toast.LENGTH_SHORT).show();
@@ -73,34 +72,47 @@ public class Login extends AppCompatActivity {
             login_password = login_password_text.getText().toString().trim();
             if(!login_email.isEmpty() && !login_password.isEmpty())
                 login_connection_button.setEnabled(true);
+            /* if the login button pressed */
             login_connection_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    /* checking with firebase auth if this email and password registered already */
                     firebase_auth.signInWithEmailAndPassword(login_email, login_password)
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if(task.isSuccessful()){
+                                        /* gets the auth unique id */
                                         user_id = firebase_auth.getCurrentUser().getUid();
-////Change
-                                        if(!user_id.equals("agRJExNLmWUhUdbosK7SgiSAKUA3")){
-                                            DocumentReference documentReference = db.collection("workers").document(user_id);
-                                            documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                                                @Override
-                                                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                                    String first_name = documentSnapshot.getString("first_name");
-                                                    String last_name = documentSnapshot.getString("last_name");
-                                                    Toast.makeText(Login.this, " התחברת בהצלחה "+ first_name + " " + last_name, Toast.LENGTH_LONG).show();
-                                                    startActivity(new Intent(Login.this, WorkerScreen.class));
-                                                }
-                                            });
-                                        }else {
-                                            Toast.makeText(Login.this, "מנהל, התחברת בהצלחה ", Toast.LENGTH_LONG).show();
-                                            startActivity(new Intent(Login.this, MangerScreen.class));
-                                        }
+                                        DocumentReference documentReference = db.collection("workers").document(user_id);
+                                        documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onSuccess(DocumentSnapshot documentSnapshot) {
 
-                                    }else{
-                                        Toast.makeText(Login.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                                /* Gets worker role, first name and last name */
+                                                String worker_role = documentSnapshot.getString("role");
+                                                String first_name = documentSnapshot.getString("first_name");
+                                                String last_name = documentSnapshot.getString("last_name");
+                                                /* if the current worker isn't the manager */
+                                                if (!worker_role.equals("מנהל")) {
+                                                    /* print welcome message ang go to the regular worker screen */
+                                                    Toast.makeText(Login.this, " התחברת בהצלחה " + first_name + " " + last_name, Toast.LENGTH_LONG).show();
+                                                    startActivity(new Intent(Login.this, WorkerScreen.class));
+
+                                                } else {/* manager */
+                                                    /* print welcome message to the manager and go the the manager screen */
+                                                    Toast.makeText(Login.this, "מנהל, התחברת בהצלחה ", Toast.LENGTH_LONG).show();
+                                                    startActivity(new Intent(Login.this, MangerScreen.class));
+                                                }
+                                            }
+                                        });
+
+
+
+
+
+                                    }else{ /* invalid email or password */
+                                        Toast.makeText(Login.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
                                     }
                                 }
                             });
