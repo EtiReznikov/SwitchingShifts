@@ -76,6 +76,9 @@ public class MangerScreen extends AppCompatActivity {
         return true;
     }
 
+    /*
+    When press one of the items in the toolbar we will go to the required screen.
+     */
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
         if(id == R.id.my_shift){

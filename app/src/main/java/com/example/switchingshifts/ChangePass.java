@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 public class ChangePass extends AppCompatActivity implements View.OnClickListener {
 
-    private EditText first_pess, second_pess;
+    private EditText first_pass, second_pass;
     private Button button;
 
     @Override
@@ -26,21 +26,24 @@ public class ChangePass extends AppCompatActivity implements View.OnClickListene
         Toolbar toolbar = findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
 
-        first_pess = findViewById(R.id.first_pess);
-        second_pess = findViewById(R.id.second_pess);
+        first_pass = findViewById(R.id.first_pass);
+        second_pass = findViewById(R.id.second_pass);
         button = findViewById(R.id.button);
 
         button.setOnClickListener(this);
 
     }
+    /* When press the button to change the password we check if they are equal,
+    if they are equal we will go to the main screen of the employee
+    else we will you will get an error message. */
     public void onClick(View view){
         if(view.getId() == R.id.button){
-            String first_pess_input = first_pess.getText().toString().trim();
-            String second_pess_input = second_pess.getText().toString().trim();
+            String first_pass_input = first_pass.getText().toString().trim();
+            String second_pass_input = second_pass.getText().toString().trim();
 
-            if(!first_pess_input.equals(second_pess_input)){
-                first_pess.setError("הסיסמאות לא שוות");
-                second_pess.setError("הסיסמאות לא שוות");
+            if(!first_pass_input.equals(second_pass_input)){
+                first_pass.setError("הסיסמאות לא שוות");
+                second_pass.setError("הסיסמאות לא שוות");
             }
             else{
                 Toast.makeText(ChangePass.this,"הסיסמא שונתה בהצלחה", Toast.LENGTH_SHORT).show();
@@ -56,6 +59,7 @@ public class ChangePass extends AppCompatActivity implements View.OnClickListene
         return true;
     }
 
+    /* When press one of the items in the toolbar we will go to the required screen. */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();

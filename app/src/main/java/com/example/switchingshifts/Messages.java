@@ -26,6 +26,7 @@ public class Messages extends AppCompatActivity {
         return true;
     }
 
+    /*When press one of the items in the toolbar we will go to the required screen.*/
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
         if(id == R.id.my_shift){
@@ -38,6 +39,7 @@ public class Messages extends AppCompatActivity {
             startActivity(new Intent(Messages.this, PersonalDetails.class));
         }
         if(id == R.id.home_page){
+            /* if the current unique id equal to maneger unique id go to maneger else worker */
             if(worker.getEmail().equals("admin@gmail.com")){
                 startActivity(new Intent(Messages.this, MangerScreen.class));
             }

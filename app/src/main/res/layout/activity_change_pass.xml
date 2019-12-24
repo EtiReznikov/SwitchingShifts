@@ -33,7 +33,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/first_pess"
+        android:id="@+id/first_pass"
         android:layout_width="486dp"
         android:layout_height="59dp"
         android:layout_marginTop="104dp"
@@ -50,7 +50,7 @@
         android:autofillHints="" />
 
     <EditText
-        android:id="@+id/second_pess"
+        android:id="@+id/second_pass"
         android:layout_width="486dp"
         android:layout_height="59dp"
         android:layout_marginTop="48dp"
@@ -64,7 +64,7 @@
 
         android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/first_pess" />
+        app:layout_constraintTop_toBottomOf="@+id/first_pass" />
 
     <Button
         android:id="@+id/button"
