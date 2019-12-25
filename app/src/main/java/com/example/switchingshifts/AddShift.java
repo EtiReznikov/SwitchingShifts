@@ -19,15 +19,17 @@ import android.app.DatePickerDialog;
 import java.util.Calendar;
 
 public class AddShift extends AppCompatActivity {
-    TextView date;
-    Button select_date;
-    Calendar calendar;
-    DatePickerDialog dpd;
+    /* private data members */
+   private TextView date;
+   private Button select_date;
+   private Calendar calendar;
+   private DatePickerDialog dpd;
 
-    Spinner s_shift_type;
-    ArrayAdapter<CharSequence> adapter_shift_type;
-    Spinner s_worker_type;
-    ArrayAdapter<CharSequence> adapter_worker_type;
+
+    private Spinner s_shift_type;
+    private ArrayAdapter<CharSequence> adapter_shift_type;
+    private Spinner s_worker_type;
+    private ArrayAdapter<CharSequence> adapter_worker_type;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
