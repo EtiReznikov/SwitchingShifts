@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -64,22 +65,24 @@ public class PersonalDetails extends AppCompatActivity implements View.OnClickLi
 
         /* Pulling the personal details from the data base. */
         DocumentReference documentReference = db.collection("workers").document(user_id);
-        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+        documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
-            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
                 first_name = documentSnapshot.getString("first_name");
                 last_name = documentSnapshot.getString("last_name");
                 email = documentSnapshot.getString("mail");
                 birthday = documentSnapshot.getString("birthday");
+
                 /* update the text view */
                 edit_text_first_name.setText(first_name);
                 edit_text_last_name.setText(last_name);
                 edit_text_email.setText(email);
                 edit_text_birthday.setText(birthday);
-
             }
         });
+
+
+
     }
     /* Checking if all fields are filled correctly */
     @Override
