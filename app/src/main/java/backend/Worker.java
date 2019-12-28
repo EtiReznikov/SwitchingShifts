@@ -3,6 +3,8 @@ package backend;
 
 import com.google.firebase.Timestamp;
 
+import java.util.Date;
+
 public class Worker {
     /* Private data members */
     private String first_name;
@@ -22,7 +24,7 @@ public class Worker {
         this.last_name = last_name;
         this.role = role;
         this.email = email;
-        birthday = null;
+        birthday = new Timestamp(new Date());
         this.first_login = true;
     }
 
