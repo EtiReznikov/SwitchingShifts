@@ -1,12 +1,15 @@
 package backend;
 
+
+import com.google.firebase.Timestamp;
+
 public class Worker {
     /* Private data members */
     private String first_name;
     private String last_name;
     private String role;
     private String email;
-    private String birthday;
+    private Timestamp birthday;
     private boolean first_login;
 
 
@@ -19,7 +22,7 @@ public class Worker {
         this.last_name = last_name;
         this.role = role;
         this.email = email;
-        this.birthday = "";
+        birthday = null;
         this.first_login = true;
     }
 
@@ -40,7 +43,7 @@ public class Worker {
         return email;
     }
 
-    public String getBirthday() {
+    public Timestamp getBirthday() {
         return birthday;
     }
 
@@ -60,7 +63,7 @@ public class Worker {
         this.email = email;
     }
 
-    public void setBirthday(String birthday) {
+    public void setBirthday(Timestamp birthday) {
         this.birthday = birthday;
     }
 
