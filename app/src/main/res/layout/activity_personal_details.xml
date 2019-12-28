@@ -89,25 +89,11 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/employeeNumber"
-        android:layout_width="115dp"
-        android:layout_height="39dp"
-        android:layout_marginTop="180dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="12dp"
-        android:text="@string/worker_number"
-        android:textColor="@color/colorInput"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
-
-    <TextView
         android:id="@+id/mailText"
         android:layout_width="115dp"
         android:layout_height="39dp"
-        android:layout_marginTop="252dp"
+        android:layout_marginTop="176dp"
         android:layout_marginEnd="12dp"
-        android:layout_marginRight="12dp"
         android:text="@string/login_email"
         android:textColor="@color/colorInput"
         android:textSize="18sp"
@@ -118,13 +104,13 @@
         android:id="@+id/mail"
         android:layout_width="187dp"
         android:layout_height="37dp"
-        android:layout_marginTop="388dp"
+        android:layout_marginTop="312dp"
         android:gravity="start"
         android:inputType="textEmailAddress"
         android:textColor="@color/colorInput"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.299"
+        app:layout_constraintHorizontal_bias="0.321"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -132,7 +118,7 @@
         android:id="@+id/birthday"
         android:layout_width="192dp"
         android:layout_height="39dp"
-        android:layout_marginTop="464dp"
+        android:layout_marginTop="388dp"
         android:gravity="start"
         android:inputType="date"
         android:textColor="@color/colorInput"
@@ -146,52 +132,49 @@
         android:id="@+id/birthdayText"
         android:layout_width="115dp"
         android:layout_height="39dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="324dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="12dp"
         android:text="@string/birthday"
         android:textColor="@color/colorInput"
         android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/birthday"
         app:layout_constraintTop_toBottomOf="@+id/mailText" />
 
     <Button
         android:id="@+id/buttonNewPess"
-        android:layout_width="127dp"
-        android:layout_height="39dp"
+        android:layout_width="135dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="52dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginEnd="35dp"
+        android:layout_marginBottom="50dp"
         android:background="@drawable/login_button_back"
         android:text="@string/new_pess"
         android:textColor="@color/colorInput"
         android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/saveButton"
         app:layout_constraintTop_toBottomOf="@+id/birthdayText" />
 
     <Button
         android:id="@+id/saveButton"
-        android:layout_width="127dp"
-        android:layout_height="39dp"
+        android:layout_width="130dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="35dp"
         android:layout_marginTop="52dp"
-        android:layout_marginEnd="84dp"
-        android:layout_marginRight="84dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="50dp"
         android:background="@drawable/login_button_back"
         android:text="@string/save"
         android:textColor="@color/colorInput"
         android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/buttonNewPess"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/birthday" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="192dp"
-        android:layout_height="39dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginRight="32dp"
-        app:layout_constraintEnd_toStartOf="@+id/employeeNumber"
-        app:layout_constraintTop_toBottomOf="@+id/lastlName" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
