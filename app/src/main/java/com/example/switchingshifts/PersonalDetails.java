@@ -182,8 +182,8 @@ public class PersonalDetails extends AppCompatActivity implements View.OnClickLi
             startActivity(new Intent(PersonalDetails.this, PersonalDetails.class));
         }
         if(id == R.id.home_page){
-            /* if the current unique id equal to maneger unique id go to maneger else worker */
-            if(firebase_auth.getCurrentUser().getUid().equals("agRJExNLmWUhUdbosK7SgiSAKUA3")){
+            /* if the current unique id equal to maneger unique id go to manager else worker */
+            if(role.equals("מנהל")){
                 startActivity(new Intent(PersonalDetails.this, MangerScreen.class));
             }
             else {
