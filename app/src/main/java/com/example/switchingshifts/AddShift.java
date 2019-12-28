@@ -2,9 +2,9 @@ package com.example.switchingshifts;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
@@ -16,26 +16,43 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.view.View;
 import android.app.DatePickerDialog;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.DocumentSnapshot;
+import backend.Shift;
+import backend.Worker;
 
 public class AddShift extends AppCompatActivity {
     /* private data members */
-   private TextView date;
-   private Button select_date;
-   private Calendar calendar;
-   private DatePickerDialog dpd;
+    private FirebaseAuth firebase_auth;
+    private FirebaseFirestore db;
+    private TextView date;
+    private Button select_date, ok_button;
+    private Calendar calendar;
+    private DatePickerDialog dpd;
+    private Shift shift;
+    private Spinner s_shift_type, s_worker_type, s_workers_names;
+    private ArrayAdapter<CharSequence> adapter_shift_type, adapter_worker_type;
+    private String worker_id, shift_id;
 
-
-    private Spinner s_shift_type;
-    private ArrayAdapter<CharSequence> adapter_shift_type;
-    private Spinner s_worker_type;
-    private ArrayAdapter<CharSequence> adapter_worker_type;
+    Worker worker;
+     List<String> names = new ArrayList<>();
+    private String shift_role, shift_date, shift_type, worker_name;
+    private ArrayAdapter<String> adapter_workers;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_shift);
         Toolbar toolbar = findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
+        /* Initialize Firebase Auth  and firestore*/
+        firebase_auth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
 
         s_shift_type= (Spinner)findViewById(R.id.spinner_shift_type);
         adapter_shift_type= ArrayAdapter.createFromResource(this,R.array.shift_type,android.R.layout.simple_spinner_item);
@@ -46,7 +63,8 @@ public class AddShift extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (parent.getItemAtPosition(position).equals("בחר משמרת")) {}
                 else {
-                    Toast.makeText(getBaseContext(), parent.getItemAtPosition(position) + "selected", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getBaseContext(), parent.getItemAtPosition(position) + "selected ", Toast.LENGTH_LONG).show();
+                    shift_type = parent.getItemAtPosition(position).toString();
                 }
             }
 
@@ -56,7 +74,7 @@ public class AddShift extends AppCompatActivity {
             }
         });
 
-        s_worker_type= (Spinner)findViewById(R.id.spinner_worker_type);
+        s_worker_type= findViewById(R.id.spinner_worker_type);
         adapter_worker_type= ArrayAdapter.createFromResource(this,R.array.role_type,android.R.layout.simple_spinner_item);
         adapter_worker_type.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         s_worker_type.setAdapter(adapter_worker_type);
@@ -65,13 +83,49 @@ public class AddShift extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (parent.getItemAtPosition(position).equals("בחר תפקיד")) {}
                 else {
-                    Toast.makeText(getBaseContext(), parent.getItemAtPosition(position) + "selected", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getBaseContext(), parent.getItemAtPosition(position) + "selected ", Toast.LENGTH_LONG).show();
+                    shift_role = parent.getItemAtPosition(position).toString();
+                    db.collection("workers").whereEqualTo("role",shift_role).get()
+                            .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                @Override
+                                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                    if(!queryDocumentSnapshots.isEmpty()){
+                                        names.clear();
+                                        names.add("");
+                                        List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                                        for(DocumentSnapshot d : list){
+                                            names.add(d.getString("first_name"));
+                                        }
+                                    }
+                                }
+                            });
                 }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
+            }
+        });
+
+
+        names.add("בחר שם");
+        s_workers_names = findViewById(R.id.spinner_workers_names);
+        adapter_workers = new ArrayAdapter(this, android.R.layout.simple_spinner_item, names);
+        adapter_workers.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        s_workers_names.setAdapter(adapter_workers);
+        s_workers_names.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(parent.getItemAtPosition(position).equals("בחר שם")){}
+                else {
+                    Toast.makeText(getBaseContext(), ("selected " + parent.getItemAtPosition(position)), Toast.LENGTH_LONG).show();
+                    worker_name = parent.getItemAtPosition(position).toString();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
             }
         });
 
@@ -96,9 +150,44 @@ public class AddShift extends AppCompatActivity {
                 },year, month, day);;
                 dpd.getDatePicker().setMinDate(System.currentTimeMillis());
                 dpd.show();
-
+                shift_date = calendar.get(Calendar.DAY_OF_MONTH) + "/" + calendar.get(Calendar.MONTH) + "/" + calendar.get(Calendar.YEAR);
             }
         });
+
+        ok_button = findViewById(R.id.button2);
+        ok_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean flag = false;
+                if(TextUtils.isEmpty(shift_date)){
+                    select_date.setError("חובה למלא שדה זה");
+                    flag = true;
+                }
+                if(TextUtils.isEmpty(shift_type)){
+                    ((TextView)s_shift_type.getSelectedView()).setError("חובה למלא שדה זה");
+                    flag = true;
+                }
+                if(TextUtils.isEmpty(shift_role)){
+                    ((TextView)s_worker_type.getSelectedView()).setError("חובה למלא שדה זה");
+                    flag = true;
+                }
+                if(TextUtils.isEmpty(worker_name)){
+                    ((TextView)s_workers_names.getSelectedView()).setError("חובה למלא שדה זה");
+                    flag = true;
+                }
+                if(!flag){
+                    shift = new Shift(shift_date, shift_type);
+                    shift_id = db.collection("Shift").document().getId();
+                    db.collection("Shift").document(shift_id).set(shift).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Toast.makeText(getBaseContext(), " נוספה משמרת חדשה ל" + worker_name , Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+            }
+        });
+
 
     }
     public boolean onCreateOptionsMenu(Menu menu){

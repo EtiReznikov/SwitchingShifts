@@ -3,21 +3,21 @@ package backend;
 public class Shift {
     /* private data members */
     private String date;
-    private String role;
+    private String type;
 
     /*constructors */
     public Shift() {
         this.date="";
-        this.role="";
+        this.type="";
     }
 
     public Shift(Shift s) {
         this.date=s.date;
-        this.role=s.role;
+        this.type=s.type;
     }
     public Shift(String date, String role) {
         this.date=date;
-        this.role=role;
+        this.type=role;
 
     }
 
@@ -31,11 +31,11 @@ public class Shift {
     }
 
     public String getRole() {
-        return role;
+        return type;
     }
 
     public void setRole(String role) {
-        this.role = role;
+        this.type = role;
     }
 
 
