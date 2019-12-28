@@ -12,7 +12,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,11 +25,12 @@ import javax.annotation.Nullable;
 
 public class PersonalDetails extends AppCompatActivity implements View.OnClickListener {
     /* private data members */
-    private EditText first_name, last_name, email, birthday;
+    private EditText edit_text_first_name, edit_text_last_name, edit_text_email, edit_text_birthday;
     private Button save_button;
     private FirebaseAuth firebase_auth;
     private FirebaseFirestore db;
     private String user_id;
+    private String first_name, last_name, email, birthday;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,10 +54,10 @@ public class PersonalDetails extends AppCompatActivity implements View.OnClickLi
                 }
         );
 
-        first_name = findViewById(R.id.personalName);
-        last_name = findViewById(R.id.lastlName);
-        email = findViewById(R.id.mail);
-        birthday = findViewById(R.id.birthday);
+        edit_text_first_name = findViewById(R.id.personalName);
+        edit_text_last_name = findViewById(R.id.lastlName);
+        edit_text_email = findViewById(R.id.mail);
+        edit_text_birthday = findViewById(R.id.birthday);
         save_button = findViewById(R.id.saveButton);
         save_button.setOnClickListener(this);
         user_id = firebase_auth.getCurrentUser().getUid();
@@ -67,11 +67,16 @@ public class PersonalDetails extends AppCompatActivity implements View.OnClickLi
         documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+
+                first_name = documentSnapshot.getString("first_name");
+                last_name = documentSnapshot.getString("last_name");
+                email = documentSnapshot.getString("mail");
+                birthday = documentSnapshot.getString("birthday");
                 /* update the text view */
-                first_name.setText(documentSnapshot.getString("first_name"));
-                last_name.setText(documentSnapshot.getString("last_name"));
-                email.setText(documentSnapshot.getString("mail"));
-                birthday.setText(documentSnapshot.getString("birthday"));
+                edit_text_first_name.setText(first_name);
+                edit_text_last_name.setText(last_name);
+                edit_text_email.setText(email);
+                edit_text_birthday.setText(birthday);
 
             }
         });
@@ -80,28 +85,28 @@ public class PersonalDetails extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View view){
         if(view.getId() == R.id.saveButton){
-            String f_name = first_name.getText().toString().trim();
-            String l_name = last_name.getText().toString().trim();
-            String mail_string = email.getText().toString().trim();
-            String birthday_string = birthday.getText().toString().trim();
+            String f_name = edit_text_first_name.getText().toString().trim();
+            String l_name = edit_text_last_name.getText().toString().trim();
+            String mail_string = edit_text_email.getText().toString().trim();
+            String birthday_string = edit_text_birthday.getText().toString().trim();
             boolean flag = false;
             if(TextUtils.isEmpty(f_name)) {
-                first_name.setError("חובה למלא שדה זה");
+                edit_text_first_name.setError("חובה למלא שדה זה");
                 flag = true;
             }
             if(TextUtils.isEmpty(l_name)) {
-                last_name.setError("חובה למלא שדה זה");
+                edit_text_last_name.setError("חובה למלא שדה זה");
                 flag = true;
             }
             if(TextUtils.isEmpty(mail_string)) {
-                email.setError("חובה למלא שדה זה");
+                edit_text_email.setError("חובה למלא שדה זה");
                 flag = true;
             }
             else if(!Patterns.EMAIL_ADDRESS.matcher(mail_string).matches()){
-                email.setError("כתובת המייל לא תקינה");
+                edit_text_email.setError("כתובת המייל לא תקינה");
             }
             if(TextUtils.isEmpty(birthday_string)) {
-                birthday.setError("חובה למלא שדה זה");
+                edit_text_birthday.setError("חובה למלא שדה זה");
                 flag = true;
             }
             if(!flag){
