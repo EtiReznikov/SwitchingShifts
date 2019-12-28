@@ -19,6 +19,7 @@
         <activity android:name=".DeleteShift" />
         <activity android:name=".AddShift" />
         <activity android:name=".Messages" />
+        <activity android:name=".PersonalDetails" />
         <activity android:name=".MyShifts" />
         <activity android:name=".WorkerScreen" />
         <activity android:name=".ChangePass" />

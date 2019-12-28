@@ -15,12 +15,19 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 import javax.annotation.Nullable;
 
@@ -31,7 +38,8 @@ public class PersonalDetails extends AppCompatActivity implements View.OnClickLi
     private FirebaseAuth firebase_auth;
     private FirebaseFirestore db;
     private String user_id;
-    private String first_name, last_name, email, birthday;
+    private String first_name, last_name, email, birthday_string;
+    private Timestamp birthday;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,14 +78,20 @@ public class PersonalDetails extends AppCompatActivity implements View.OnClickLi
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 first_name = documentSnapshot.getString("first_name");
                 last_name = documentSnapshot.getString("last_name");
-                email = documentSnapshot.getString("mail");
-                birthday = documentSnapshot.getString("birthday");
+                email = documentSnapshot.getString("email");
+                birthday = documentSnapshot.getTimestamp("birthday");
+
+                long birthday_sec =  birthday.getSeconds();
+                SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+                Date netDate = (new Date(birthday_sec));
+                birthday_string = sdf.format(netDate);
+
 
                 /* update the text view */
                 edit_text_first_name.setText(first_name);
                 edit_text_last_name.setText(last_name);
                 edit_text_email.setText(email);
-                edit_text_birthday.setText(birthday);
+                edit_text_birthday.setText(birthday_string);
             }
         });
 
@@ -120,7 +134,7 @@ public class PersonalDetails extends AppCompatActivity implements View.OnClickLi
     }
 
     public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.menu, menu);
+//        getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
 
