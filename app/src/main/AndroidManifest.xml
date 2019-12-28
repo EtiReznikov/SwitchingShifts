@@ -20,7 +20,6 @@
         <activity android:name=".AddShift" />
         <activity android:name=".Messages" />
         <activity android:name=".MyShifts" />
-        <activity android:name=".PersonalDetails" />
         <activity android:name=".WorkerScreen" />
         <activity android:name=".ChangePass" />
         <activity android:name=".Login" />
