@@ -5,14 +5,24 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import backend.Worker;
 
 
 public class MyShifts extends AppCompatActivity {
     private Worker worker;
+    private TextView shifts;
+    private FirebaseAuth firebase_auth;
+    private FirebaseFirestore db;
+    private String user_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +31,21 @@ public class MyShifts extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
+        shifts= findViewById(R.id.textView_my_shifts);
+
+        firebase_auth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+
+        user_id = firebase_auth.getCurrentUser().getUid();
+
+
+
+        String text="";
+        shifts.setText(text);
+
+        shifts.setMovementMethod(new ScrollingMovementMethod());
+
+
 
     }
 
