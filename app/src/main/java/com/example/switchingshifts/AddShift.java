@@ -18,7 +18,9 @@ import android.view.View;
 import android.app.DatePickerDialog;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -38,11 +40,11 @@ public class AddShift extends AppCompatActivity {
     private Shift shift;
     private Spinner s_shift_type, s_worker_type, s_workers_names;
     private ArrayAdapter<CharSequence> adapter_shift_type, adapter_worker_type;
-    private String worker_id, shift_id;
-
     Worker worker;
-     List<String> names = new ArrayList<>();
-    private String shift_role, shift_date, shift_type, worker_name;
+    private List<String> names = new ArrayList<>();
+    private List<String> id_names = new ArrayList<>();
+    Map<String,String> worker_and_shift =  new HashMap<>();
+    private String shift_role, shift_date, shift_type, worker_name, worker_id, shift_id;
     private ArrayAdapter<String> adapter_workers;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,9 +93,11 @@ public class AddShift extends AppCompatActivity {
                                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                                     if(!queryDocumentSnapshots.isEmpty()){
                                         names.clear();
-                                        names.add("");
+                                        id_names.clear();
+                                        names.add("בחר שם");
                                         List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
                                         for(DocumentSnapshot d : list){
+                                            id_names.add(d.getId());
                                             names.add(d.getString("first_name"));
                                         }
                                     }
@@ -121,6 +125,7 @@ public class AddShift extends AppCompatActivity {
                 else {
                     Toast.makeText(getBaseContext(), ("selected " + parent.getItemAtPosition(position)), Toast.LENGTH_LONG).show();
                     worker_name = parent.getItemAtPosition(position).toString();
+                    worker_id = id_names.get(position-1);
                 }
             }
 
@@ -145,12 +150,12 @@ public class AddShift extends AppCompatActivity {
                 dpd=new DatePickerDialog(AddShift.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int mDay, int mMonth, int mYear) {
-                        date.setText(mYear + "/" + mMonth + "/"+ mDay);
+                        date.setText(mYear + "/" + (mMonth+1) + "/"+ mDay);
+                        shift_date = mYear + "/" + (mMonth+1) + "/" + mDay;
                     }
                 },year, month, day);;
                 dpd.getDatePicker().setMinDate(System.currentTimeMillis());
                 dpd.show();
-                shift_date = calendar.get(Calendar.DAY_OF_MONTH) + "/" + calendar.get(Calendar.MONTH) + "/" + calendar.get(Calendar.YEAR);
             }
         });
 
@@ -182,6 +187,13 @@ public class AddShift extends AppCompatActivity {
                         @Override
                         public void onSuccess(Void aVoid) {
                             Toast.makeText(getBaseContext(), " נוספה משמרת חדשה ל" + worker_name , Toast.LENGTH_LONG).show();
+                        }
+                    });
+                    worker_and_shift.put("shift_id", shift_id);
+                    db.collection("ShiftAndWorker").document(worker_id).set(worker_and_shift).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            startActivity(new Intent(AddShift.this, AddShift.class));
                         }
                     });
                 }
