@@ -225,6 +225,10 @@ public class AddShift extends AppCompatActivity {
             Intent intent = new Intent(AddShift.this, MangerScreen.class);
             startActivity(intent);
         }
+        if(id == R.id.logout){
+            Intent intent = new Intent(AddShift.this, Login.class);
+            startActivity(intent);
+        }
         return true;
     }
 }

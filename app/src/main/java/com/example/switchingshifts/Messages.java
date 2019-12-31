@@ -47,6 +47,10 @@ public class Messages extends AppCompatActivity {
                 startActivity(new Intent(Messages.this, WorkerScreen.class));
             }
         }
+        if(id == R.id.logout){
+            Intent intent = new Intent(Messages.this, Login.class);
+            startActivity(intent);
+        }
         return true;
     }
 }

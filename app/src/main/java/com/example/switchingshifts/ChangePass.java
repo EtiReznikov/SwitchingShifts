@@ -99,6 +99,10 @@ public class ChangePass extends AppCompatActivity implements View.OnClickListene
         if(id == R.id.home_page){
             startActivity(new Intent(ChangePass.this, WorkerScreen.class));
         }
+        if(id == R.id.logout){
+            Intent intent = new Intent(ChangePass.this, Login.class);
+            startActivity(intent);
+        }
         return true;
     }
 }

@@ -190,6 +190,10 @@ public class PersonalDetails extends AppCompatActivity implements View.OnClickLi
                 startActivity(new Intent(PersonalDetails.this, WorkerScreen.class));
             }
         }
+        if(id == R.id.logout) {
+            startActivity (new Intent(PersonalDetails.this, Login.class));
+
+        }
         return true;
     }
 

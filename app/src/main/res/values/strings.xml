@@ -40,6 +40,8 @@
     <string name="choose_shift">בחר משמרת</string>
     <string name="day">בחר תאריך</string>
     <string name="shift">משמרת</string>
+    <string name="Shifts">משמרות</string>
+    <string name="logout">התנתק</string>
     <string name="role">תפקיד</string>
     <string name="worker">עובד</string>
     <string name="morning">בוקר</string>

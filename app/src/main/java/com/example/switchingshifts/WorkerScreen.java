@@ -49,6 +49,10 @@ public class WorkerScreen extends AppCompatActivity {
             Intent intent = new Intent(WorkerScreen.this, WorkerScreen.class);
             startActivity(intent);
         }
+        if(id == R.id.logout) {
+            Intent intent = new Intent(WorkerScreen.this, Login.class);
+            startActivity(intent);
+        }
         return true;
     }
 }

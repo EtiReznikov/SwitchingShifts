@@ -73,6 +73,10 @@ public class MyShifts extends AppCompatActivity {
                 startActivity(new Intent(MyShifts.this, WorkerScreen.class));
             }
         }
+        if(id == R.id.logout){
+            Intent intent = new Intent(MyShifts.this, Login.class);
+            startActivity(intent);
+        }
         return true;
     }
 }

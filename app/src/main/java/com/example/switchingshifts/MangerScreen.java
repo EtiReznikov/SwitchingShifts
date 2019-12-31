@@ -97,6 +97,10 @@ public class MangerScreen extends AppCompatActivity {
             Intent intent = new Intent(MangerScreen.this, MangerScreen.class);
             startActivity(intent);
         }
+        if(id == R.id.logout){
+            Intent intent = new Intent(MangerScreen.this, Login.class);
+            startActivity(intent);
+        }
         return true;
     }
 

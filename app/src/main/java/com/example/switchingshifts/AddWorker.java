@@ -2,12 +2,15 @@ package com.example.switchingshifts;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
 
 import android.text.TextUtils;
 import android.util.Patterns;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -30,18 +33,14 @@ import backend.Worker;
 
 public class AddWorker extends AppCompatActivity {
     /* private data members */
-    private String first_name, last_name, email, role, password;
-    private EditText text_input_email;
-    private EditText text_input_first_name;
-    private EditText text_input_last_name;
+    private String first_name, last_name, email, role, password, user_id;
+    private EditText text_input_email, text_input_first_name, text_input_last_name;
     private Button ok;
-    private TextView error;
-    Spinner s_worker_type;
-    ArrayAdapter<CharSequence> adapter_worker_type;
+    private Spinner s_worker_type;
+    private ArrayAdapter<CharSequence> adapter_worker_type;
     private Worker worker;
     private FirebaseAuth firebase_auth;
     private FirebaseFirestore db;
-    private String user_id;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -50,11 +49,10 @@ public class AddWorker extends AppCompatActivity {
         /* Initialize Firebase Auth  and firestore*/
         firebase_auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
+        Toolbar toolbar = findViewById(R.id.app_bar);
+        setSupportActionBar(toolbar);
 
-
-        error=(TextView)findViewById(R.id.textError);
-
-        s_worker_type = (Spinner) findViewById(R.id.spinner_worker_type);
+        s_worker_type = findViewById(R.id.spinner_worker_type);
         adapter_worker_type = ArrayAdapter.createFromResource(this, R.array.role_type, android.R.layout.simple_spinner_item);
         adapter_worker_type.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         s_worker_type.setAdapter(adapter_worker_type);
@@ -74,10 +72,10 @@ public class AddWorker extends AppCompatActivity {
             }
         });
 
-        text_input_first_name = (EditText) findViewById(R.id.Etext_first_name);
-        text_input_last_name = (EditText) findViewById(R.id.Etext_last_name);
-        text_input_email = (EditText) findViewById(R.id.Etext_mail);
-        ok = (Button) findViewById(R.id.button_ok);
+        text_input_first_name = findViewById(R.id.Etext_first_name);
+        text_input_last_name = findViewById(R.id.Etext_last_name);
+        text_input_email = findViewById(R.id.Etext_mail);
+        ok = findViewById(R.id.button_ok);
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -150,13 +148,33 @@ public class AddWorker extends AppCompatActivity {
     }
 
 
-
-    private boolean validateEmail(String mail) {
-        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
     }
-    private boolean vaildateText(String text){
-        if (text.isEmpty())
-            return false;
+    /* When press one of the items in the toolbar we will go to the required screen. */
+    public boolean onOptionsItemSelected(MenuItem item){
+        int id = item.getItemId();
+        if(id == R.id.my_shift){
+            Intent intent = new Intent(AddWorker.this, MyShifts.class);
+            startActivity(intent);
+        }
+        if(id == R.id.messages){
+            Intent intent = new Intent(AddWorker.this, Messages.class);
+            startActivity(intent);
+        }
+        if(id == R.id.personal_info){
+            Intent intent = new Intent(AddWorker.this, PersonalDetails.class);
+            startActivity(intent);
+        }
+        if(id == R.id.home_page){
+            Intent intent = new Intent(AddWorker.this, MangerScreen.class);
+            startActivity(intent);
+        }
+        if(id == R.id.logout) {
+            Intent intent = new Intent(AddWorker.this, Login.class);
+            startActivity(intent);
+        }
         return true;
     }
 }
