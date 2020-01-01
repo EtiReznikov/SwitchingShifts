@@ -19,7 +19,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -28,12 +27,10 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-import backend.Shift;
-
 public class RemoveWorker extends AppCompatActivity {
     private FirebaseAuth firebase_auth;
     private FirebaseFirestore db;
-    private FirebaseUser user;
+
     private Spinner s_workers_names, s_worker_type;
     private ArrayAdapter<CharSequence> adapter_workers, adapter_worker_type;
     private String worker_role, worker_name, worker_id, user_id, worker_birthday, worker_mail, worker_last_name;
@@ -42,6 +39,7 @@ public class RemoveWorker extends AppCompatActivity {
     private Button ok_button;
     private CheckBox checkBox;
     private TextView worker_details;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +85,7 @@ public class RemoveWorker extends AppCompatActivity {
 
             }
         });
+
 
         worker_details = findViewById(R.id.text_worker_details);
         names.add("בחר שם");
@@ -164,11 +163,7 @@ public class RemoveWorker extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
         if(id == R.id.my_shift){
-            Intent intent = new Intent(RemoveWorker.this, MyShifts.class);
-            startActivity(intent);
-        }
-        if(id == R.id.messages){
-            Intent intent = new Intent(RemoveWorker.this, Messages.class);
+            Intent intent = new Intent(RemoveWorker.this, WorkerShifts.class);
             startActivity(intent);
         }
         if(id == R.id.personal_info){

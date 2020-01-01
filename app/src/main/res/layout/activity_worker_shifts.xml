@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/back_gradient"
-    tools:context=".Messages">
+    tools:context=".WorkerShifts">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/app_bar"
@@ -17,16 +17,32 @@
         app:titleMarginStart="40dp"></androidx.appcompat.widget.Toolbar>
 
     <TextView
-        android:id="@+id/messagesTitle"
+        android:id="@+id/myShiftTitle"
         android:layout_width="285dp"
         android:layout_height="60dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
-        android:text="@string/messages"
+        android:text="@string/my_shift"
         android:textColor="@android:color/background_light"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/app_bar" />
+
+    <ScrollView
+        android:id="@+id/my_shifts"
+        android:layout_width="409dp"
+        android:layout_height="597dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/myShiftTitle">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </ScrollView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

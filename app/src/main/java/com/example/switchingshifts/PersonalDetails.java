@@ -7,7 +7,6 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Patterns;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,18 +20,12 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
-
-import javax.annotation.Nullable;
 
 import backend.Worker;
 
@@ -173,10 +166,7 @@ public class PersonalDetails extends AppCompatActivity implements View.OnClickLi
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
         if(id == R.id.my_shift){
-            startActivity(new Intent(PersonalDetails.this, MyShifts.class));
-        }
-        if(id == R.id.messages){
-            startActivity(new Intent(PersonalDetails.this, Messages.class));
+            startActivity(new Intent(PersonalDetails.this, WorkerShifts.class));
         }
         if(id == R.id.personal_info){
             startActivity(new Intent(PersonalDetails.this, PersonalDetails.class));

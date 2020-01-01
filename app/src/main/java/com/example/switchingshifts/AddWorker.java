@@ -156,11 +156,7 @@ public class AddWorker extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
         if(id == R.id.my_shift){
-            Intent intent = new Intent(AddWorker.this, MyShifts.class);
-            startActivity(intent);
-        }
-        if(id == R.id.messages){
-            Intent intent = new Intent(AddWorker.this, Messages.class);
+            Intent intent = new Intent(AddWorker.this, WorkerShifts.class);
             startActivity(intent);
         }
         if(id == R.id.personal_info){

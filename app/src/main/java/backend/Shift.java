@@ -7,17 +7,17 @@ public class Shift {
 
     /*constructors */
     public Shift() {
-        this.date="";
-        this.type="";
+        this.date = "";
+        this.type = "";
     }
 
     public Shift(Shift s) {
-        this.date=s.date;
-        this.type=s.type;
+        this.date = s.date;
+        this.type = s.type;
     }
-    public Shift(String date, String role) {
-        this.date=date;
-        this.type=role;
+    public Shift(String date, String type) {
+        this.date = date;
+        this.type = type;
 
     }
 
@@ -34,8 +34,8 @@ public class Shift {
         return type;
     }
 
-    public void setRole(String role) {
-        this.type = role;
+    public void setRole(String type) {
+        this.type = type;
     }
 
 

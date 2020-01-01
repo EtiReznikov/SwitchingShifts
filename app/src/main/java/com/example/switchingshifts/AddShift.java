@@ -18,16 +18,14 @@ import android.view.View;
 import android.app.DatePickerDialog;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.DocumentSnapshot;
 import backend.Shift;
-import backend.Worker;
 
 public class AddShift extends AppCompatActivity {
     /* private data members */
@@ -40,10 +38,8 @@ public class AddShift extends AppCompatActivity {
     private Shift shift;
     private Spinner s_shift_type, s_worker_type, s_workers_names;
     private ArrayAdapter<CharSequence> adapter_shift_type, adapter_worker_type;
-    Worker worker;
     private List<String> names = new ArrayList<>();
     private List<String> id_names = new ArrayList<>();
-    Map<String,String> worker_and_shift =  new HashMap<>();
     private String shift_role, shift_date, shift_type, worker_name, worker_id, shift_id;
     private ArrayAdapter<String> adapter_workers;
     @Override
@@ -56,8 +52,8 @@ public class AddShift extends AppCompatActivity {
         firebase_auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
-        s_shift_type= (Spinner)findViewById(R.id.spinner_shift_type);
-        adapter_shift_type= ArrayAdapter.createFromResource(this,R.array.shift_type,android.R.layout.simple_spinner_item);
+        s_shift_type = findViewById(R.id.spinner_shift_type);
+        adapter_shift_type = ArrayAdapter.createFromResource(this,R.array.shift_type,android.R.layout.simple_spinner_item);
         adapter_shift_type.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         s_shift_type.setAdapter(adapter_shift_type);
         s_shift_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -66,7 +62,12 @@ public class AddShift extends AppCompatActivity {
                 if (parent.getItemAtPosition(position).equals("בחר משמרת")) {}
                 else {
                     Toast.makeText(getBaseContext(), parent.getItemAtPosition(position) + "selected ", Toast.LENGTH_LONG).show();
-                    shift_type = parent.getItemAtPosition(position).toString();
+                    if(parent.getItemAtPosition(position).equals("ערב")){
+                        shift_type = "Evening";
+                    }
+                    else{
+                        shift_type = "Morning";
+                    }
                 }
             }
 
@@ -151,7 +152,7 @@ public class AddShift extends AppCompatActivity {
                     @Override
                     public void onDateSet(DatePicker datePicker, int mDay, int mMonth, int mYear) {
                         date.setText(mYear + "/" + (mMonth+1) + "/"+ mDay);
-                        shift_date = mYear + "/" + (mMonth+1) + "/" + mDay;
+                        shift_date = mYear + "." + (mMonth+1) + "." + mDay;
                     }
                 },year, month, day);;
                 dpd.getDatePicker().setMinDate(System.currentTimeMillis());
@@ -182,17 +183,12 @@ public class AddShift extends AppCompatActivity {
                 }
                 if(!flag){
                     shift = new Shift(shift_date, shift_type);
-                    shift_id = db.collection("Shift").document().getId();
-                    db.collection("Shift").document(shift_id).set(shift).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    shift_id = shift_date + shift_type;
+                    db.collection("workers").document(worker_id).collection("shifts").document(shift_id).set(shift)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
                             Toast.makeText(getBaseContext(), " נוספה משמרת חדשה ל" + worker_name , Toast.LENGTH_LONG).show();
-                        }
-                    });
-                    worker_and_shift.put("shift_id", shift_id);
-                    db.collection("ShiftAndWorker").document(worker_id).set(worker_and_shift).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
                             startActivity(new Intent(AddShift.this, AddShift.class));
                         }
                     });
@@ -210,11 +206,7 @@ public class AddShift extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
         if(id == R.id.my_shift){
-            Intent intent = new Intent(AddShift.this, MyShifts.class);
-            startActivity(intent);
-        }
-        if(id == R.id.messages){
-            Intent intent = new Intent(AddShift.this, Messages.class);
+            Intent intent = new Intent(AddShift.this, WorkerShifts.class);
             startActivity(intent);
         }
         if(id == R.id.personal_info){

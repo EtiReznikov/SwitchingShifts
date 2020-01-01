@@ -14,13 +14,11 @@
         <activity android:name=".AddWorker"></activity>
         <activity android:name=".RemoveWorker" />
         <activity android:name=".MangerScreen" />
-        <activity android:name=".Settings" />
-        <activity android:name=".Shifts" />
+        <activity android:name=".MangerShifts" />
         <activity android:name=".DeleteShift" />
         <activity android:name=".AddShift" />
-        <activity android:name=".Messages" />
         <activity android:name=".PersonalDetails" />
-        <activity android:name=".MyShifts" />
+        <activity android:name=".WorkerShifts" />
         <activity android:name=".WorkerScreen" />
         <activity android:name=".ChangePass" />
         <activity android:name=".Login" />
