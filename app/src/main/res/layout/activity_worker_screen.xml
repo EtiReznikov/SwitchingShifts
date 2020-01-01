@@ -51,7 +51,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Spinner
-        android:id="@+id/spinner"
+        android:id="@+id/spinner_shifts_reg"
         android:layout_width="458dp"
         android:layout_height="46dp"
         android:layout_marginTop="2dp"
@@ -74,7 +74,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Spinner
-        android:id="@+id/spinner1"
+        android:id="@+id/spinner_shifts_wanted"
         android:layout_width="458dp"
         android:layout_height="46dp"
         android:layout_marginTop="160dp"
