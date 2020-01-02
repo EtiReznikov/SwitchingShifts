@@ -10,8 +10,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MangerShifts extends AppCompatActivity {
@@ -30,6 +35,7 @@ public class MangerShifts extends AppCompatActivity {
         /* Initialize Firebase Auth  and firestore*/
         firebase_auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
+
 
 
 

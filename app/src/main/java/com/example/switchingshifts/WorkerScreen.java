@@ -8,7 +8,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
+
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -28,19 +28,19 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.Timestamp;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.CollectionReference;
 
-import org.w3c.dom.Document;
-
+import backend.Graph;
+import backend.DFS;
 import backend.Request;
-import backend.Shift;
+
+import backend.Vetrex;
 
 
 /*The worker main screen */
@@ -57,11 +57,15 @@ public class WorkerScreen extends AppCompatActivity {
     private ArrayAdapter<CharSequence> adapter_shift_reg, adapter_shift_wanted;
     private String shift_reg_selcted, shift_wanted_selcted, shift_reg_id, shift_wanted_id;
     private String request_id;
+    Graph graph;
+    DFS dps;
+    Vetrex v_worker_id, v_wanted_shift, v_reg_shift;
 
     private Button ok_button;
     private Request request;
 
     SimpleDateFormat sfd = new SimpleDateFormat("dd-MM-yyyy");
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,11 +78,16 @@ public class WorkerScreen extends AppCompatActivity {
         firebase_auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         user_id = firebase_auth.getCurrentUser().getUid();
+
+        final TextView textViewToChange = (TextView) findViewById(R.id.Worker_Screen_title);
+
         DocumentReference documentReference = db.collection("workers").document(user_id);
         documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 worker_role = documentSnapshot.getString("role");
+                textViewToChange.setText(
+                        "Hello "+ documentSnapshot.get("first_name"));
             }
         });
 
@@ -201,34 +210,66 @@ public class WorkerScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 boolean flag = false;
-                if(TextUtils.isEmpty(shift_reg_selcted)){
-                    ((TextView)s_shift_reg.getSelectedView()).setError("חובה למלא שדה זה");
+                if (TextUtils.isEmpty(shift_reg_selcted)) {
+                    ((TextView) s_shift_reg.getSelectedView()).setError("חובה למלא שדה זה");
                     flag = true;
                 }
-                if(TextUtils.isEmpty(shift_wanted_selcted)){
-                    ((TextView)s_shift_wanted.getSelectedView()).setError("חובה למלא שדה זה");
+                if (TextUtils.isEmpty(shift_wanted_selcted)) {
+                    ((TextView) s_shift_wanted.getSelectedView()).setError("חובה למלא שדה זה");
                     flag = true;
                 }
-                if(!flag){
-                    request = new Request( shift_reg_id, shift_wanted_id);
-                    request_id = shift_reg_id+"_"+shift_wanted_id;
+                if (!flag) {
+                    request = new Request(shift_reg_id, shift_wanted_id);
+                    request_id = shift_reg_id + "_" + shift_wanted_id;
                     db.collection("workers").document(user_id).collection("requests").document(request_id).set(request)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
-                                    Toast.makeText(getBaseContext(), " בקשתך לחילוף התקבלה" , Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getBaseContext(), " בקשתך לחילוף התקבלה", Toast.LENGTH_LONG).show();
                                     startActivity(new Intent(WorkerScreen.this, WorkerScreen.class));
                                 }
                             });
                 }
+                graph = new Graph();
+                db.collection("workers")
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (DocumentSnapshot doc : task.getResult()) {
+                                        v_worker_id = new Vetrex(true, doc.getId());
+                                        db.collection("workers").document(doc.getId()).collection("requests").get()
+                                                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                                    //add Equal to role
+                                                    @Override
+                                                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                                        if (!queryDocumentSnapshots.isEmpty()) {
+                                                            List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                                                            for (DocumentSnapshot d : list) {
+                                                                v_reg_shift = new Vetrex(true, d.get("shift_reg_id").toString());
+                                                                v_wanted_shift = new Vetrex(true, d.get("shift_wanted_id").toString());
+                                                                graph.add_edge(v_reg_shift, v_worker_id, v_wanted_shift);
+                                                            }
+
+                                                        }
+                                                    }
+
+                                                });
+
+
+                                    }
+                                }
+
+                            }
+                        });
+
+
             }
         });
 
 
     }
-
-
-
 
 
     public boolean onCreateOptionsMenu(Menu menu) {
