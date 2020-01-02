@@ -30,7 +30,6 @@ import java.util.List;
 public class RemoveWorker extends AppCompatActivity {
     private FirebaseAuth firebase_auth;
     private FirebaseFirestore db;
-
     private Spinner s_workers_names, s_worker_type;
     private ArrayAdapter<CharSequence> adapter_workers, adapter_worker_type;
     private String worker_role, worker_name, worker_id, user_id, worker_birthday, worker_mail, worker_last_name;
@@ -39,6 +38,7 @@ public class RemoveWorker extends AppCompatActivity {
     private Button ok_button;
     private CheckBox checkBox;
     private TextView worker_details;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,7 +142,6 @@ public class RemoveWorker extends AppCompatActivity {
                     flag = true;
                 }
                 if(!flag){
-
                     db.collection("workers").document(worker_id).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {

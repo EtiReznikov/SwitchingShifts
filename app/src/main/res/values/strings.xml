@@ -78,6 +78,7 @@
     <string name="home">בית</string>
     <string name="my_messages">ההודעות שלי</string>
     <string name="shifts">משמרות</string>
+    <string name="workers_shifts">משמרות עובדים</string>
 
     <string name="delete_worker_for_sure">אני בטוח שאני רוצה למחוק</string>
     <string name="invaild_mail">כתובת מייל לא תקינה</string>

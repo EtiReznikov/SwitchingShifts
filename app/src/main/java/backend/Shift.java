@@ -1,40 +1,40 @@
 package backend;
 
+import com.google.firebase.Timestamp;
+
+
 public class Shift {
     /* private data members */
-    private String date;
+    private Timestamp date;
     private String type;
 
     /*constructors */
-    public Shift() {
-        this.date = "";
-        this.type = "";
-    }
+    public Shift() {}
 
     public Shift(Shift s) {
         this.date = s.date;
         this.type = s.type;
     }
-    public Shift(String date, String type) {
+    public Shift(Timestamp date, String type) {
         this.date = date;
         this.type = type;
 
     }
 
     /* getters and setters*/
-    public String getDate() {
+    public Timestamp getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Timestamp date) {
         this.date = date;
     }
 
-    public String getRole() {
+    public String getType() {
         return type;
     }
 
-    public void setRole(String type) {
+    public void setType(String type) {
         this.type = type;
     }
 
