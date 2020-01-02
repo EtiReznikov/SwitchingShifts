@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,7 +20,9 @@ import java.util.List;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -36,6 +39,9 @@ import com.google.firebase.firestore.CollectionReference;
 
 import org.w3c.dom.Document;
 
+import backend.Request;
+import backend.Shift;
+
 
 /*The worker main screen */
 public class WorkerScreen extends AppCompatActivity {
@@ -50,9 +56,12 @@ public class WorkerScreen extends AppCompatActivity {
     private Spinner s_shift_reg, s_shift_wanted;
     private ArrayAdapter<CharSequence> adapter_shift_reg, adapter_shift_wanted;
     private String shift_reg_selcted, shift_wanted_selcted, shift_reg_id, shift_wanted_id;
-    SimpleDateFormat sfd = new SimpleDateFormat("dd-MM-yyyy");
-    private static final String TAG = "WorkerScreen";
+    private String request_id;
 
+    private Button ok_button;
+    private Request request;
+
+    SimpleDateFormat sfd = new SimpleDateFormat("dd-MM-yyyy");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,8 +94,8 @@ public class WorkerScreen extends AppCompatActivity {
                             for (DocumentSnapshot d : list) {
                                 id_shifts_reg.add(d.getId());
                                 Date shift_date = d.getDate("date");
-                               shifts_reg.add(sfd.format(shift_date) + "  " + d.getString("type"));
-                               // shifts_reg.add(d.getId());
+                                shifts_reg.add(sfd.format(shift_date) + "  " + d.getString("type"));
+                                // shifts_reg.add(d.getId());
                             }
                         }
                     }
@@ -107,25 +116,25 @@ public class WorkerScreen extends AppCompatActivity {
                         shifts_wanted.add("");
                         if (task.isSuccessful()) {
                             for (DocumentSnapshot doc : task.getResult()) {
-                                if (doc.getId()!=user_id) {
+                                if (doc.getId() != user_id) {
                                     db.collection("workers").document(doc.getId()).collection("shifts").get()
                                             .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-//add Equal to role
+                                                //add Equal to role
                                                 @Override
                                                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                                                     if (!queryDocumentSnapshots.isEmpty()) {
                                                         List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
                                                         for (DocumentSnapshot d : list) {
-                                                                if (!shifts_reg.contains(d.getId())) {
-                                                                    id_shifts_wanted.add(d.getId());
-                                                                    Date shift_date = d.getDate("date");
-                                                                   // shifts_wanted.add(d.getId());
-                                                                  shifts_wanted.add(sfd.format(shift_date) + "  " + d.getString("type"));
-                                                                }
+                                                            if (!shifts_reg.contains(d.getId())) {
+                                                                id_shifts_wanted.add(d.getId());
+                                                                Date shift_date = d.getDate("date");
+                                                                // shifts_wanted.add(d.getId());
+                                                                shifts_wanted.add(sfd.format(shift_date) + "  " + d.getString("type"));
                                                             }
-
                                                         }
+
                                                     }
+                                                }
 
                                             });
                                 }
@@ -137,16 +146,90 @@ public class WorkerScreen extends AppCompatActivity {
                 });
 
 
-
         shifts_wanted.add("");
         s_shift_wanted = findViewById(R.id.spinner_shifts_wanted);
         adapter_shift_wanted = new ArrayAdapter(this, android.R.layout.simple_spinner_item, shifts_wanted);
         adapter_shift_wanted.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         s_shift_wanted.setAdapter(adapter_shift_wanted);
 
+        s_shift_reg.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+                shift_reg_selcted = parent.getItemAtPosition(pos).toString();
+                shift_reg_id = id_shifts_reg.get(pos);
+            }
+
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        s_shift_reg.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                if (!parentView.getItemAtPosition(position).equals("")) {
+                    Toast.makeText(getBaseContext(), ("selected " + parentView.getItemAtPosition(position)), Toast.LENGTH_LONG).show();
+                    shift_reg_selcted = parentView.getItemAtPosition(position).toString();
+                    shift_reg_id = id_shifts_reg.get(position - 1);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+
+            }
+
+        });
+
+        s_shift_wanted.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                if (!parentView.getItemAtPosition(position).equals("")) {
+                    Toast.makeText(getBaseContext(), ("selected " + parentView.getItemAtPosition(position)), Toast.LENGTH_LONG).show();
+                    shift_wanted_selcted = parentView.getItemAtPosition(position).toString();
+                    shift_wanted_id = id_shifts_wanted.get(position - 1);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+
+            }
+
+        });
+
+        ok_button = findViewById(R.id.button_ok_worker_screen);
+        ok_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean flag = false;
+                if(TextUtils.isEmpty(shift_reg_selcted)){
+                    ((TextView)s_shift_reg.getSelectedView()).setError("חובה למלא שדה זה");
+                    flag = true;
+                }
+                if(TextUtils.isEmpty(shift_wanted_selcted)){
+                    ((TextView)s_shift_wanted.getSelectedView()).setError("חובה למלא שדה זה");
+                    flag = true;
+                }
+                if(!flag){
+                    request = new Request( shift_reg_id, shift_wanted_id);
+                    request_id = shift_reg_id+"_"+shift_wanted_id;
+                    db.collection("workers").document(user_id).collection("requests").document(request_id).set(request)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Toast.makeText(getBaseContext(), " בקשתך לחילוף התקבלה" , Toast.LENGTH_LONG).show();
+                                    startActivity(new Intent(WorkerScreen.this, WorkerScreen.class));
+                                }
+                            });
+                }
+            }
+        });
 
 
     }
+
+
+
+
 
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
