@@ -168,7 +168,7 @@ public class AddShift extends AppCompatActivity {
 
                         Toast.makeText(getBaseContext(), ("selected " + shift_date), Toast.LENGTH_LONG).show();
                     }
-                },year, month, day);;
+                },year, month, day);
                 dpd.getDatePicker().setMinDate(System.currentTimeMillis());
                 dpd.show();
             }

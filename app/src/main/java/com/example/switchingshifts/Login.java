@@ -94,15 +94,22 @@ public class Login extends AppCompatActivity {
                                                 String first_name = documentSnapshot.getString("first_name");
                                                 String last_name = documentSnapshot.getString("last_name");
                                                 /* if the current worker isn't the manager */
-                                                if (!worker_role.equals("מנהל")) {
-                                                    /* print welcome message ang go to the regular worker screen */
-                                                    Toast.makeText(Login.this, " התחברת בהצלחה " + first_name + " " + last_name, Toast.LENGTH_LONG).show();
-                                                    startActivity(new Intent(Login.this, WorkerScreen.class));
+                                                if (worker_role.equals("מנהל")) {
 
-                                                } else {/* manager */
                                                     /* print welcome message to the manager and go the the manager screen */
                                                     Toast.makeText(Login.this, "מנהל, התחברת בהצלחה ", Toast.LENGTH_LONG).show();
                                                     startActivity(new Intent(Login.this, MangerScreen.class));
+
+
+                                                }
+                                                else if(worker_role.equals("פוטר")) {
+                                                    Toast.makeText(Login.this, "העובד לא קיים במערכת, אנא נסה שנית ", Toast.LENGTH_LONG).show();
+                                                    startActivity(new Intent(Login.this, Login.class));
+                                                }
+                                                else{
+                                                    /* print welcome message ang go to the regular worker screen */
+                                                    Toast.makeText(Login.this, " התחברת בהצלחה " + first_name + " " + last_name, Toast.LENGTH_LONG).show();
+                                                    startActivity(new Intent(Login.this, WorkerScreen.class));
                                                 }
                                             }
                                         });

@@ -1,5 +1,6 @@
 package com.example.switchingshifts;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -17,15 +18,27 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class RemoveWorker extends AppCompatActivity {
     private FirebaseAuth firebase_auth;
@@ -105,7 +118,9 @@ public class RemoveWorker extends AppCompatActivity {
                     documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                         @Override
                         public void onSuccess(DocumentSnapshot documentSnapshot) {
-                            worker_birthday = documentSnapshot.get("birthday").toString();
+                            Date birthday = documentSnapshot.getTimestamp("birthday").toDate();
+                            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                            worker_birthday = sdf.format(birthday);
                             worker_last_name = documentSnapshot.get("last_name").toString();
                             worker_mail = documentSnapshot.get("email").toString();
 
@@ -142,13 +157,61 @@ public class RemoveWorker extends AppCompatActivity {
                     flag = true;
                 }
                 if(!flag){
-                    db.collection("workers").document(worker_id).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Toast.makeText(getBaseContext(), ("העובד- " + worker_name + " נמחק"), Toast.LENGTH_LONG).show();
-                        }
-                    });
 
+                    /* Changes role to "פוטר" */
+                    Map<String, Object> data = new HashMap<>();
+                    data.put("role", "פוטר");
+                    db.collection("workers").document(worker_id).set(data, SetOptions.merge());
+
+                    /* remove requests from database */
+                    db.collection("workers").document(worker_id)
+                            .collection("requests")
+                            .get()
+                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if(task.isSuccessful()){
+                                        /* go over all document in requests collection and remove them */
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                          db.collection("workers").document(worker_id)
+                                                  .collection("requests")
+                                                  .document(document.getId())
+                                                  .delete();
+                                        }
+
+                                    }else{
+                                        Toast.makeText(RemoveWorker.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+
+
+                    /* remove shifts from database */
+                    db.collection("workers").document(worker_id)
+                            .collection("shifts")
+                            .get()
+                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                                    if(task.isSuccessful()){
+                                        /* go over all document in shifts collection and remove them */
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                            db.collection("workers").document(worker_id)
+                                                    .collection("shifts")
+                                                    .document(document.getId())
+                                                    .delete();
+                                        }
+                                    }else{
+                                        Toast.makeText(RemoveWorker.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
+                                    }
+
+                                }
+                            });
+
+                    /* write a toasts to the screen and go to manager screen */
+                    Toast.makeText(RemoveWorker.this, " נמחק בהצלחה " + worker_name + " " + worker_last_name, Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(RemoveWorker.this, MangerScreen.class));
                 }
             }
         });
