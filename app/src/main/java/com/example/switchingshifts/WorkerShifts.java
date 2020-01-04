@@ -1,5 +1,6 @@
 package com.example.switchingshifts;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -8,12 +9,20 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ScrollView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import backend.Worker;
 
@@ -24,6 +33,8 @@ public class WorkerShifts extends AppCompatActivity {
     private FirebaseAuth firebase_auth;
     private FirebaseFirestore db;
     private String user_id;
+    private List<String> shift_ids = new ArrayList<>();
+    private List<String> shifts_to_show = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,17 +45,41 @@ public class WorkerShifts extends AppCompatActivity {
         setSupportActionBar(toolbar);
         shifts= findViewById(R.id.my_shifts);
 
+        /* Initialize Firebase Auth  and firestore*/
         firebase_auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
+        /* get user id */
         user_id = firebase_auth.getCurrentUser().getUid();
-        DocumentReference documentReference = db.collection("ShiftAndWorker").document(user_id);
-        documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
 
-            }
-        });
+        db.collection("workers").document(user_id)
+                .collection("shifts")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                        if(task.isSuccessful()){
+                            /* go over all document in shifts collection */
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                /* save id's of all documents */
+                                shift_ids.add(document.getId());
+                            }
+                        }else{
+                            Toast.makeText(WorkerShifts.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                });
+
+        DocumentReference documentReference = db.collection("workers").document(user_id);
+
+//        for(String shift_id: shift_ids){
+//            db.collection("workers").document(user_id)
+//                    .collection("shifts").document(shift_id)
+//        }
+
+
 
 
 
