@@ -82,7 +82,7 @@ public class MangerScreen extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
         if(id == R.id.my_shift){
-            Intent intent = new Intent(MangerScreen.this, WorkerShifts.class);
+            Intent intent = new Intent(MangerScreen.this, MangerShifts.class);
             startActivity(intent);
         }
         if(id == R.id.personal_info){

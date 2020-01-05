@@ -79,7 +79,7 @@
     <string name="my_messages">ההודעות שלי</string>
     <string name="shifts">משמרות</string>
     <string name="workers_shifts">משמרות עובדים</string>
-
+    <string name="display_shift">הצג משמרות</string>
     <string name="delete_worker_for_sure">אני בטוח שאני רוצה למחוק</string>
     <string name="invaild_mail">כתובת מייל לא תקינה</string>
     <string name="empty_input">אנא מלא את כל הפרטים</string>

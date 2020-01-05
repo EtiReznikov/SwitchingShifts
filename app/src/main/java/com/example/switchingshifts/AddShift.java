@@ -16,12 +16,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.view.View;
 import android.app.DatePickerDialog;
-
 import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,6 +29,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.DocumentSnapshot;
 import backend.Shift;
 import java.util.Date;
+import java.util.Map;
 
 public class AddShift extends AppCompatActivity {
     /* private data members */
@@ -45,9 +44,9 @@ public class AddShift extends AppCompatActivity {
     private ArrayAdapter<CharSequence> adapter_shift_type, adapter_worker_type;
     private List<String> names = new ArrayList<>();
     private List<String> id_names = new ArrayList<>();
-    private String shift_role, shift_type, worker_name, worker_id, shift_id, shift_timestemp, temp;
+    private String shift_role, shift_type, worker_name, worker_id, shift_id, shift_timestemp, shift_date;
     private ArrayAdapter<String> adapter_workers;
-    private Date shift_date;
+    private Date chosen_date;
     private Timestamp timestamp;
 
     @Override
@@ -156,17 +155,17 @@ public class AddShift extends AppCompatActivity {
                 int month = calendar.get(Calendar.MONTH);
                 int year = calendar.get(Calendar.YEAR);
 
-
                 dpd=new DatePickerDialog(AddShift.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
-                    public void onDateSet(DatePicker datePicker, int mDay, int mMonth, int mYear) {
-                        date.setText(mYear + "/" + (mMonth+1) + "/"+ mDay);
-                        temp = mYear + "." + (mMonth+1) + "." + mDay;
-                        shift_timestemp = DateFormat.getDateInstance(DateFormat.FULL).format(calendar.getTime());
-                        shift_date = new Date(shift_timestemp);
-                        timestamp = new Timestamp(shift_date);
-
-                        Toast.makeText(getBaseContext(), ("selected " + shift_date), Toast.LENGTH_LONG).show();
+                    public void onDateSet(DatePicker datePicker, int mYear, int mMonth, int mDay) {
+                        date.setText(mDay + "/" + (mMonth+1) + "/"+ mYear);
+                        shift_date = mDay + "." + (mMonth+1) + "." + mYear;
+                        calendar.set(Calendar.YEAR, mYear);
+                        calendar.set(Calendar.MONTH, mMonth);
+                        calendar.set(Calendar.DAY_OF_MONTH, mDay);
+                        shift_timestemp = DateFormat.getDateInstance(DateFormat.LONG).format(calendar.getTime());
+                        chosen_date = new Date(shift_timestemp);
+                        timestamp = new Timestamp(chosen_date);
                     }
                 },year, month, day);
                 dpd.getDatePicker().setMinDate(System.currentTimeMillis());
@@ -197,7 +196,7 @@ public class AddShift extends AppCompatActivity {
                 }
                 if(!flag){
                     shift = new Shift(timestamp, shift_type);
-                    shift_id = temp + shift_type;
+                    shift_id = shift_date + shift_type;
                     db.collection("workers").document(worker_id).collection("shifts").document(shift_id).set(shift)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override

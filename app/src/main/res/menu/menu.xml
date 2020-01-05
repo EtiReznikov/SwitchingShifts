@@ -9,9 +9,6 @@
         android:title="@string/personal_information"
         android:id="@+id/personal_info"/>
     <item
-        android:title="@string/messages"
-        android:id="@+id/messages" />
-    <item
         android:title="@string/logout"
         android:id="@+id/logout" />
     <item
