@@ -38,12 +38,13 @@
 
         android:background="@color/colorTextBoxBeck"
         android:drawableEnd="@drawable/ic_lock_white_24dp"
-        android:gravity="start"
+
+        android:gravity="end"
         android:hint="@string/pass"
         android:inputType="textEmailAddress"
         android:padding="10dp"
+        android:password="true"
         android:textColor="@color/colorInput"
-
         android:textColorHint="@color/colorHint"
         android:textSize="22sp"
         app:layout_constraintBottom_toTopOf="@+id/loginConnectionButton"

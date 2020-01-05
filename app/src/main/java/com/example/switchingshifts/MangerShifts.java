@@ -18,8 +18,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
-
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -31,12 +29,12 @@ public class MangerShifts extends AppCompatActivity {
     private FirebaseFirestore db;
     private Spinner s_worker_type;
     private ArrayAdapter<CharSequence> adapter_worker_type;
-    private String role, shifts = "", current_date;
+    private String role, shifts = "";
     private TextView shifts_list;
     private SimpleDateFormat sfd = new SimpleDateFormat("dd/MM/yyyy");
     private Calendar calendar;
     private Button display_shift;
-
+    private int day, month;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,9 +45,9 @@ public class MangerShifts extends AppCompatActivity {
         /* Initialize Firebase Auth  and firestore*/
         firebase_auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
+
         calendar = Calendar.getInstance();
         shifts_list = findViewById(R.id.shifts_list);
-        current_date = sfd.format(calendar.getTime());
         display_shift = findViewById(R.id.button_display_shift);
 
         s_worker_type= findViewById(R.id.spinner_worker_type);
@@ -62,26 +60,8 @@ public class MangerShifts extends AppCompatActivity {
                 if (parent.getItemAtPosition(position).equals("בחר תפקיד")) {}
                 else {
                     role = parent.getItemAtPosition(position).toString();
-                    Toast.makeText(getBaseContext(), parent.getItemAtPosition(position) + "selected", Toast.LENGTH_LONG).show();
-                    Toast.makeText(getBaseContext(), "sfsd", Toast.LENGTH_LONG).show();
-
+                    Toast.makeText(getBaseContext(), parent.getItemAtPosition(position) + " selected", Toast.LENGTH_LONG).show();
                     shifts = "";
-//                    db.collection("shift_by_role").document("role").collection(role).orderBy("date").get()
-//                            .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-//                                @Override
-//                                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-//                                    if(!queryDocumentSnapshots.isEmpty()){
-//                                        List<DocumentSnapshot> list_shifts = queryDocumentSnapshots.getDocuments();
-//                                        for(DocumentSnapshot shift : list_shifts){
-//                                            if(shift.exists()){
-//                                                shifts += shift.getString("name") + "\n" + shift.getString("date") + "\n";
-//                                                Toast.makeText(getBaseContext(), shift.getString("date"), Toast.LENGTH_LONG).show();
-//                                            }
-//                                        }
-//                                    }
-//
-//                                }
-//                            });
                     db.collection("workers").whereEqualTo("role", role).get()
                             .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                 @Override
@@ -90,6 +70,7 @@ public class MangerShifts extends AppCompatActivity {
                                         List<DocumentSnapshot> list_workers = queryDocumentSnapshots.getDocuments();
                                         for(DocumentSnapshot worker : list_workers){
                                             final String worker_name = worker.getString("first_name") + " " + worker.getString("last_name");
+                                            final String worker_id = worker.getId();
                                             db.collection("workers").document(worker.getId()).collection("shifts").orderBy("date").get()
                                                     .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                                         @Override
@@ -99,13 +80,15 @@ public class MangerShifts extends AppCompatActivity {
                                                                 List<DocumentSnapshot> list_shifts = queryDocumentSnapshots.getDocuments();
                                                                 for(DocumentSnapshot shift : list_shifts){
                                                                     if(shift.exists()) {
-
                                                                         Date shift_date = shift.getDate("date");
-//                                                                        Toast.makeText(getBaseContext(), shift.getDate("date").getDay(), Toast.LENGTH_LONG).show();
-                                                                        shifts += sfd.format(shift_date) + " " + shift.get("type") + "\n";
-                                                                        String s = sfd.format(shift_date);
-
-//                                                                        && shift.getDate("date").after(calendar.getTime())
+                                                                        day = Integer.parseInt(sfd.format(shift_date).substring(0,2));
+                                                                        month = Integer.parseInt(sfd.format(shift_date).substring(3,5));
+                                                                        if(!((day < calendar.get(Calendar.DAY_OF_MONTH)) && (month == (calendar.get(Calendar.MONTH))+1))) {
+                                                                            shifts += sfd.format(shift_date) + " " + shift.get("type") + "\n";
+                                                                        }
+                                                                        else{
+                                                                            db.collection("workers").document(worker_id).collection("shifts").document(shift.getId()).delete();
+                                                                        }
                                                                     }
                                                                 }
                                                             }

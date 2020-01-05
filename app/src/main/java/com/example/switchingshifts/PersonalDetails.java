@@ -158,7 +158,7 @@ public class PersonalDetails extends AppCompatActivity implements View.OnClickLi
     }
 
     public boolean onCreateOptionsMenu(Menu menu){
-//        getMenuInflater().inflate(R.menu.menu, menu);
+        getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
 

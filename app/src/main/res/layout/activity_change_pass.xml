@@ -34,9 +34,10 @@
 
     <EditText
         android:id="@+id/first_pass"
-        android:layout_width="486dp"
+        android:layout_width="407dp"
         android:layout_height="59dp"
         android:layout_marginTop="104dp"
+        android:autofillHints=""
         android:drawableEnd="@drawable/ic_lock_white_24dp"
         android:drawableRight="@drawable/ic_lock_white_24dp"
         android:gravity="end"
@@ -46,12 +47,11 @@
         android:textColor="@color/colorInput"
         android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/New_pess_title"
-        android:autofillHints="" />
+        app:layout_constraintTop_toBottomOf="@+id/New_pess_title" />
 
     <EditText
         android:id="@+id/second_pass"
-        android:layout_width="486dp"
+        android:layout_width="407dp"
         android:layout_height="59dp"
         android:layout_marginTop="48dp"
         android:drawableEnd="@drawable/ic_lock_white_24dp"
