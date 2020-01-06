@@ -1,5 +1,6 @@
 package com.example.switchingshifts;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.content.Intent;
@@ -21,7 +22,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
@@ -198,7 +202,7 @@ public class AddShift extends AppCompatActivity {
                 }
                 if(!flag){
                     shift = new Shift(timestamp, shift_type, shift_role);
-                    shift_id = shift_date + shift_type;
+                    shift_id = shift_date + shift_type + shift_role;
                     db.collection("workers").document(worker_id).collection("shifts").document(shift_id).set(shift)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override

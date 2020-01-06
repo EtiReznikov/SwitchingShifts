@@ -1,5 +1,6 @@
 package com.example.switchingshifts;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.content.Intent;
@@ -13,7 +14,10 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -72,8 +76,16 @@ public class MangerShifts extends AppCompatActivity {
                                         for(DocumentSnapshot worker : list_workers){
                                             final String worker_name = worker.getString("first_name") + " " + worker.getString("last_name");
                                             final String worker_id = worker.getId();
-//                                            worker.get("date");
-                                            Toast.makeText(getBaseContext(), worker.getString("date") + " selected", Toast.LENGTH_LONG).show();
+                                            db.collection("workers").document(worker.getId()).collection("shifts").orderBy("date").get()
+                                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                            if(task.isSuccessful()){
+                                                                String s = task.getResult().toString();
+                                                                Toast.makeText(getBaseContext(),   s, Toast.LENGTH_LONG).show();
+                                                            }
+                                                        }
+                                                    });
 //                                            db.collection("workers").document(worker.getId()).collection("shifts").orderBy("date").get()
 //                                                    .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
 //                                                        @Override
