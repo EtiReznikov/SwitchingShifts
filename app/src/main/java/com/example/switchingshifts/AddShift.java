@@ -74,13 +74,8 @@ public class AddShift extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (parent.getItemAtPosition(position).equals("בחר משמרת")) {}
                 else {
-                    Toast.makeText(getBaseContext(), parent.getItemAtPosition(position) + "selected ", Toast.LENGTH_LONG).show();
-                    if(parent.getItemAtPosition(position).equals("ערב")){
-                        shift_type = "Evening";
-                    }
-                    else{
-                        shift_type = "Morning";
-                    }
+                    Toast.makeText(getBaseContext(),"selected " + parent.getItemAtPosition(position) , Toast.LENGTH_LONG).show();
+                    shift_type = parent.getItemAtPosition(position).toString();
                 }
             }
 
@@ -99,7 +94,7 @@ public class AddShift extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (parent.getItemAtPosition(position).equals("בחר תפקיד")) {}
                 else {
-                    Toast.makeText(getBaseContext(), parent.getItemAtPosition(position) + "selected ", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getBaseContext(), "selected " + parent.getItemAtPosition(position), Toast.LENGTH_LONG).show();
                     shift_role = parent.getItemAtPosition(position).toString();
                     db.collection("workers").whereEqualTo("role",shift_role).get()
                             .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {

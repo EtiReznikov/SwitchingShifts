@@ -62,7 +62,7 @@ public class AddWorker extends AppCompatActivity {
                 if (parent.getItemAtPosition(position).equals("בחר תפקיד")) {
                 } else {
                     role = parent.getItemAtPosition(position).toString();
-                    Toast.makeText(getBaseContext(), parent.getItemAtPosition(position) + "selected", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getBaseContext(), "selected " + parent.getItemAtPosition(position), Toast.LENGTH_LONG).show();
                 }
             }
 

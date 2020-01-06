@@ -14,10 +14,7 @@ import android.view.View;
 import android.widget.Button;
 /*The main screen of the manager*/
 public class MangerScreen extends AppCompatActivity {
-    private Button add_worker;
-    private Button remove_worker;
-    private Button remove_shift;
-    private Button add_shift;
+    private Button add_worker, remove_worker, remove_shift, add_shift;
     private NotificationManagerCompat notificationManager;
 
     @Override
@@ -30,28 +27,28 @@ public class MangerScreen extends AppCompatActivity {
         notificationManager = NotificationManagerCompat.from(this);
 
     /*Moves the user to the required screen by the button he is clicking of*/
-        add_worker = (Button)findViewById(R.id.button_add_worker);
+        add_worker = findViewById(R.id.button_add_worker);
         add_worker.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick( View v){
                 openActivityAddWorker();
             }
         });
-        remove_worker = (Button)findViewById(R.id.button_remove_worker);
+        remove_worker = findViewById(R.id.button_remove_worker);
         remove_worker.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick( View v){
                 openActivityRemoveWorker();
             }
         });
-        remove_shift = (Button)findViewById(R.id.button_remove_shift);
+        remove_shift = findViewById(R.id.button_remove_shift);
         remove_shift.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick( View v){
                 openActivityRemoveShift();
             }
         });
-        add_shift = (Button)findViewById(R.id.button_add_shift);
+        add_shift = findViewById(R.id.button_add_shift);
         add_shift.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick( View v){

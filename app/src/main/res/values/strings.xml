@@ -45,8 +45,8 @@
     <string name="logout">התנתק</string>
     <string name="role">תפקיד</string>
     <string name="worker">עובד</string>
-    <string name="morning">בוקר</string>
-    <string name="evening">ערב</string>
+    <string name="morning">Morning</string>
+    <string name="evening">Evening</string>
     <string name="waiter">Waiter</string>
     <string name="barista">Berman</string>
     <string name="chef">Chef</string>

@@ -14,10 +14,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -65,48 +62,41 @@ public class MangerShifts extends AppCompatActivity {
                 if (parent.getItemAtPosition(position).equals("בחר תפקיד")) {}
                 else {
                     role = parent.getItemAtPosition(position).toString();
-                    Toast.makeText(getBaseContext(), parent.getItemAtPosition(position) + " selected", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getBaseContext(), "selected " + parent.getItemAtPosition(position) , Toast.LENGTH_LONG).show();
                     shifts = "";
                     db.collection("workers").whereEqualTo("role", role).get()
                             .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                 @Override
                                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                                     if(!queryDocumentSnapshots.isEmpty()){
+                                        /*getting all the documents where the worker role is what the manager choose*/
                                         List<DocumentSnapshot> list_workers = queryDocumentSnapshots.getDocuments();
                                         for(DocumentSnapshot worker : list_workers){
                                             final String worker_name = worker.getString("first_name") + " " + worker.getString("last_name");
                                             final String worker_id = worker.getId();
                                             db.collection("workers").document(worker.getId()).collection("shifts").orderBy("date").get()
-                                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                    .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                                         @Override
-                                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                            if(task.isSuccessful()){
-                                                                String s = task.getResult().toString();
-                                                                Toast.makeText(getBaseContext(),   s, Toast.LENGTH_LONG).show();
+                                                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                                            if(!queryDocumentSnapshots.isEmpty()){
+                                                                shifts += worker_name + "\n";
+                                                                List<DocumentSnapshot> list_shifts = queryDocumentSnapshots.getDocuments();
+                                                                /*for each worker we take all the shifts that the date has not passed
+                                                                  if the date has passed, we will delete the shift*/
+                                                                for(DocumentSnapshot shift : list_shifts){
+                                                                    if(shift.exists()) {
+                                                                        Date shift_date = shift.getDate("date");
+                                                                        if(!shift.contains(current_date)){
+                                                                            shifts += sfd.format(shift_date) + " " + shift.get("type") + "\n";
+                                                                        }
+                                                                        else{
+                                                                            db.collection("workers").document(worker_id).collection("shifts").document(shift.getId()).delete();
+                                                                        }
+                                                                    }
+                                                                }
                                                             }
                                                         }
                                                     });
-//                                            db.collection("workers").document(worker.getId()).collection("shifts").orderBy("date").get()
-//                                                    .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-//                                                        @Override
-//                                                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-//                                                            if(!queryDocumentSnapshots.isEmpty()){
-//                                                                shifts += worker_name + "\n";
-//                                                                List<DocumentSnapshot> list_shifts = queryDocumentSnapshots.getDocuments();
-//                                                                for(DocumentSnapshot shift : list_shifts){
-//                                                                    if(shift.exists()) {
-//                                                                        Date shift_date = shift.getDate("date");
-//                                                                        if(!shift.contains(current_date)){
-//                                                                            shifts += sfd.format(shift_date) + " " + shift.get("type") + "\n";
-//                                                                        }
-//                                                                        else{
-//                                                                            db.collection("workers").document(worker_id).collection("shifts").document(shift.getId()).delete();
-//                                                                        }
-//                                                                    }
-//                                                                }
-//                                                            }
-//                                                        }
-//                                                    });
                                         }
 
                                     }
@@ -121,7 +111,7 @@ public class MangerShifts extends AppCompatActivity {
         });
 
 
-
+        /*When press on the display_shift button we'll see list of all the shifts */
         display_shift.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -137,6 +127,9 @@ public class MangerShifts extends AppCompatActivity {
         return true;
     }
 
+    /*
+    When press one of the items in the toolbar we will go to the required screen.
+     */
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
         if(id == R.id.my_shift){
