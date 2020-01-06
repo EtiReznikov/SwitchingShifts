@@ -58,11 +58,17 @@ public class Graph {
         graph.get(shift_reg_index).addEdge(worker);
         graph.get(worker_index).addEdge(shift_wanted);
     }
+    public void add_edge(Vetrex shift_reg, Vetrex worker){
+        add_vetrex(shift_reg);
+        add_vetrex(worker);
+        int shift_reg_index=get_vetrex_index(shift_reg);
+        graph.get(shift_reg_index).addEdge(worker);
+
+    }
 
     /* gets two vertex and remove the edge between them (if exists) */
     public void remove_edge(Vetrex v, Vetrex u){
         int v_index=get_vetrex_index(v);
-        int u_index=get_vetrex_index(u);
         graph.get(v_index).remove_edge(u);
     }
     /*print the graph to the console*/

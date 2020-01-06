@@ -16,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Stack;
 
 import android.view.View;
 import android.widget.AdapterView;
@@ -40,6 +41,7 @@ import backend.Graph;
 import backend.DFS;
 import backend.Request;
 
+import backend.Shift;
 import backend.Vetrex;
 
 
@@ -58,8 +60,9 @@ public class WorkerScreen extends AppCompatActivity {
     private String shift_reg_selcted, shift_wanted_selcted, shift_reg_id, shift_wanted_id;
     private String request_id;
     Graph graph;
-    DFS dps;
+    DFS dfs;
     Vetrex v_worker_id, v_wanted_shift, v_reg_shift;
+    Shift new_shift;
 
     private Button ok_button;
     private Request request;
@@ -81,13 +84,13 @@ public class WorkerScreen extends AppCompatActivity {
 
         final TextView textViewToChange = (TextView) findViewById(R.id.Worker_Screen_title);
 
-        DocumentReference documentReference = db.collection("workers").document(user_id);
+        final DocumentReference documentReference = db.collection("workers").document(user_id);
         documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 worker_role = documentSnapshot.getString("role");
                 textViewToChange.setText(
-                        "Hello "+ documentSnapshot.get("first_name"));
+                        "Hello " + documentSnapshot.get("first_name"));
             }
         });
 
@@ -105,6 +108,7 @@ public class WorkerScreen extends AppCompatActivity {
                                 Date shift_date = d.getDate("date");
                                 shifts_reg.add(sfd.format(shift_date) + "  " + d.getString("type"));
                                 // shifts_reg.add(d.getId());
+                                //add date condition
                             }
                         }
                     }
@@ -116,6 +120,7 @@ public class WorkerScreen extends AppCompatActivity {
         s_shift_reg.setAdapter(adapter_shift_reg);
 
         db.collection("workers")
+                //.whereEqualTo("role", worker_role)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -125,7 +130,6 @@ public class WorkerScreen extends AppCompatActivity {
                         shifts_wanted.add("");
                         if (task.isSuccessful()) {
                             for (DocumentSnapshot doc : task.getResult()) {
-                                if (doc.getId() != user_id) {
                                     db.collection("workers").document(doc.getId()).collection("shifts").get()
                                             .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                                 //add Equal to role
@@ -139,6 +143,7 @@ public class WorkerScreen extends AppCompatActivity {
                                                                 Date shift_date = d.getDate("date");
                                                                 // shifts_wanted.add(d.getId());
                                                                 shifts_wanted.add(sfd.format(shift_date) + "  " + d.getString("type"));
+                                                                //add date condition
                                                             }
                                                         }
 
@@ -146,8 +151,6 @@ public class WorkerScreen extends AppCompatActivity {
                                                 }
 
                                             });
-                                }
-
                             }
                         }
 
@@ -263,6 +266,76 @@ public class WorkerScreen extends AppCompatActivity {
 
                             }
                         });
+
+                dfs = new DFS(graph);
+                boolean has_cycle = true;
+                Stack<Vetrex> path = new Stack<>();
+                while (has_cycle) {
+                    path = dfs.dfsCycle();
+                    if (path.empty())
+                        has_cycle = false;
+                    else {
+                        int count = 0;
+                        for (int i=0; i<path.size(); i++){
+                            if (path.get(i).isIs_user())
+                                count++;
+                        }
+
+                        String current_id_user;
+                        String current_id_shift_reg;
+                        String current_id_shift_wanted;
+                        String next_id_user;
+                        Vetrex current = path.pop();
+                        if (current.isIs_user()) {
+                            path.add(0, current);
+                            current = path.pop();
+                        }
+                        while (count>0) {
+                            current_id_shift_reg = current.getId();
+                            Vetrex user = path.pop();
+                            Vetrex next_shift = path.pop();
+                            current_id_user = user.getId();
+                            current_id_shift_wanted = next_shift.getId();
+                            next_id_user = path.peek().getId();
+
+
+                            db.collection("workers").document(current_id_user).collection("shifts").document(current_id_shift_reg)
+                                    .delete();
+                            db.collection("workers").document(current_id_user).collection("request").document(current_id_shift_reg + "_" + next_shift.getId()).delete();
+
+
+                            DocumentReference document_shift = db.collection("workers").document(next_id_user).collection("shifts").document(current_id_shift_wanted);
+
+                            document_shift.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                @Override
+                                public void onSuccess(DocumentSnapshot docSnapshot) {
+                                    new_shift = new Shift(docSnapshot.getTimestamp("date"),docSnapshot.getString("type"), docSnapshot.getString("role"));
+                                    Toast.makeText(getBaseContext(), " התבצע חילוף", Toast.LENGTH_LONG).show();
+
+                                }
+                            });
+                            db.collection("workers").document(current_id_user).collection("shifts").document(shift_wanted_id).set(new_shift)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            //send massege
+                                        }
+                                    });
+//
+                            path.add(0, current);
+                            path.add(0, user);
+                            path.add(0, next_shift);
+
+                            graph.remove_edge(current, user);
+                            graph.remove_edge(user, next_shift);
+                            graph.add_edge(next_shift, user);
+
+                            count--;
+                        }
+
+                    }
+
+                }
 
 
             }

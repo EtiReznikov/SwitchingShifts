@@ -102,13 +102,26 @@ public class DFS {
         Vetrex eti= new Vetrex(true,"Eti");
         Vetrex MM= new Vetrex(false, "MM");
         Vetrex yaara= new Vetrex(true, "yaara");
-        System.out.println("before remove SM--> eti:");
+
+
+
+//        System.out.println("before remove SM--> eti:");
         G.add_edge(SM, eti, MM);
         G.add_edge(MM,yaara,SM);
-        G.printGraph();
-        System.out.println("after remove SM--> eti:");
-        G.remove_edge(SM, eti);
-        G.printGraph();
+
+        DFS dfs=new DFS(G);
+        Stack <Vetrex> s= dfs.dfsCycle();
+        //while (!s.empty()){
+            Vetrex u=s.pop();
+            System.out.println(u.getId());
+        //}
+        s.add(0,yaara);
+        u=s.pop();
+        System.out.println(u.getId());
+//        G.printGraph();
+//        System.out.println("after remove SM--> eti:");
+//        G.remove_edge(SM, eti);
+//        G.printGraph();
 
       //  G.printGraph();
 //        DFS dfs=new DFS(G);

@@ -9,6 +9,7 @@ public class Vetrex{
     private boolean is_user;
     private LinkedList<Vetrex> neg;
 
+
     /*constructors */
     public Vetrex(boolean is_user, String id){
         neg= new LinkedList<>();
