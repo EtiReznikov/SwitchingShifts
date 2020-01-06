@@ -22,9 +22,8 @@
         android:layout_width="309dp"
         android:layout_height="63dp"
         android:layout_marginTop="60dp"
-        android:layout_marginEnd="72dp"
-        android:layout_marginRight="72dp"
-        android:text="@string/hello"
+        android:layout_marginEnd="16dp"
+        android:text="@string/hello_manger"
         android:textColor="@color/colorInput"
         android:textColorHighlight="#000F0101"
         android:textColorLink="#00180101"
@@ -100,4 +99,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_add_worker" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

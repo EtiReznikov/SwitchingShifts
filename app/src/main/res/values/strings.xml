@@ -30,6 +30,7 @@
     <string name="OK_button">אישור</string>
 
     <string name="hello">שלום</string>
+    <string name="hello_manger">שלום מנהל</string>
     <string name="add_shift">הוסף משמרת</string>
     <string name="remove_shift">מחק משמרת</string>
     <string name="add_worker">הוסף עובד</string>

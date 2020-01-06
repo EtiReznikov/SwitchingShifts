@@ -34,7 +34,7 @@ public class MangerShifts extends AppCompatActivity {
     private SimpleDateFormat sfd = new SimpleDateFormat("dd/MM/yyyy");
     private Calendar calendar;
     private Button display_shift;
-    private int day, month;
+    private String current_date;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +47,7 @@ public class MangerShifts extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
 
         calendar = Calendar.getInstance();
+        current_date = sfd.format(calendar.getTime());
         shifts_list = findViewById(R.id.shifts_list);
         display_shift = findViewById(R.id.button_display_shift);
 
@@ -71,29 +72,29 @@ public class MangerShifts extends AppCompatActivity {
                                         for(DocumentSnapshot worker : list_workers){
                                             final String worker_name = worker.getString("first_name") + " " + worker.getString("last_name");
                                             final String worker_id = worker.getId();
-                                            db.collection("workers").document(worker.getId()).collection("shifts").orderBy("date").get()
-                                                    .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                                                        @Override
-                                                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                                                            if(!queryDocumentSnapshots.isEmpty()){
-                                                                shifts += worker_name + "\n";
-                                                                List<DocumentSnapshot> list_shifts = queryDocumentSnapshots.getDocuments();
-                                                                for(DocumentSnapshot shift : list_shifts){
-                                                                    if(shift.exists()) {
-                                                                        Date shift_date = shift.getDate("date");
-                                                                        day = Integer.parseInt(sfd.format(shift_date).substring(0,2));
-                                                                        month = Integer.parseInt(sfd.format(shift_date).substring(3,5));
-                                                                        if(!((day < calendar.get(Calendar.DAY_OF_MONTH)) && (month == (calendar.get(Calendar.MONTH))+1))) {
-                                                                            shifts += sfd.format(shift_date) + " " + shift.get("type") + "\n";
-                                                                        }
-                                                                        else{
-                                                                            db.collection("workers").document(worker_id).collection("shifts").document(shift.getId()).delete();
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    });
+//                                            worker.get("date");
+                                            Toast.makeText(getBaseContext(), worker.getString("date") + " selected", Toast.LENGTH_LONG).show();
+//                                            db.collection("workers").document(worker.getId()).collection("shifts").orderBy("date").get()
+//                                                    .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+//                                                        @Override
+//                                                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+//                                                            if(!queryDocumentSnapshots.isEmpty()){
+//                                                                shifts += worker_name + "\n";
+//                                                                List<DocumentSnapshot> list_shifts = queryDocumentSnapshots.getDocuments();
+//                                                                for(DocumentSnapshot shift : list_shifts){
+//                                                                    if(shift.exists()) {
+//                                                                        Date shift_date = shift.getDate("date");
+//                                                                        if(!shift.contains(current_date)){
+//                                                                            shifts += sfd.format(shift_date) + " " + shift.get("type") + "\n";
+//                                                                        }
+//                                                                        else{
+//                                                                            db.collection("workers").document(worker_id).collection("shifts").document(shift.getId()).delete();
+//                                                                        }
+//                                                                    }
+//                                                                }
+//                                                            }
+//                                                        }
+//                                                    });
                                         }
 
                                     }

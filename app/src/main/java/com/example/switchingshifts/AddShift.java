@@ -24,7 +24,9 @@ import java.util.List;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.DocumentSnapshot;
 import backend.Shift;
@@ -195,7 +197,7 @@ public class AddShift extends AppCompatActivity {
                     flag = true;
                 }
                 if(!flag){
-                    shift = new Shift(timestamp, shift_type);
+                    shift = new Shift(timestamp, shift_type, shift_role);
                     shift_id = shift_date + shift_type;
                     db.collection("workers").document(worker_id).collection("shifts").document(shift_id).set(shift)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {

@@ -2,7 +2,10 @@ package com.example.switchingshifts;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
+import android.app.Notification;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -15,6 +18,7 @@ public class MangerScreen extends AppCompatActivity {
     private Button remove_worker;
     private Button remove_shift;
     private Button add_shift;
+    private NotificationManagerCompat notificationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +26,8 @@ public class MangerScreen extends AppCompatActivity {
         setContentView(R.layout.activity_manger_screen);
         Toolbar toolbar = findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
+
+        notificationManager = NotificationManagerCompat.from(this);
 
     /*Moves the user to the required screen by the button he is clicking of*/
         add_worker = (Button)findViewById(R.id.button_add_worker);
@@ -53,6 +59,19 @@ public class MangerScreen extends AppCompatActivity {
             }
         });
     }
+
+//    public void sendOnChannel1(View v){
+//        Notification notification = new NotificationCompat.Builder(this, NotificationHelper.channel1_id)
+//                .setSmallIcon(R.drawable.ic_message)
+//                .setContentTitle("יש לך הודעה חדשה")
+//                .setContentText("החיים בזבל")
+//                .setPriority(NotificationCompat.PRIORITY_HIGH)
+//                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+//                .build();
+//
+//        notificationManager.notify(1, notification);
+//    }
+
 
     private void openActivityAddWorker(){
         Intent intent = new Intent(this, AddWorker.class);
@@ -94,11 +113,13 @@ public class MangerScreen extends AppCompatActivity {
             startActivity(intent);
         }
         if(id == R.id.logout){
+
             Intent intent = new Intent(MangerScreen.this, Login.class);
             startActivity(intent);
         }
         return true;
     }
+
 
 
 }
