@@ -21,7 +21,7 @@ public class Graph {
     }
 
     public void add_vetrex(Vetrex v) {
-        if (!this.contains_vetrex(v))
+        //if (!this.contains_vetrex(v))
             graph.add(v);
     }
     /* check if the graph contain this vetrex*/
@@ -79,5 +79,9 @@ public class Graph {
                 System.out.println(u.getId()+" , ");
             System.out.println();
         }
+    }
+
+    public int graph_size(){
+        return graph.size();
     }
 }
