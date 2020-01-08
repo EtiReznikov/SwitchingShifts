@@ -7,15 +7,18 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.TextUtils;
 
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Stack;
 
 import android.view.View;
@@ -46,7 +49,7 @@ import backend.Vetrex;
 
 
 /*The worker main screen */
-public class WorkerScreen extends AppCompatActivity {
+public class WorkerScreen extends AppCompatActivity implements Serializable {
     private FirebaseAuth firebase_auth;
     private FirebaseFirestore db;
     private String user_id;
@@ -74,6 +77,8 @@ public class WorkerScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_worker_screen);
+
+
 
         Toolbar toolbar = findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
@@ -410,6 +415,12 @@ public class WorkerScreen extends AppCompatActivity {
         int id = item.getItemId();
         if (id == R.id.my_shift) {
             Intent intent = new Intent(WorkerScreen.this, WorkerShifts.class);
+            String shifts_to_show = "";
+
+            for(String s: shifts_reg) {
+                shifts_to_show = shifts_to_show + s + "\n";
+            }
+            intent.putExtra("shifts_to_show",  shifts_to_show);
             startActivity(intent);
         }
         if (id == R.id.personal_info) {
