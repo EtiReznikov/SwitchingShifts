@@ -98,25 +98,27 @@ public class DFS {
 
     public static void main(String[] args) {
         Graph G= new Graph();
-        Vetrex SM= new Vetrex(false,"SM");
-        Vetrex eti= new Vetrex(true,"Eti");
-        Vetrex MM= new Vetrex(false, "MM");
-        Vetrex yaara= new Vetrex(true, "yaara");
-
+        Vetrex SM= new Vetrex(false,"9.1.2020EveningChef");
+        Vetrex eti= new Vetrex(true,"uW6bRWyYQOQSu6Pyx4H6LKOn");
+        Vetrex MM= new Vetrex(false, "10.1.2020MorningChef");
+        Vetrex yaara= new Vetrex(true, "kikkb1EnI9WD7kFItkrugcIX");
+        Vetrex SM2=new Vetrex(false,"9.1.2020EveningChef");
+        Vetrex MM2= new Vetrex(false, "10.1.2020MorningChef");
 
 
 //        System.out.println("before remove SM--> eti:");
         G.add_edge(SM, eti, MM);
-        G.add_edge(MM,yaara,SM);
+        G.add_edge(MM2,yaara,SM2);
 
-        System.out.println(G.graph_size());
+        System.out.println("graph size:"+G.graph_size());
+        G.printGraph();
 
 //        DFS dfs=new DFS(G);
 //        Stack <Vetrex> s= dfs.dfsCycle();
-//        //while (!s.empty()){
+//        while (!s.empty()){
 //            Vetrex u=s.pop();
 //            System.out.println(u.getId());
-//        //}
+//        }
 //        s.add(0,yaara);
 //        u=s.pop();
 //        System.out.println(u.getId());

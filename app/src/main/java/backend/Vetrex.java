@@ -44,14 +44,14 @@ public class Vetrex{
     /*check if there edge from this vertex to v*/
     public boolean contains_edge(Vetrex v){
         for (int i=0; i<this.neg.size(); i++)
-            if (neg.get(i).equals(v))
+            if (neg.get(i).getId().equals(v.getId()))
                 return true;
         return false;
     }
     /*remove vertex v to this neighborhoods list (remove edge)*/
     public void remove_edge(Vetrex v){
         for (int i=0; i<this.neg.size(); i++)
-            if (neg.get(i).equals(v))
+            if (neg.get(i).getId().equals(v.getId()))
                 neg.remove(i);
     }
     /*check if this vetrex is equal to vetrex v*/

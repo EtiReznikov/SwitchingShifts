@@ -10,7 +10,6 @@ public class Graph {
     /*constructors */
     public Graph() {
         graph = new ArrayList<Vetrex>();
-
     }
     public Graph(Graph g) {
         graph = new ArrayList<>(g.getGraph());
@@ -21,13 +20,14 @@ public class Graph {
     }
 
     public void add_vetrex(Vetrex v) {
-        //if (!this.contains_vetrex(v))
+        if (!this.contains_vetrex(v))
             graph.add(v);
     }
     /* check if the graph contain this vetrex*/
     public boolean contains_vetrex(Vetrex v) {
-        for (int i = 0; i < graph.size(); i++) {
-            if (graph.get(i).equals(v))
+        for (int i = 0; i < graph.size(); i++)
+        {
+            if (graph.get(i).getId().equals(v.getId()))
                 return true;
         }
         return false;
@@ -36,7 +36,7 @@ public class Graph {
     /* return the vertex index at the graph, -1 if the vertex is not exists*/
     public int get_vetrex_index(Vetrex v){
         for (int i = 0; i < graph.size(); i++) {
-            if (graph.get(i).equals(v))
+            if (graph.get(i).getId().equals(v.getId()))
                 return i;
         }
         return -1;

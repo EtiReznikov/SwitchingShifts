@@ -59,15 +59,24 @@ public class WorkerScreen extends AppCompatActivity {
     private ArrayAdapter<CharSequence> adapter_shift_reg, adapter_shift_wanted;
     private String shift_reg_selcted, shift_wanted_selcted, shift_reg_id, shift_wanted_id;
     private String request_id;
-    Graph graph;
-    DFS dfs;
-    Vetrex v_worker_id, v_wanted_shift, v_reg_shift;
-    Shift new_shift;
-    int size;
-    boolean reads_data;
+    private Graph graph;
+    private DFS dfs;
+    private Vetrex v_worker_id, v_wanted_shift, v_reg_shift;
+    private Shift new_shift;
+    private int size;
+    private boolean reads_data;
     private Button ok_button;
     private Request request;
-
+    private int num_of_requests;
+    private Stack<Vetrex> path;
+    private String u_id;
+    private String current_reg_id, curent_wanted_id;
+    private String current_id_user;
+    private String current_id_shift_reg;
+    private String current_id_shift_wanted;
+    private String next_id_user;
+    private List<String> requests = new ArrayList();
+    private List<String> shifts_to_deltete = new ArrayList();
     SimpleDateFormat sfd = new SimpleDateFormat("dd-MM-yyyy");
 
     @Override
@@ -226,7 +235,7 @@ public class WorkerScreen extends AppCompatActivity {
                     flag = true;
                 }
                 if (!flag) {
-                    request = new Request(shift_reg_id, shift_wanted_id);
+                    request = new Request(shift_reg_id, shift_wanted_id, user_id);
                     request_id = shift_reg_id + "_" + shift_wanted_id;
                     db.collection("workers").document(user_id).collection("requests").document(request_id).set(request)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -252,10 +261,10 @@ public class WorkerScreen extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                           @Override
                                           public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                              num_of_requests = 0;
                                               if (!queryDocumentSnapshots.isEmpty()) {
                                                   List<DocumentSnapshot> docs = queryDocumentSnapshots.getDocuments();
                                                   for (DocumentSnapshot doc : docs) {
-                                                      v_worker_id = new Vetrex(true, doc.getId());
                                                       db.collection("workers").document(doc.getId()).collection("requests").get()
                                                               .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                                                   //add Equal to role
@@ -264,11 +273,18 @@ public class WorkerScreen extends AppCompatActivity {
                                                                       if (!queryDocumentSnapshots_in.isEmpty()) {
                                                                           List<DocumentSnapshot> list = queryDocumentSnapshots_in.getDocuments();
                                                                           for (DocumentSnapshot d : list) {
-                                                                              v_reg_shift = new Vetrex(false, d.get("shift_reg_id").toString());
-                                                                              v_wanted_shift = new Vetrex(false, d.get("shift_wanted_id").toString());
+                                                                              v_worker_id = new Vetrex(true, d.getString("worker_id"));
+                                                                              v_reg_shift = new Vetrex(false, d.getString("shift_reg_id"));
+                                                                              v_wanted_shift = new Vetrex(false, d.getString("shift_wanted_id"));
                                                                               graph.add_edge(v_reg_shift, v_worker_id, v_wanted_shift);
                                                                               size = graph.graph_size();
-                                                                              Toast.makeText(getBaseContext(), size + "", Toast.LENGTH_LONG).show();
+//                                                                              Toast.makeText(getBaseContext(), graph.graph_size()+"", Toast.LENGTH_LONG).show();
+//                                                                             Toast.makeText(getBaseContext(), v_worker_id.getId(), Toast.LENGTH_LONG).show();
+                                                                              num_of_requests++;
+                                                                              if (num_of_requests > 1)
+                                                                                  start_dfs();
+
+
                                                                           }
                                                                       }
 
@@ -277,44 +293,10 @@ public class WorkerScreen extends AppCompatActivity {
                                                               });
                                                   }
                                               }
-                                              start_dfs();
+
                                           }
                                       }
                 );
-
-
-//        db.collection("workers")
-//                .get()
-//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                        if (task.isSuccessful()) {
-//                            for (DocumentSnapshot doc : task.getResult()) {
-//                                v_worker_id = new Vetrex(true, doc.getId());
-//                                db.collection("workers").document(doc.getId()).collection("requests").get()
-//                                        .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-//                                            //add Equal to role
-//                                            @Override
-//                                            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-//                                                if (!queryDocumentSnapshots.isEmpty()) {
-//                                                    List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
-//                                                    for (DocumentSnapshot d : list) {
-//                                                        v_reg_shift = new Vetrex(false, d.get("shift_reg_id").toString());
-//                                                        v_wanted_shift = new Vetrex(false, d.get("shift_wanted_id").toString());
-//                                                        graph.add_edge(v_reg_shift, v_worker_id, v_wanted_shift);
-//                                                        size = graph.graph_size();
-//                                                        Toast.makeText(getBaseContext(), size + "", Toast.LENGTH_LONG).show();
-//                                                    }
-//                                                }
-//
-//                                            }
-//
-//                                        });
-//                            }
-//                        }
-//                        start_dfs();
-//                    }
-//                });
 
 
     }
@@ -324,13 +306,37 @@ public class WorkerScreen extends AppCompatActivity {
         //  Toast.makeText(getBaseContext(), grap_is_ready+" "+counter, Toast.LENGTH_LONG).show();
         //  counter++;
         //   if(grap_is_ready) {
-        Toast.makeText(getBaseContext(), "start dfs: " + size, Toast.LENGTH_LONG).show();
+        //  while (num_of_requests<1);
+        //   if (num_of_requests == 2) {
+//
+//           // Toast.makeText(getBaseContext(), "start dfs: " + size, Toast.LENGTH_LONG).show();
+//            String vat_neg="";
+//            Toast.makeText(getBaseContext(), "graph size: " + graph.graph_size()+"",Toast.LENGTH_LONG).show();
+//            for (Vetrex v: graph.getGraph()){
+//               vat_neg=v.getId()+" : ";
+//           //     Toast.makeText(getBaseContext(), vat_neg, Toast.LENGTH_LONG).show();
+//                for (Vetrex u: v.getNeg())
+//                    vat_neg+=u.getId()+" , ";
+//                Toast.makeText(getBaseContext(), vat_neg, Toast.LENGTH_LONG).show();
+//            }
+
         dfs = new DFS(graph);
+        //     path=dfs.dfsCycle();
+//            Toast.makeText(getBaseContext(), "path size:" +path.size() + "", Toast.LENGTH_LONG).show();
         boolean has_cycle = true;
-        Stack<Vetrex> path = new Stack<>();
         while (has_cycle) {
             path = dfs.dfsCycle();
-            Toast.makeText(getBaseContext(), path.size() + "", Toast.LENGTH_LONG).show();
+//            String p = "";
+//            Vetrex v = null;
+//            for (int i = 0; i < 4; i++) {
+//                v = path.pop();
+//                p += v.getId();
+//                path.add(0, v);
+//            }
+//            Vetrex u=s.pop();
+//            System.out.println(u.id);
+//        }
+//            Toast.makeText(getBaseContext(), p + "", Toast.LENGTH_LONG).show();
             if (path.empty()) {
                 has_cycle = false;
                 Toast.makeText(getBaseContext(), "empty", Toast.LENGTH_LONG).show();
@@ -340,57 +346,90 @@ public class WorkerScreen extends AppCompatActivity {
                     if (path.get(i).isIs_user())
                         count++;
                 }
+                Toast.makeText(getBaseContext(), count + "", Toast.LENGTH_LONG).show();
 
-                String current_id_user;
-                String current_id_shift_reg;
-                String current_id_shift_wanted;
-                String next_id_user;
-                Vetrex current = path.pop();
-                if (current.isIs_user()) {
-                    path.add(0, current);
-                    current = path.pop();
-                }
                 while (count > 0) {
-                    current_id_shift_reg = current.getId();
+                    Vetrex current_shift = path.pop();
+                    if (current_shift.isIs_user()) {
+                        path.add(0, current_shift);
+                        current_shift = path.pop();
+                    }
+
+                    current_id_shift_reg = current_shift.getId();
                     Vetrex user = path.pop();
                     Vetrex next_shift = path.pop();
                     current_id_user = user.getId();
                     current_id_shift_wanted = next_shift.getId();
                     next_id_user = path.peek().getId();
+                    //   requests.add(current_id_shift_reg + "_" + current_id_shift_wanted);
+                    //         shifts_to_deltete.add((cu))
 
-
-                    db.collection("workers").document(current_id_user).collection("shifts").document(current_id_shift_reg)
-                            .delete();
-                    db.collection("workers").document(current_id_user).collection("request").document(current_id_shift_reg + "_" + next_shift.getId()).delete();
-
-
-                    DocumentReference document_shift = db.collection("workers").document(next_id_user).collection("shifts").document(current_id_shift_wanted);
-
-                    document_shift.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    Toast.makeText(getBaseContext(), current_id_user, Toast.LENGTH_LONG).show();
+                    db.collection("workers").document(next_id_user).collection("shifts").document(current_id_shift_wanted)
+                            .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                         @Override
                         public void onSuccess(DocumentSnapshot docSnapshot) {
                             new_shift = new Shift(docSnapshot.getTimestamp("date"), docSnapshot.getString("type"), docSnapshot.getString("role"));
-                            Toast.makeText(getBaseContext(), " התבצע חילוף", Toast.LENGTH_LONG).show();
-
+                            db.collection("workers").document(current_id_user).collection("shifts").document(shift_wanted_id).set(new_shift)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            //send massege
+                                            Toast.makeText(getBaseContext(), " התבצע חילוף", Toast.LENGTH_LONG).show();
+                                        }
+                                    });
                         }
                     });
-                    db.collection("workers").document(current_id_user).collection("shifts").document(shift_wanted_id).set(new_shift)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    //send massege
-                                }
-                            });
-//
-                    path.add(0, current);
-                    path.add(0, user);
-                    path.add(0, next_shift);
 
-                    graph.remove_edge(current, user);
+
+                    //          db.collection("workers").document(current_id_user).collection("request").document(current_id_shift_reg + "_" + current_id_shift_wanted).delete();
+
+
+//                      db.collection("workers").document(next_id_user).collection("shifts").document(current_id_shift_wanted)
+//                              .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+//                            @Override
+//                            public void onSuccess(DocumentSnapshot docSnapshot) {
+//                                new_shift = new Shift(docSnapshot.getTimestamp("date"), docSnapshot.getString("type"), docSnapshot.getString("role"));
+//                                db.collection("workers").document(current_id_user).collection("shifts").document(shift_wanted_id).set(new_shift)
+//                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                    @Override
+//                                    public void onSuccess(Void aVoid) {
+//                                        //send massege
+//                                        Toast.makeText(getBaseContext(), " התבצע חילוף", Toast.LENGTH_LONG).show();
+//                                    }
+//                                });
+//                            }
+//                        });
+//                        db.collection("workers").document(current_id_user).collection("shifts").document(current_id_shift_reg).delete();
+
+//                        db.collection("workers").document(current_id_user).collection("shifts").document(shift_wanted_id).set(new_shift)
+//                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                    @Override
+//                                    public void onSuccess(Void aVoid) {
+//                                        //send massege
+//                                    }
+//                                });
+//
+                    path.add(0, current_shift);
+                    path.add(0, user);
+                    path.push(next_shift);
+//                    p = "";
+//                    for (int i = 0; i < 4; i++) {
+//                        v = path.pop();
+//                        p += v.getId();
+//                        path.add(0, v);
+//                    }
+//            Vetrex u=s.pop();
+//            System.out.println(u.id);
+//        }
+//                    Toast.makeText(getBaseContext(), p + "", Toast.LENGTH_LONG).show();
+                    graph.remove_edge(current_shift, user);
                     graph.remove_edge(user, next_shift);
                     graph.add_edge(next_shift, user);
 
+
                     count--;
+                    Toast.makeText(getBaseContext(), count + "", Toast.LENGTH_LONG).show();
                 }
 
             }
@@ -398,6 +437,7 @@ public class WorkerScreen extends AppCompatActivity {
             //  }
         }
     }
+    // }
 
 
     public boolean onCreateOptionsMenu(Menu menu) {
