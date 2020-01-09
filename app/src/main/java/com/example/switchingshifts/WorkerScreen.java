@@ -3,8 +3,11 @@ package com.example.switchingshifts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 
+import android.app.Notification;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -52,46 +55,36 @@ import backend.Vetrex;
 public class WorkerScreen extends AppCompatActivity implements Serializable {
     private FirebaseAuth firebase_auth;
     private FirebaseFirestore db;
-    private String user_id;
-    private String worker_role;
+    private String user_id, worker_role, shift_reg_selcted, shift_wanted_selcted, shift_reg_id, shift_wanted_id;
     private List<String> shifts_reg = new ArrayList<>();
     private List<String> id_shifts_reg = new ArrayList<>();
     private List<String> shifts_wanted = new ArrayList<>();
     private List<String> id_shifts_wanted = new ArrayList<>();
     private Spinner s_shift_reg, s_shift_wanted;
     private ArrayAdapter<CharSequence> adapter_shift_reg, adapter_shift_wanted;
-    private String shift_reg_selcted, shift_wanted_selcted, shift_reg_id, shift_wanted_id;
-    private String request_id;
+    private String request_id, current_id_user, current_id_shift_reg, current_id_shift_wanted, next_id_user;
     private Graph graph;
     private DFS dfs;
     private Vetrex v_worker_id, v_wanted_shift, v_reg_shift;
+//    private Vetrex current_shift, user, next_shift;
     private Shift new_shift;
-    private int size;
-    private boolean reads_data;
+    private int size, num_of_requests;
     private Button ok_button;
     private Request request;
-    private int num_of_requests;
     private Stack<Vetrex> path;
-    private String u_id;
-    private String current_reg_id, curent_wanted_id;
-    private String current_id_user;
-    private String current_id_shift_reg;
-    private String current_id_shift_wanted;
-    private String next_id_user;
-    private List<String> requests = new ArrayList();
-    private List<String> shifts_to_deltete = new ArrayList();
+    private List<String> workers_id = new ArrayList();
+    private List<String> shifts_to_delete = new ArrayList();
     SimpleDateFormat sfd = new SimpleDateFormat("dd-MM-yyyy");
+    private NotificationManagerCompat notificationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_worker_screen);
-
-
-
         Toolbar toolbar = findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
 
+        notificationManager = NotificationManagerCompat.from(this);
         graph = new Graph();
 
         /* Initialize Firebase Auth  and firestore*/
@@ -99,7 +92,7 @@ public class WorkerScreen extends AppCompatActivity implements Serializable {
         db = FirebaseFirestore.getInstance();
         user_id = firebase_auth.getCurrentUser().getUid();
 
-        final TextView textViewToChange = (TextView) findViewById(R.id.Worker_Screen_title);
+        final TextView textViewToChange = findViewById(R.id.Worker_Screen_title);
 
         final DocumentReference documentReference = db.collection("workers").document(user_id);
         documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -147,6 +140,7 @@ public class WorkerScreen extends AppCompatActivity implements Serializable {
                         shifts_wanted.add("");
                         if (task.isSuccessful()) {
                             for (DocumentSnapshot doc : task.getResult()) {
+                                if(!doc.getId().equals(user_id))
                                 db.collection("workers").document(doc.getId()).collection("shifts").get()
                                         .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                             //add Equal to role
@@ -156,11 +150,14 @@ public class WorkerScreen extends AppCompatActivity implements Serializable {
                                                     List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
                                                     for (DocumentSnapshot d : list) {
                                                         if (!shifts_reg.contains(d.getId())) {
-                                                            id_shifts_wanted.add(d.getId());
-                                                            Date shift_date = d.getDate("date");
-                                                            // shifts_wanted.add(d.getId());
-                                                            shifts_wanted.add(sfd.format(shift_date) + "  " + d.getString("type"));
-                                                            //add date condition
+                                                            if(d.getString("role").equals(worker_role)){
+                                                                id_shifts_wanted.add(d.getId());
+                                                                Date shift_date = d.getDate("date");
+                                                                // shifts_wanted.add(d.getId());
+                                                                shifts_wanted.add(sfd.format(shift_date) + "  " + d.getString("type"));
+                                                                //add date condition
+                                                            }
+
                                                         }
                                                     }
 
@@ -286,73 +283,33 @@ public class WorkerScreen extends AppCompatActivity implements Serializable {
 //                                                                              Toast.makeText(getBaseContext(), graph.graph_size()+"", Toast.LENGTH_LONG).show();
 //                                                                             Toast.makeText(getBaseContext(), v_worker_id.getId(), Toast.LENGTH_LONG).show();
                                                                               num_of_requests++;
-                                                                              if (num_of_requests > 1)
+                                                                              if (num_of_requests > 1){
                                                                                   start_dfs();
-
-
+                                                                              }
                                                                           }
                                                                       }
-
                                                                   }
-
                                                               });
                                                   }
                                               }
-
                                           }
                                       }
                 );
-
-
     }
 
     public void start_dfs() {
-        // int counter=0;
-        //  Toast.makeText(getBaseContext(), grap_is_ready+" "+counter, Toast.LENGTH_LONG).show();
-        //  counter++;
-        //   if(grap_is_ready) {
-        //  while (num_of_requests<1);
-        //   if (num_of_requests == 2) {
-//
-//           // Toast.makeText(getBaseContext(), "start dfs: " + size, Toast.LENGTH_LONG).show();
-//            String vat_neg="";
-//            Toast.makeText(getBaseContext(), "graph size: " + graph.graph_size()+"",Toast.LENGTH_LONG).show();
-//            for (Vetrex v: graph.getGraph()){
-//               vat_neg=v.getId()+" : ";
-//           //     Toast.makeText(getBaseContext(), vat_neg, Toast.LENGTH_LONG).show();
-//                for (Vetrex u: v.getNeg())
-//                    vat_neg+=u.getId()+" , ";
-//                Toast.makeText(getBaseContext(), vat_neg, Toast.LENGTH_LONG).show();
-//            }
-
         dfs = new DFS(graph);
-        //     path=dfs.dfsCycle();
-//            Toast.makeText(getBaseContext(), "path size:" +path.size() + "", Toast.LENGTH_LONG).show();
         boolean has_cycle = true;
         while (has_cycle) {
             path = dfs.dfsCycle();
-//            String p = "";
-//            Vetrex v = null;
-//            for (int i = 0; i < 4; i++) {
-//                v = path.pop();
-//                p += v.getId();
-//                path.add(0, v);
-//            }
-//            Vetrex u=s.pop();
-//            System.out.println(u.id);
-//        }
-//            Toast.makeText(getBaseContext(), p + "", Toast.LENGTH_LONG).show();
             if (path.empty()) {
                 has_cycle = false;
-                Toast.makeText(getBaseContext(), "empty", Toast.LENGTH_LONG).show();
             } else {
                 int count = 0;
                 for (int i = 0; i < path.size(); i++) {
                     if (path.get(i).isIs_user())
                         count++;
                 }
-                Toast.makeText(getBaseContext(), count + "", Toast.LENGTH_LONG).show();
-
                 while (count > 0) {
                     Vetrex current_shift = path.pop();
                     if (current_shift.isIs_user()) {
@@ -366,84 +323,64 @@ public class WorkerScreen extends AppCompatActivity implements Serializable {
                     current_id_user = user.getId();
                     current_id_shift_wanted = next_shift.getId();
                     next_id_user = path.peek().getId();
-                    //   requests.add(current_id_shift_reg + "_" + current_id_shift_wanted);
-                    //         shifts_to_deltete.add((cu))
+                    shifts_to_delete.add(current_id_shift_reg);
+                    workers_id.add(current_id_user);
+                    String current_user_request = current_id_shift_reg + "_" + current_id_shift_wanted;
 
-                    Toast.makeText(getBaseContext(), current_id_user, Toast.LENGTH_LONG).show();
-                    db.collection("workers").document(next_id_user).collection("shifts").document(current_id_shift_wanted)
-                            .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                        @Override
-                        public void onSuccess(DocumentSnapshot docSnapshot) {
-                            new_shift = new Shift(docSnapshot.getTimestamp("date"), docSnapshot.getString("type"), docSnapshot.getString("role"));
-                            db.collection("workers").document(current_id_user).collection("shifts").document(shift_wanted_id).set(new_shift)
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                            //send massege
-                                            Toast.makeText(getBaseContext(), " התבצע חילוף", Toast.LENGTH_LONG).show();
-                                        }
-                                    });
-                        }
-                    });
+                    switch_shift(next_id_user, current_id_user, current_id_shift_wanted);
 
-
-                    //          db.collection("workers").document(current_id_user).collection("request").document(current_id_shift_reg + "_" + current_id_shift_wanted).delete();
-
-
-//                      db.collection("workers").document(next_id_user).collection("shifts").document(current_id_shift_wanted)
-//                              .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-//                            @Override
-//                            public void onSuccess(DocumentSnapshot docSnapshot) {
-//                                new_shift = new Shift(docSnapshot.getTimestamp("date"), docSnapshot.getString("type"), docSnapshot.getString("role"));
-//                                db.collection("workers").document(current_id_user).collection("shifts").document(shift_wanted_id).set(new_shift)
-//                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                                    @Override
-//                                    public void onSuccess(Void aVoid) {
-//                                        //send massege
-//                                        Toast.makeText(getBaseContext(), " התבצע חילוף", Toast.LENGTH_LONG).show();
-//                                    }
-//                                });
-//                            }
-//                        });
-//                        db.collection("workers").document(current_id_user).collection("shifts").document(current_id_shift_reg).delete();
-
-//                        db.collection("workers").document(current_id_user).collection("shifts").document(shift_wanted_id).set(new_shift)
-//                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                                    @Override
-//                                    public void onSuccess(Void aVoid) {
-//                                        //send massege
-//                                    }
-//                                });
-//
                     path.add(0, current_shift);
                     path.add(0, user);
                     path.push(next_shift);
-//                    p = "";
-//                    for (int i = 0; i < 4; i++) {
-//                        v = path.pop();
-//                        p += v.getId();
-//                        path.add(0, v);
-//                    }
-//            Vetrex u=s.pop();
-//            System.out.println(u.id);
-//        }
-//                    Toast.makeText(getBaseContext(), p + "", Toast.LENGTH_LONG).show();
                     graph.remove_edge(current_shift, user);
                     graph.remove_edge(user, next_shift);
                     graph.add_edge(next_shift, user);
 
-
+                    db.collection("workers").document(current_id_user).collection("requests").document(current_user_request).delete();
                     count--;
-                    Toast.makeText(getBaseContext(), count + "", Toast.LENGTH_LONG).show();
                 }
-
             }
-
-            //  }
         }
     }
-    // }
 
+
+
+//    delete_shifts(shifts_to_delete, workers_id);
+    public void delete_shifts(List<String> shifts_to_delete, List<String> workers_id){
+        for(int i = 0; i < shifts_to_delete.size(); i++) {
+            db.collection("workers").document(workers_id.get(i)).collection("shifts").document(shifts_to_delete.get(i)).delete();
+        }
+        shifts_to_delete.clear();
+        workers_id.clear();
+    }
+
+    public void switch_shift(String next_id_user, final String current_id_user, final String current_id_shift_wanted){
+        db.collection("workers").document(next_id_user).collection("shifts").document(current_id_shift_wanted).get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot docSnapshot) {
+                        new_shift = new Shift(docSnapshot.getTimestamp("date"), docSnapshot.getString("type"), docSnapshot.getString("role"));
+                        db.collection("workers").document(current_id_user).collection("shifts")
+                                .document(current_id_shift_wanted).set(new_shift).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Toast.makeText(getBaseContext(), " התבצע חילוף", Toast.LENGTH_LONG).show();
+//                                send_notification();
+                            }
+                        });
+                    }
+                });
+    }
+    public void send_notification(){
+        Notification notification = new NotificationCompat.Builder(this, NotificationHelper.channel1_id)
+                .setSmallIcon(R.drawable.ic_message)
+                .setContentTitle("יש לך הודעה חדשה")
+                .setContentText("נמצאה לך משמרת להחלפה")
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                .build();
+        notificationManager.notify(1, notification);
+    }
 
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);

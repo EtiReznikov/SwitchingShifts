@@ -21,11 +21,10 @@
 
     <TextView
         android:id="@+id/Worker_Screen_title"
-        android:layout_width="400dp"
-        android:layout_height="63dp"
+        android:layout_width="353dp"
+        android:layout_height="54dp"
         android:layout_marginTop="64dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginEnd="32dp"
         android:text="@string/hello"
         android:textColor="@color/colorInput"
         android:textColorHighlight="#000F0101"
@@ -34,7 +33,6 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
     <TextView
         android:id="@+id/choose_shift_to_swap"
@@ -52,11 +50,10 @@
 
     <Spinner
         android:id="@+id/spinner_shifts_reg"
-        android:layout_width="458dp"
+        android:layout_width="398dp"
         android:layout_height="46dp"
         android:layout_marginTop="2dp"
         android:layout_marginEnd="1dp"
-        android:layout_marginRight="1dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/choose_shift_to_swap" />
 
@@ -75,7 +72,7 @@
 
     <Spinner
         android:id="@+id/spinner_shifts_wanted"
-        android:layout_width="458dp"
+        android:layout_width="398dp"
         android:layout_height="46dp"
         android:layout_marginTop="160dp"
         app:layout_constraintEnd_toEndOf="parent"
