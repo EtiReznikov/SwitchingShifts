@@ -6,9 +6,12 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -21,25 +24,41 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import backend.Worker;
 
+import android.os.Bundle;
+import android.app.Activity;
+import android.view.Menu;
+import android.widget.ArrayAdapter;import android.widget.ListView;
 
-public class WorkerShifts extends AppCompatActivity {
+import static java.util.Objects.*;
+
+
+public class WorkerShifts extends AppCompatActivity implements Serializable {
     private Worker worker;
     private ScrollView shifts;
     private FirebaseAuth firebase_auth;
     private FirebaseFirestore db;
     private String user_id;
-    private List<String> shift_ids = new ArrayList<>();
-    private List<String> shifts_to_show = new ArrayList<>();
-
+    private String shifts_to_show = "";
+    private SimpleDateFormat sdf;
+    private TextView shifts_list;
+    String shifts_list_intent = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_worker_shifts);
+
+        shifts_list_intent = getIntent().getStringExtra("shifts_to_show");
+
 
         Toolbar toolbar = findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
@@ -48,6 +67,11 @@ public class WorkerShifts extends AppCompatActivity {
         /* Initialize Firebase Auth  and firestore*/
         firebase_auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
+
+        shifts_list = findViewById(R.id.my_text_view);
+        shifts_list.setMovementMethod(new ScrollingMovementMethod());
+
+        sdf = new SimpleDateFormat("dd/MM/yyyy");
 
         /* get user id */
         user_id = firebase_auth.getCurrentUser().getUid();
@@ -63,21 +87,39 @@ public class WorkerShifts extends AppCompatActivity {
                             /* go over all document in shifts collection */
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 /* save id's of all documents */
-                                shift_ids.add(document.getId());
+//                                shift_ids.add(document.getId());
+                                DocumentReference documentReference = db
+                                        .collection("workers")
+                                        .document(user_id).collection("shifts")
+                                        .document(document.getId());
+                                documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                        /* Gets worker date and type of shift */
+                                        Date shift_date = documentSnapshot.getTimestamp("date").toDate();
+                                        String shift_type = documentSnapshot.getString("type");
+
+                                        String date_str = sdf.format(shift_date);
+                                        String shift_str = date_str + ", " + shift_type + "\n";
+                                        shifts_to_show +=shift_str ;
+
+                                    }
+                                });
                             }
+
                         }else{
                             Toast.makeText(WorkerShifts.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
                         }
 
+
                     }
                 });
 
-        DocumentReference documentReference = db.collection("workers").document(user_id);
 
-//        for(String shift_id: shift_ids){
-//            db.collection("workers").document(user_id)
-//                    .collection("shifts").document(shift_id)
-//        }
+
+//        shifts_list_intent = "hii";
+
+       shifts_list.setText(shifts_list_intent);
 
 
 
