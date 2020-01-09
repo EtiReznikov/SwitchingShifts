@@ -129,10 +129,7 @@ public class WorkerScreen extends AppCompatActivity implements Serializable {
         adapter_shift_reg.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         s_shift_reg.setAdapter(adapter_shift_reg);
 
-        db.collection("workers")
-                //.whereEqualTo("role", worker_role)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        db.collection("workers").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         shifts_wanted.clear();
@@ -140,7 +137,9 @@ public class WorkerScreen extends AppCompatActivity implements Serializable {
                         shifts_wanted.add("");
                         if (task.isSuccessful()) {
                             for (DocumentSnapshot doc : task.getResult()) {
-                                if(!doc.getId().equals(user_id))
+                                if(!doc.getId().equals(user_id)) {
+                                    final String name = doc.getString("first_name");
+
                                 db.collection("workers").document(doc.getId()).collection("shifts").get()
                                         .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                             //add Equal to role
@@ -154,7 +153,7 @@ public class WorkerScreen extends AppCompatActivity implements Serializable {
                                                                 id_shifts_wanted.add(d.getId());
                                                                 Date shift_date = d.getDate("date");
                                                                 // shifts_wanted.add(d.getId());
-                                                                shifts_wanted.add(sfd.format(shift_date) + "  " + d.getString("type"));
+                                                                shifts_wanted.add(sfd.format(shift_date) + "  " + d.getString("type") + " -" + name);
                                                                 //add date condition
                                                             }
 
@@ -165,6 +164,7 @@ public class WorkerScreen extends AppCompatActivity implements Serializable {
                                             }
 
                                         });
+                                }
                             }
                         }
 
