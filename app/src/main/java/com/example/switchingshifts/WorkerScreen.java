@@ -139,7 +139,7 @@ public class WorkerScreen extends AppCompatActivity implements Serializable {
                             for (DocumentSnapshot doc : task.getResult()) {
                                 if(!doc.getId().equals(user_id)) {
                                     final String name = doc.getString("first_name");
-
+                                    final String id = doc.getId();
                                 db.collection("workers").document(doc.getId()).collection("shifts").get()
                                         .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                             //add Equal to role
@@ -182,6 +182,7 @@ public class WorkerScreen extends AppCompatActivity implements Serializable {
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
                 shift_reg_selcted = parent.getItemAtPosition(pos).toString();
                 shift_reg_id = id_shifts_reg.get(pos);
+
             }
 
             public void onNothingSelected(AdapterView<?> parent) {
@@ -327,7 +328,10 @@ public class WorkerScreen extends AppCompatActivity implements Serializable {
                     workers_id.add(current_id_user);
                     String current_user_request = current_id_shift_reg + "_" + current_id_shift_wanted;
 
-                    switch_shift(next_id_user, current_id_user, current_id_shift_wanted);
+                    switch_shift(next_id_user, current_id_user, current_id_shift_wanted, current_id_shift_reg);
+                    db.collection("workers").document(current_id_user).collection("shifts").document(current_id_shift_reg)
+                            .update("delete", true);
+
 
                     path.add(0, current_shift);
                     path.add(0, user);
@@ -354,12 +358,13 @@ public class WorkerScreen extends AppCompatActivity implements Serializable {
         workers_id.clear();
     }
 
-    public void switch_shift(String next_id_user, final String current_id_user, final String current_id_shift_wanted){
+    public void switch_shift(String next_id_user, final String current_id_user, final String current_id_shift_wanted, String current_id_shift_reg){
+
         db.collection("workers").document(next_id_user).collection("shifts").document(current_id_shift_wanted).get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot docSnapshot) {
-                        new_shift = new Shift(docSnapshot.getTimestamp("date"), docSnapshot.getString("type"), docSnapshot.getString("role"));
+                        new_shift = new Shift(docSnapshot.getTimestamp("date"), docSnapshot.getString("type"), docSnapshot.getString("role"), false);
                         db.collection("workers").document(current_id_user).collection("shifts")
                                 .document(current_id_shift_wanted).set(new_shift).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override

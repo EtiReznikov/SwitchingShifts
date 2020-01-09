@@ -196,7 +196,7 @@ public class AddShift extends AppCompatActivity {
                     flag = true;
                 }
                 if(!flag){
-                    shift = new Shift(timestamp, shift_type, shift_role);
+                    shift = new Shift(timestamp, shift_type, shift_role, false);
                     shift_id = shift_date + shift_type + shift_role;
                     db.collection("workers").document(worker_id).collection("shifts").document(shift_id).set(shift)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
