@@ -150,11 +150,17 @@ public class WorkerScreen extends AppCompatActivity implements Serializable {
                                                     for (DocumentSnapshot d : list) {
                                                         if (!shifts_reg.contains(d.getId())) {
                                                             if(d.getString("role").equals(worker_role)){
-                                                                id_shifts_wanted.add(d.getId());
-                                                                Date shift_date = d.getDate("date");
-                                                                // shifts_wanted.add(d.getId());
-                                                                shifts_wanted.add(sfd.format(shift_date) + "  " + d.getString("type") + " -" + name);
-                                                                //add date condition
+                                                                if(d.get("delete").equals(true)){
+                                                                    db.collection("workers").document(id).collection("shifts")
+                                                                            .document(d.getId()).delete();
+                                                                }else{
+                                                                    id_shifts_wanted.add(d.getId());
+                                                                    Date shift_date = d.getDate("date");
+                                                                    // shifts_wanted.add(d.getId());
+                                                                    shifts_wanted.add(sfd.format(shift_date) + "  " + d.getString("type") + " -" + name);
+                                                                    //add date condition
+                                                                }
+
                                                             }
 
                                                         }
