@@ -173,7 +173,7 @@ public class PersonalDetails extends AppCompatActivity implements View.OnClickLi
         }
         if(id == R.id.home_page){
             /* if the current unique id equal to maneger unique id go to manager else worker */
-            if(role.equals("מנהל")){
+            if(role.equals("Manager")){
                 startActivity(new Intent(PersonalDetails.this, MangerScreen.class));
             }
             else {

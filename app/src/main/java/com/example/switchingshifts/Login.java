@@ -99,7 +99,7 @@ public class Login extends AppCompatActivity {
                                                 String last_name = documentSnapshot.getString("last_name");
                                                 boolean first_login = documentSnapshot.getBoolean("first_login");
                                                 /* if the current worker isn't the manager */
-                                                if (worker_role.equals("מנהל")) {
+                                                if (worker_role.equals("Manager")) {
 
                                                     if(first_login){
                                                         /* print welcome message to the manager, change first_login to false and go to ChangePass activity */
