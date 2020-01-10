@@ -19,6 +19,8 @@ import android.view.MenuItem;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -52,7 +54,7 @@ import backend.Vetrex;
 
 
 /*The worker main screen */
-public class WorkerScreen extends AppCompatActivity implements Serializable {
+public class WorkerScreen extends AppCompatActivity {
     private FirebaseAuth firebase_auth;
     private FirebaseFirestore db;
     private String user_id, worker_role, shift_reg_selcted, shift_wanted_selcted, shift_reg_id, shift_wanted_id;
@@ -404,6 +406,8 @@ public class WorkerScreen extends AppCompatActivity implements Serializable {
         if (id == R.id.my_shift) {
             Intent intent = new Intent(WorkerScreen.this, WorkerShifts.class);
             String shifts_to_show = "";
+
+            Collections.sort(shifts_reg);
 
             for(String s: shifts_reg) {
                 shifts_to_show = shifts_to_show + s + "\n";
