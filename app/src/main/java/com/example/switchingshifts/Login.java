@@ -108,6 +108,7 @@ public class Login extends AppCompatActivity {
                                         user_id = firebase_auth.getCurrentUser().getUid();
 
 
+
                                         if(all_ids.contains(user_id)){
 
                                             DocumentReference documentReference = db.collection("workers").document(user_id);
