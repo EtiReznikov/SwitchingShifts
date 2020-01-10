@@ -14,9 +14,13 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 
 public class ChangePass extends AppCompatActivity implements View.OnClickListener {
@@ -24,6 +28,10 @@ public class ChangePass extends AppCompatActivity implements View.OnClickListene
     private EditText first_pass, second_pass;
     private Button button;
     private String first_pass_input, second_pass_input;
+    private FirebaseAuth firebase_auth;
+    private FirebaseFirestore db;
+    private String user_id;
+    private String role;
 
 
     @Override
@@ -34,7 +42,19 @@ public class ChangePass extends AppCompatActivity implements View.OnClickListene
         Toolbar toolbar = findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
 
+        /* Initialize Firebase Auth  and firestore*/
+        firebase_auth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
 
+        /* gets the auth unique id */
+        user_id = firebase_auth.getCurrentUser().getUid();
+        DocumentReference documentReference = db.collection("workers").document(user_id);
+        documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                role = documentSnapshot.getString("role");
+            }
+        });
 
 
         first_pass = findViewById(R.id.first_pass);
@@ -70,8 +90,13 @@ public class ChangePass extends AppCompatActivity implements View.OnClickListene
                                 }
                             }
                         });
+                if(role.equals("Manager")){
+                    startActivity(new Intent(ChangePass.this, MangerScreen.class));
+                }
+                else {
+                    startActivity(new Intent(ChangePass.this, WorkerScreen.class));
+                }
 
-                startActivity(new Intent(ChangePass.this, WorkerScreen.class));
             }
         }
     }
@@ -88,13 +113,25 @@ public class ChangePass extends AppCompatActivity implements View.OnClickListene
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if(id == R.id.my_shift){
-            startActivity(new Intent(ChangePass.this, WorkerShifts.class));
+            if(role.equals("Manager")){
+            }
+            else {
+                startActivity(new Intent(ChangePass.this, WorkerShifts.class));
+            }
         }
         if(id == R.id.personal_info){
             startActivity(new Intent(ChangePass.this, PersonalDetails.class));
         }
         if(id == R.id.home_page){
-            startActivity(new Intent(ChangePass.this, WorkerScreen.class));
+
+            if(role.equals("Manager")){
+                startActivity(new Intent(ChangePass.this, MangerScreen.class));
+            }
+            else {
+                startActivity(new Intent(ChangePass.this, WorkerScreen.class));
+            }
+
+
         }
         if(id == R.id.logout){
             Intent intent = new Intent(ChangePass.this, Login.class);
