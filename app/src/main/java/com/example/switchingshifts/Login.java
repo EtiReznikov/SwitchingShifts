@@ -186,15 +186,6 @@ public class Login extends AppCompatActivity {
 
 
 
-
-
-
-
-
-
-
-
-
                                     }else{ /* invalid email or password */
                                         Toast.makeText(Login.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
                                     }
