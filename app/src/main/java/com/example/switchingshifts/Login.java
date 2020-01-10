@@ -23,6 +23,10 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.SetOptions;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.annotation.Nullable;
 
@@ -93,23 +97,53 @@ public class Login extends AppCompatActivity {
                                                 String worker_role = documentSnapshot.getString("role");
                                                 String first_name = documentSnapshot.getString("first_name");
                                                 String last_name = documentSnapshot.getString("last_name");
+                                                boolean first_login = documentSnapshot.getBoolean("first_login");
                                                 /* if the current worker isn't the manager */
                                                 if (worker_role.equals("מנהל")) {
 
-                                                    /* print welcome message to the manager and go the the manager screen */
-                                                    Toast.makeText(Login.this, "מנהל, התחברת בהצלחה ", Toast.LENGTH_LONG).show();
-                                                    startActivity(new Intent(Login.this, MangerScreen.class));
+                                                    if(first_login){
+                                                        /* print welcome message to the manager, change first_login to false and go to ChangePass activity */
+                                                        Toast.makeText(Login.this, "מנהל, התחברת בהצלחה ", Toast.LENGTH_LONG).show();
+                                                        Map<String, Object> data = new HashMap<>();
+                                                        data.put("first_login", false);
+
+                                                        db.collection("workers").document(user_id)
+                                                                .set(data, SetOptions.merge());
+                                                        startActivity(new Intent(Login.this, ChangePass.class));
+                                                    }
+                                                    else{
+                                                        /* print welcome message to the manager and go the the manager screen */
+                                                        Toast.makeText(Login.this, "מנהל, התחברת בהצלחה ", Toast.LENGTH_LONG).show();
+                                                        startActivity(new Intent(Login.this, MangerScreen.class));
+                                                    }
+
 
 
                                                 }
-                                                else if(worker_role.equals("פוטר")) {
+                                                else if(worker_role.equals("פוטר")) {//fired
                                                     Toast.makeText(Login.this, "העובד לא קיים במערכת, אנא נסה שנית ", Toast.LENGTH_LONG).show();
                                                     startActivity(new Intent(Login.this, Login.class));
                                                 }
-                                                else{
-                                                    /* print welcome message ang go to the regular worker screen */
-                                                    Toast.makeText(Login.this, " התחברת בהצלחה " + first_name + " " + last_name, Toast.LENGTH_LONG).show();
-                                                    startActivity(new Intent(Login.this, WorkerScreen.class));
+                                                else{//regular worker
+
+
+                                                    if(first_login){
+                                                        /* print welcome message to the worker, change first_login to false and go to ChangePass activity */
+                                                        Toast.makeText(Login.this, " התחברת בהצלחה " + first_name + " " + last_name, Toast.LENGTH_LONG).show();
+                                                        Map<String, Object> data = new HashMap<>();
+                                                        data.put("first_login", false);
+
+                                                        db.collection("workers").document(user_id)
+                                                                .set(data, SetOptions.merge());
+                                                        startActivity(new Intent(Login.this, ChangePass.class));
+                                                    }
+
+                                                    else{//first_login = false
+                                                        /* print welcome message and go to the regular worker screen */
+                                                        Toast.makeText(Login.this, " התחברת בהצלחה " + first_name + " " + last_name, Toast.LENGTH_LONG).show();
+                                                        startActivity(new Intent(Login.this, WorkerScreen.class));
+                                                    }
+
                                                 }
                                             }
                                         });
@@ -137,16 +171,3 @@ public class Login extends AppCompatActivity {
 
 }
 
-
-
-
-//    Button loginConnectionButton = findViewById(R.id.loginConnectionButton);
-//
-//        loginConnectionButton.setOnClickListener(
-//                new Button.OnClickListener(){
-//@Override
-//public void onClick(View v) {
-//        startActivity(new Intent(Login.this, ChangePass.class));
-//        }
-//        }
-//        );
