@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -51,7 +52,7 @@ import backend.Vetrex;
 
 
 /*The worker main screen */
-public class WorkerScreen extends AppCompatActivity implements Serializable {
+public class WorkerScreen extends AppCompatActivity {
     private FirebaseAuth firebase_auth;
     private FirebaseFirestore db;
     private static final int REQUEST_CALL=1;
@@ -460,6 +461,8 @@ public class WorkerScreen extends AppCompatActivity implements Serializable {
         if (id == R.id.my_shift) {
             Intent intent = new Intent(WorkerScreen.this, WorkerShifts.class);
             String shifts_to_show = "";
+
+            Collections.sort(shifts_reg);
 
             for(String s: shifts_reg) {
                 shifts_to_show = shifts_to_show + s + "\n";
