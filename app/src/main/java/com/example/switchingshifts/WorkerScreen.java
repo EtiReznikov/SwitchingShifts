@@ -1,52 +1,51 @@
 package com.example.switchingshifts;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
-
-
+import android.Manifest;
 import android.app.Notification;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.text.TextUtils;
-
 import android.view.Menu;
 import android.view.MenuItem;
-
-import java.io.Serializable;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-import java.util.Stack;
-
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-
 import com.google.firebase.firestore.QuerySnapshot;
 
-import backend.Graph;
-import backend.DFS;
-import backend.Request;
+import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Stack;
 
+import backend.DFS;
+import backend.Graph;
+import backend.Request;
 import backend.Shift;
 import backend.Vetrex;
 
@@ -55,6 +54,7 @@ import backend.Vetrex;
 public class WorkerScreen extends AppCompatActivity implements Serializable {
     private FirebaseAuth firebase_auth;
     private FirebaseFirestore db;
+    private static final int REQUEST_CALL=1;
     private String user_id, worker_role, shift_reg_selcted, shift_wanted_selcted, shift_reg_id, shift_wanted_id;
     private List<String> shifts_reg = new ArrayList<>();
     private List<String> id_shifts_reg = new ArrayList<>();
@@ -66,7 +66,6 @@ public class WorkerScreen extends AppCompatActivity implements Serializable {
     private Graph graph;
     private DFS dfs;
     private Vetrex v_worker_id, v_wanted_shift, v_reg_shift;
-//    private Vetrex current_shift, user, next_shift;
     private Shift new_shift;
     private int size, num_of_requests;
     private Button ok_button;
@@ -76,7 +75,10 @@ public class WorkerScreen extends AppCompatActivity implements Serializable {
     private List<String> shifts_to_delete = new ArrayList();
     SimpleDateFormat sfd = new SimpleDateFormat("dd-MM-yyyy");
     private NotificationManagerCompat notificationManager;
+    private String phone_number;
 
+    private Calendar calendar;
+    private String current_date;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,10 +89,41 @@ public class WorkerScreen extends AppCompatActivity implements Serializable {
         notificationManager = NotificationManagerCompat.from(this);
         graph = new Graph();
 
+
         /* Initialize Firebase Auth  and firestore*/
         firebase_auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         user_id = firebase_auth.getCurrentUser().getUid();
+
+        calendar = Calendar.getInstance();
+        current_date = sfd.format(calendar.getTime());
+
+        db.collection("workers").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (DocumentSnapshot doc : task.getResult()) {
+                            db.collection("workers").document(doc.getId())
+                                    .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                @Override
+                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                    if (documentSnapshot.getString("role").equals("Manager"))
+                                        phone_number=documentSnapshot.getString("phone_number");
+                                }
+                            });
+                        }
+                    }
+                }
+        });
+        ImageView imageCall = findViewById(R.id.image_call);
+
+        imageCall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                makePhoneCall();
+            }
+        });
+
 
         final TextView textViewToChange = findViewById(R.id.Worker_Screen_title);
 
@@ -391,6 +424,29 @@ public class WorkerScreen extends AppCompatActivity implements Serializable {
                 .setCategory(NotificationCompat.CATEGORY_MESSAGE)
                 .build();
         notificationManager.notify(1, notification);
+    }
+
+    private void makePhoneCall() {
+
+            if (ContextCompat.checkSelfPermission(WorkerScreen.this,
+                    Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(WorkerScreen.this,
+                        new String[]{Manifest.permission.CALL_PHONE}, REQUEST_CALL);
+            } else {
+                String dial = "tel:" + phone_number;
+                startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(dial)));
+            }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_CALL) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                makePhoneCall();
+            } else {
+                Toast.makeText(this, "Permission DENIED", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
