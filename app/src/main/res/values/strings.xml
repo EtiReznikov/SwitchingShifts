@@ -84,7 +84,7 @@
     <string name="delete_worker_for_sure">אני בטוח שאני רוצה למחוק</string>
     <string name="invaild_mail">כתובת מייל לא תקינה</string>
     <string name="empty_input">אנא מלא את כל הפרטים</string>
-
+    <string name="descript">התקשר למנהל</string>
     <string name="save">שמור</string>
     <string name="login_email">מייל</string>
 
