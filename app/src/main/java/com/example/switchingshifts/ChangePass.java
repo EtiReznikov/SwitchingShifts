@@ -76,8 +76,8 @@ public class ChangePass extends AppCompatActivity implements View.OnClickListene
                 second_pass.setError("הסיסמאות לא שוות");
             }
             if (first_pass_input.length() < 6 || second_pass_input.length() < 6){
-                first_pass.setError("הסיסמא צריכה להיות באורך של לפחות 6 תווים");
-                second_pass.setError("הסיסמא צריכה להיות באורך של לפחות 6 תווים");
+                first_pass.setError("הסיסמה צריכה להיות באורך של לפחות 6 תווים");
+                second_pass.setError("הסיסמה צריכה להיות באורך של לפחות 6 תווים");
             }
             else{
                 /* if the password are same- update tha users password */
@@ -88,17 +88,22 @@ public class ChangePass extends AppCompatActivity implements View.OnClickListene
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()){
                                     Toast.makeText(ChangePass.this,"הסיסמה שונתה בהצלחה", Toast.LENGTH_LONG).show();
+
+                                    if(role.equals("Manager")){
+                                        startActivity(new Intent(ChangePass.this, ManagerScreen.class));
+                                    }
+                                    else {
+                                        startActivity(new Intent(ChangePass.this, WorkerScreen.class));
+                                    }
+
                                 }else {
                                     Toast.makeText(ChangePass.this, task.getException().getMessage() , Toast.LENGTH_LONG).show();
+                                    startActivity(new Intent(ChangePass.this, ChangePass.class));
+
                                 }
                             }
                         });
-                if(role.equals("Manager")){
-                    startActivity(new Intent(ChangePass.this, ManagerScreen.class));
-                }
-                else {
-                    startActivity(new Intent(ChangePass.this, WorkerScreen.class));
-                }
+
 
             }
         }
