@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -64,9 +63,9 @@ public class ChangePass extends AppCompatActivity implements View.OnClickListene
         button.setOnClickListener(this);
 
     }
-    /* When press the button to change the password we check if they are equal,
-    if they are equal we will go to the main screen of the employee
-    else we will you will get an error message. */
+    /* When press the button to change the password we check if they are equal and if the password length is less then 6 characters,
+    if they are not equal or less the 6 characters we'll get an error message
+    else we'll go to the main screen of the worker. */
     public void onClick(View view){
         if(view.getId() == R.id.button){
             first_pass_input = first_pass.getText().toString().trim();
@@ -76,8 +75,12 @@ public class ChangePass extends AppCompatActivity implements View.OnClickListene
                 first_pass.setError("הסיסמאות לא שוות");
                 second_pass.setError("הסיסמאות לא שוות");
             }
+            if (first_pass_input.length() < 6 || second_pass_input.length() < 6){
+                first_pass.setError("הסיסמא צריכה להיות באורך של לפחות 6 תווים");
+                second_pass.setError("הסיסמא צריכה להיות באורך של לפחות 6 תווים");
+            }
             else{
-                /* if the password are same- updade tha users password */
+                /* if the password are same- update tha users password */
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 user.updatePassword(first_pass_input)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -91,7 +94,7 @@ public class ChangePass extends AppCompatActivity implements View.OnClickListene
                             }
                         });
                 if(role.equals("Manager")){
-                    startActivity(new Intent(ChangePass.this, MangerScreen.class));
+                    startActivity(new Intent(ChangePass.this, ManagerScreen.class));
                 }
                 else {
                     startActivity(new Intent(ChangePass.this, WorkerScreen.class));
@@ -114,7 +117,7 @@ public class ChangePass extends AppCompatActivity implements View.OnClickListene
         int id = item.getItemId();
         if(id == R.id.my_shift){
             if(role.equals("Manager")){
-                startActivity(new Intent(ChangePass.this, MangerShifts.class));
+                startActivity(new Intent(ChangePass.this, ManagerShifts.class));
             }
             else {
                 startActivity(new Intent(ChangePass.this, WorkerShifts.class));
@@ -126,7 +129,7 @@ public class ChangePass extends AppCompatActivity implements View.OnClickListene
         if(id == R.id.home_page){
 
             if(role.equals("Manager")){
-                startActivity(new Intent(ChangePass.this, MangerScreen.class));
+                startActivity(new Intent(ChangePass.this, ManagerScreen.class));
             }
             else {
                 startActivity(new Intent(ChangePass.this, WorkerScreen.class));

@@ -29,8 +29,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import backend.Shift;
-
 public class DeleteShift extends AppCompatActivity {
     private FirebaseAuth firebase_auth;
     private FirebaseFirestore db;
@@ -188,7 +186,7 @@ public class DeleteShift extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(Void aVoid) {
                                     Toast.makeText(getBaseContext(), "המשמרת נמחקה בהצלחה!" , Toast.LENGTH_LONG).show();
-                                    startActivity(new Intent(DeleteShift.this, MangerScreen.class));
+                                    startActivity(new Intent(DeleteShift.this, ManagerScreen.class));
                                 }
                             });
                 }
@@ -213,7 +211,7 @@ public class DeleteShift extends AppCompatActivity {
             startActivity(intent);
         }
         if(id == R.id.home_page){
-            Intent intent = new Intent(DeleteShift.this, MangerScreen.class);
+            Intent intent = new Intent(DeleteShift.this, ManagerScreen.class);
             startActivity(intent);
         }
         if(id == R.id.logout){

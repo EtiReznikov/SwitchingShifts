@@ -1,6 +1,5 @@
 package com.example.switchingshifts;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.content.Intent;
@@ -20,22 +19,16 @@ import android.app.DatePickerDialog;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
-
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.DocumentSnapshot;
 import backend.Shift;
 import java.util.Date;
-import java.util.Map;
+
 
 public class AddShift extends AppCompatActivity {
     /* private data members */
@@ -69,6 +62,7 @@ public class AddShift extends AppCompatActivity {
         adapter_shift_type = ArrayAdapter.createFromResource(this,R.array.shift_type,android.R.layout.simple_spinner_item);
         adapter_shift_type.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         s_shift_type.setAdapter(adapter_shift_type);
+        /*Choosing the shift type- morning or evening */
         s_shift_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -89,6 +83,7 @@ public class AddShift extends AppCompatActivity {
         adapter_worker_type= ArrayAdapter.createFromResource(this,R.array.role_type,android.R.layout.simple_spinner_item);
         adapter_worker_type.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         s_worker_type.setAdapter(adapter_worker_type);
+        /*Choosing the worker role and create a list of all the workers names with the chosen role */
         s_worker_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -121,7 +116,7 @@ public class AddShift extends AppCompatActivity {
             }
         });
 
-
+        /*Choosing the worker that you will add him a new shift from the list of worker with the role you selected*/
         names.add("בחר שם");
         s_workers_names = findViewById(R.id.spinner_workers_names);
         adapter_workers = new ArrayAdapter(this, android.R.layout.simple_spinner_item, names);
@@ -147,7 +142,7 @@ public class AddShift extends AppCompatActivity {
         select_date = findViewById(R.id.button_day);
         date = findViewById(R.id.txt_date);
 
-
+        /*Choosing the date for the shift*/
         select_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -174,6 +169,9 @@ public class AddShift extends AppCompatActivity {
             }
         });
 
+        /*When press the ok button we'll check if all the fields are filled correctly
+          if so we'll create a new document in the collection "shifts" and add ths data
+          else, we'll get am error message*/
         ok_button = findViewById(R.id.button2);
         ok_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -217,6 +215,9 @@ public class AddShift extends AppCompatActivity {
         return true;
     }
 
+    /*
+    When press one of the items in the toolbar we will go to the required screen.
+     */
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
         if(id == R.id.my_shift){
@@ -228,7 +229,7 @@ public class AddShift extends AppCompatActivity {
             startActivity(intent);
         }
         if(id == R.id.home_page){
-            Intent intent = new Intent(AddShift.this, MangerScreen.class);
+            Intent intent = new Intent(AddShift.this, ManagerScreen.class);
             startActivity(intent);
         }
         if(id == R.id.logout){

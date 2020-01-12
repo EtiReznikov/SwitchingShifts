@@ -1,6 +1,5 @@
 package com.example.switchingshifts;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.content.Intent;
@@ -25,7 +24,7 @@ import java.util.Date;
 import java.util.List;
 
 
-public class MangerShifts extends AppCompatActivity {
+public class ManagerShifts extends AppCompatActivity {
     private FirebaseAuth firebase_auth;
     private FirebaseFirestore db;
     private Spinner s_worker_type;
@@ -40,7 +39,7 @@ public class MangerShifts extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_manger_shifts);
+        setContentView(R.layout.activity_manager_shifts);
         Toolbar toolbar = findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
         /* Initialize Firebase Auth  and firestore*/
@@ -86,7 +85,7 @@ public class MangerShifts extends AppCompatActivity {
                                                                 for(DocumentSnapshot shift : list_shifts){
                                                                     if(shift.exists()) {
                                                                         Date shift_date = shift.getDate("date");
-                                                                        if(!shift.contains(current_date)){
+                                                                        if((shift_date.after(calendar.getTime()) || sfd.format(shift_date).equals(current_date)) && shift.get("delete").equals(false)){
                                                                             shifts += sfd.format(shift_date) + " " + shift.get("type") + "\n";
                                                                         }
                                                                         else{
@@ -133,19 +132,19 @@ public class MangerShifts extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
         if(id == R.id.my_shift){
-            Intent intent = new Intent(MangerShifts.this, MangerShifts.class);
+            Intent intent = new Intent(ManagerShifts.this, ManagerShifts.class);
             startActivity(intent);
         }
         if(id == R.id.personal_info){
-            Intent intent = new Intent(MangerShifts.this, PersonalDetails.class);
+            Intent intent = new Intent(ManagerShifts.this, PersonalDetails.class);
             startActivity(intent);
         }
         if(id == R.id.home_page){
-            Intent intent = new Intent(MangerShifts.this, MangerScreen.class);
+            Intent intent = new Intent(ManagerShifts.this, ManagerScreen.class);
             startActivity(intent);
         }
         if(id == R.id.logout){
-            Intent intent = new Intent(MangerShifts.this, Login.class);
+            Intent intent = new Intent(ManagerShifts.this, Login.class);
             startActivity(intent);
         }
         return true;

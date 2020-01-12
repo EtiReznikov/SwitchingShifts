@@ -1,6 +1,5 @@
 package com.example.switchingshifts;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -18,27 +17,17 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.SetOptions;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class RemoveWorker extends AppCompatActivity {
     private FirebaseAuth firebase_auth;
@@ -165,7 +154,7 @@ public class RemoveWorker extends AppCompatActivity {
 
                     /* write a toasts to the screen and go to manager screen */
                     Toast.makeText(RemoveWorker.this, " נמחק בהצלחה " + worker_name + " " + worker_last_name, Toast.LENGTH_LONG).show();
-                    startActivity(new Intent(RemoveWorker.this, MangerScreen.class));
+                    startActivity(new Intent(RemoveWorker.this, ManagerScreen.class));
 
 //                    /* remove requests from database */
 //                    db.collection("workers").document(worker_id)
@@ -235,7 +224,7 @@ public class RemoveWorker extends AppCompatActivity {
             startActivity(intent);
         }
         if(id == R.id.home_page){
-            Intent intent = new Intent(RemoveWorker.this, MangerScreen.class);
+            Intent intent = new Intent(RemoveWorker.this, ManagerScreen.class);
             startActivity(intent);
         }
         if(id == R.id.logout) {

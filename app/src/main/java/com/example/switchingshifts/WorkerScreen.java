@@ -1,7 +1,6 @@
 package com.example.switchingshifts;
 
 import android.Manifest;
-import android.app.Notification;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -9,7 +8,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
-
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -18,15 +16,11 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -35,11 +29,10 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
-
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Stack;
@@ -57,13 +50,16 @@ public class WorkerScreen extends AppCompatActivity {
     private FirebaseFirestore db;
     private static final int REQUEST_CALL=1;
     private String user_id, worker_role, shift_reg_selcted, shift_wanted_selcted, shift_reg_id, shift_wanted_id;
+    private String request_id, current_id_user, current_id_shift_reg, current_id_shift_wanted, next_id_user, current_date, phone_number;
     private List<String> shifts_reg = new ArrayList<>();
     private List<String> id_shifts_reg = new ArrayList<>();
     private List<String> shifts_wanted = new ArrayList<>();
     private List<String> id_shifts_wanted = new ArrayList<>();
+    private List<String> workers_id = new ArrayList();
+    private List<String> shifts_to_delete = new ArrayList();
     private Spinner s_shift_reg, s_shift_wanted;
     private ArrayAdapter<CharSequence> adapter_shift_reg, adapter_shift_wanted;
-    private String request_id, current_id_user, current_id_shift_reg, current_id_shift_wanted, next_id_user;
+
     private Graph graph;
     private DFS dfs;
     private Vetrex v_worker_id, v_wanted_shift, v_reg_shift;
@@ -72,14 +68,9 @@ public class WorkerScreen extends AppCompatActivity {
     private Button ok_button;
     private Request request;
     private Stack<Vetrex> path;
-    private List<String> workers_id = new ArrayList();
-    private List<String> shifts_to_delete = new ArrayList();
     SimpleDateFormat sfd = new SimpleDateFormat("dd-MM-yyyy");
-    private NotificationManagerCompat notificationManager;
-    private String phone_number;
-
     private Calendar calendar;
-    private String current_date;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,7 +78,6 @@ public class WorkerScreen extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
 
-        notificationManager = NotificationManagerCompat.from(this);
         graph = new Graph();
 
 
@@ -148,11 +138,15 @@ public class WorkerScreen extends AppCompatActivity {
                             shifts_reg.add("");
                             List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
                             for (DocumentSnapshot d : list) {
-                                id_shifts_reg.add(d.getId());
                                 Date shift_date = d.getDate("date");
-                                shifts_reg.add(sfd.format(shift_date) + "  " + d.getString("type"));
-                                // shifts_reg.add(d.getId());
-                                //add date condition
+                                if((shift_date.after(calendar.getTime()) || sfd.format(shift_date).equals(current_date)) && d.get("delete").equals(false)){
+                                    id_shifts_reg.add(d.getId());
+                                    shifts_reg.add(sfd.format(shift_date) + "  " + d.getString("type"));
+                                }
+                                else {
+                                    db.collection("workers").document(user_id).collection("shifts")
+                                            .document(d.getId()).delete();
+                                }
                             }
                         }
                     }
@@ -184,17 +178,15 @@ public class WorkerScreen extends AppCompatActivity {
                                                     for (DocumentSnapshot d : list) {
                                                         if (!shifts_reg.contains(d.getId())) {
                                                             if(d.getString("role").equals(worker_role)){
-                                                                if(d.get("delete").equals(true)){
+                                                                Date shift_date = d.getDate("date");
+                                                                if((shift_date.after(calendar.getTime()) || sfd.format(shift_date).equals(current_date)) && d.get("delete").equals(false)){
+                                                                    id_shifts_wanted.add(d.getId());
+                                                                    shifts_wanted.add(sfd.format(shift_date) + "  " + d.getString("type") + " -" + name);
+                                                                }
+                                                                else {
                                                                     db.collection("workers").document(id).collection("shifts")
                                                                             .document(d.getId()).delete();
-                                                                }else{
-                                                                    id_shifts_wanted.add(d.getId());
-                                                                    Date shift_date = d.getDate("date");
-                                                                    // shifts_wanted.add(d.getId());
-                                                                    shifts_wanted.add(sfd.format(shift_date) + "  " + d.getString("type") + " -" + name);
-                                                                    //add date condition
                                                                 }
-
                                                             }
 
                                                         }
@@ -368,7 +360,7 @@ public class WorkerScreen extends AppCompatActivity {
                     workers_id.add(current_id_user);
                     String current_user_request = current_id_shift_reg + "_" + current_id_shift_wanted;
 
-                    switch_shift(next_id_user, current_id_user, current_id_shift_wanted, current_id_shift_reg);
+                    switch_shift(next_id_user, current_id_user, current_id_shift_wanted);
                     db.collection("workers").document(current_id_user).collection("shifts").document(current_id_shift_reg)
                             .update("delete", true);
 
@@ -387,18 +379,7 @@ public class WorkerScreen extends AppCompatActivity {
         }
     }
 
-
-
-//    delete_shifts(shifts_to_delete, workers_id);
-    public void delete_shifts(List<String> shifts_to_delete, List<String> workers_id){
-        for(int i = 0; i < shifts_to_delete.size(); i++) {
-            db.collection("workers").document(workers_id.get(i)).collection("shifts").document(shifts_to_delete.get(i)).delete();
-        }
-        shifts_to_delete.clear();
-        workers_id.clear();
-    }
-
-    public void switch_shift(String next_id_user, final String current_id_user, final String current_id_shift_wanted, String current_id_shift_reg){
+    public void switch_shift(String next_id_user, final String current_id_user, final String current_id_shift_wanted){
 
         db.collection("workers").document(next_id_user).collection("shifts").document(current_id_shift_wanted).get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -410,21 +391,10 @@ public class WorkerScreen extends AppCompatActivity {
                             @Override
                             public void onSuccess(Void aVoid) {
                                 Toast.makeText(getBaseContext(), " התבצע חילוף", Toast.LENGTH_LONG).show();
-//                                send_notification();
                             }
                         });
                     }
                 });
-    }
-    public void send_notification(){
-        Notification notification = new NotificationCompat.Builder(this, NotificationHelper.channel1_id)
-                .setSmallIcon(R.drawable.ic_message)
-                .setContentTitle("יש לך הודעה חדשה")
-                .setContentText("נמצאה לך משמרת להחלפה")
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
-                .build();
-        notificationManager.notify(1, notification);
     }
 
     private void makePhoneCall() {
