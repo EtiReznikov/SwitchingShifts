@@ -139,7 +139,7 @@ public class WorkerScreen extends AppCompatActivity {
                             List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
                             for (DocumentSnapshot d : list) {
                                 Date shift_date = d.getDate("date");
-                                if((shift_date.after(calendar.getTime()) || sfd.format(shift_date).equals(current_date)) && d.get("delete").equals(false)){
+                                if(shift_date.after(calendar.getTime()) && d.get("delete").equals(false)){
                                     id_shifts_reg.add(d.getId());
                                     shifts_reg.add(sfd.format(shift_date) + "  " + d.getString("type"));
                                 }
@@ -179,7 +179,7 @@ public class WorkerScreen extends AppCompatActivity {
                                                         if (!shifts_reg.contains(d.getId())) {
                                                             if(d.getString("role").equals(worker_role)){
                                                                 Date shift_date = d.getDate("date");
-                                                                if((shift_date.after(calendar.getTime()) || sfd.format(shift_date).equals(current_date)) && d.get("delete").equals(false)){
+                                                                if(shift_date.after(calendar.getTime()) && d.get("delete").equals(false)){
                                                                     id_shifts_wanted.add(d.getId());
                                                                     shifts_wanted.add(sfd.format(shift_date) + "  " + d.getString("type") + " -" + name);
                                                                 }
