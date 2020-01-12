@@ -143,7 +143,7 @@ public class WorkerScreen extends AppCompatActivity {
                                     id_shifts_reg.add(d.getId());
                                     shifts_reg.add(sfd.format(shift_date) + "  " + d.getString("type"));
                                 }
-                                else {
+                                else if(d.get("delete").equals(true) && !sfd.format(shift_date).equals(current_date)){
                                     db.collection("workers").document(user_id).collection("shifts")
                                             .document(d.getId()).delete();
                                 }
@@ -183,7 +183,7 @@ public class WorkerScreen extends AppCompatActivity {
                                                                     id_shifts_wanted.add(d.getId());
                                                                     shifts_wanted.add(sfd.format(shift_date) + "  " + d.getString("type") + " -" + name);
                                                                 }
-                                                                else {
+                                                                else if(d.get("delete").equals(true) && !sfd.format(shift_date).equals(current_date)) {
                                                                     db.collection("workers").document(id).collection("shifts")
                                                                             .document(d.getId()).delete();
                                                                 }
