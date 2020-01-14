@@ -20,9 +20,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
@@ -30,10 +28,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.annotation.Nullable;
-
-import backend.Worker;
 
 
 public class Login extends AppCompatActivity {
@@ -137,7 +131,7 @@ public class Login extends AppCompatActivity {
                                                         else{
                                                             /* print welcome message to the manager and go the the manager screen */
                                                             Toast.makeText(Login.this, "מנהל, התחברת בהצלחה ", Toast.LENGTH_LONG).show();
-                                                            startActivity(new Intent(Login.this, MangerScreen.class));
+                                                            startActivity(new Intent(Login.this, ManagerScreen.class));
                                                         }
 
                                                     }

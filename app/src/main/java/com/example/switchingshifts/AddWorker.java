@@ -56,6 +56,7 @@ public class AddWorker extends AppCompatActivity {
         adapter_worker_type = ArrayAdapter.createFromResource(this, R.array.role_type, android.R.layout.simple_spinner_item);
         adapter_worker_type.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         s_worker_type.setAdapter(adapter_worker_type);
+        /*Choosing the role for ths new worker */
         s_worker_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -76,6 +77,9 @@ public class AddWorker extends AppCompatActivity {
         text_input_last_name = findViewById(R.id.Etext_last_name);
         text_input_email = findViewById(R.id.Etext_mail);
         ok = findViewById(R.id.button_ok);
+        /*When press the ok button we'll check if all the fields are filled correctly
+          if so we'll create a new worker and add ths data
+          else, we'll get am error message*/
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -130,7 +134,7 @@ public class AddWorker extends AppCompatActivity {
                                         });
 
 
-                                        startActivity(new Intent(getApplicationContext(), MangerScreen.class));
+                                        startActivity(new Intent(getApplicationContext(), ManagerScreen.class));
                                     }else{
                                         Toast.makeText(AddWorker.this, task.getException().getMessage(),Toast.LENGTH_LONG).show();
                                     }
@@ -164,7 +168,7 @@ public class AddWorker extends AppCompatActivity {
             startActivity(intent);
         }
         if(id == R.id.home_page){
-            Intent intent = new Intent(AddWorker.this, MangerScreen.class);
+            Intent intent = new Intent(AddWorker.this, ManagerScreen.class);
             startActivity(intent);
         }
         if(id == R.id.logout) {
