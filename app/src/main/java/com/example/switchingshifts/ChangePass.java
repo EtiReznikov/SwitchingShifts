@@ -114,6 +114,7 @@ public class ChangePass extends AppCompatActivity implements View.OnClickListene
         int id = item.getItemId();
         if(id == R.id.my_shift){
             if(role.equals("Manager")){
+                startActivity(new Intent(ChangePass.this, MangerShifts.class));
             }
             else {
                 startActivity(new Intent(ChangePass.this, WorkerShifts.class));

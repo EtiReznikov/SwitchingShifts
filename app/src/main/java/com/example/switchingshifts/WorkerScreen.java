@@ -1,10 +1,7 @@
 package com.example.switchingshifts;
 
-import android.Manifest;
 import android.app.Notification;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -13,7 +10,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,10 +17,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
-import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -38,7 +32,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Stack;
@@ -54,7 +47,6 @@ import backend.Vetrex;
 public class WorkerScreen extends AppCompatActivity implements Serializable {
     private FirebaseAuth firebase_auth;
     private FirebaseFirestore db;
-    private static final int REQUEST_CALL=1;
     private String user_id, worker_role, shift_reg_selcted, shift_wanted_selcted, shift_reg_id, shift_wanted_id;
     private List<String> shifts_reg = new ArrayList<>();
     private List<String> id_shifts_reg = new ArrayList<>();
@@ -67,7 +59,7 @@ public class WorkerScreen extends AppCompatActivity implements Serializable {
     private DFS dfs;
     private Vetrex v_worker_id, v_wanted_shift, v_reg_shift;
     private Shift new_shift;
-    private int size, num_of_requests;
+    private int num_of_requests;
     private Button ok_button;
     private Request request;
     private Stack<Vetrex> path;
@@ -75,10 +67,7 @@ public class WorkerScreen extends AppCompatActivity implements Serializable {
     private List<String> shifts_to_delete = new ArrayList();
     SimpleDateFormat sfd = new SimpleDateFormat("dd-MM-yyyy");
     private NotificationManagerCompat notificationManager;
-    private String phone_number;
 
-    private Calendar calendar;
-    private String current_date;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,41 +78,10 @@ public class WorkerScreen extends AppCompatActivity implements Serializable {
         notificationManager = NotificationManagerCompat.from(this);
         graph = new Graph();
 
-
         /* Initialize Firebase Auth  and firestore*/
         firebase_auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         user_id = firebase_auth.getCurrentUser().getUid();
-
-        calendar = Calendar.getInstance();
-        current_date = sfd.format(calendar.getTime());
-
-        db.collection("workers").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (DocumentSnapshot doc : task.getResult()) {
-                            db.collection("workers").document(doc.getId())
-                                    .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                                @Override
-                                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                    if (documentSnapshot.getString("role").equals("Manager"))
-                                        phone_number=documentSnapshot.getString("phone_number");
-                                }
-                            });
-                        }
-                    }
-                }
-        });
-        ImageView imageCall = findViewById(R.id.image_call);
-
-        imageCall.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                makePhoneCall();
-            }
-        });
-
 
         final TextView textViewToChange = findViewById(R.id.Worker_Screen_title);
 
@@ -147,11 +105,17 @@ public class WorkerScreen extends AppCompatActivity implements Serializable {
                             shifts_reg.add("");
                             List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
                             for (DocumentSnapshot d : list) {
-                                id_shifts_reg.add(d.getId());
-                                Date shift_date = d.getDate("date");
-                                shifts_reg.add(sfd.format(shift_date) + "  " + d.getString("type"));
-                                // shifts_reg.add(d.getId());
-                                //add date condition
+                                if(d.get("delete").equals(true)){
+                                    db.collection("workers").document(user_id).collection("shifts")
+                                            .document(d.getId()).delete();
+                                }
+                                else {
+                                    id_shifts_reg.add(d.getId());
+                                    Date shift_date = d.getDate("date");
+                                    shifts_reg.add(sfd.format(shift_date) + "  " + d.getString("type"));
+                                    // shifts_reg.add(d.getId());
+                                    //add date condition
+                                }
                             }
                         }
                     }
@@ -319,9 +283,6 @@ public class WorkerScreen extends AppCompatActivity implements Serializable {
                                                                               v_reg_shift = new Vetrex(false, d.getString("shift_reg_id"));
                                                                               v_wanted_shift = new Vetrex(false, d.getString("shift_wanted_id"));
                                                                               graph.add_edge(v_reg_shift, v_worker_id, v_wanted_shift);
-                                                                              size = graph.graph_size();
-//                                                                              Toast.makeText(getBaseContext(), graph.graph_size()+"", Toast.LENGTH_LONG).show();
-//                                                                             Toast.makeText(getBaseContext(), v_worker_id.getId(), Toast.LENGTH_LONG).show();
                                                                               num_of_requests++;
                                                                               if (num_of_requests > 1){
                                                                                   start_dfs();
@@ -424,29 +385,6 @@ public class WorkerScreen extends AppCompatActivity implements Serializable {
                 .setCategory(NotificationCompat.CATEGORY_MESSAGE)
                 .build();
         notificationManager.notify(1, notification);
-    }
-
-    private void makePhoneCall() {
-
-            if (ContextCompat.checkSelfPermission(WorkerScreen.this,
-                    Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(WorkerScreen.this,
-                        new String[]{Manifest.permission.CALL_PHONE}, REQUEST_CALL);
-            } else {
-                String dial = "tel:" + phone_number;
-                startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(dial)));
-            }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == REQUEST_CALL) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                makePhoneCall();
-            } else {
-                Toast.makeText(this, "Permission DENIED", Toast.LENGTH_SHORT).show();
-            }
-        }
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
