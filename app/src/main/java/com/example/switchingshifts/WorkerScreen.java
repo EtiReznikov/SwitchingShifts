@@ -16,11 +16,13 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -29,6 +31,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -48,7 +51,7 @@ import backend.Vetrex;
 public class WorkerScreen extends AppCompatActivity {
     private FirebaseAuth firebase_auth;
     private FirebaseFirestore db;
-    private static final int REQUEST_CALL=1;
+    private static final int REQUEST_CALL = 1;
     private String user_id, worker_role, shift_reg_selcted, shift_wanted_selcted, shift_reg_id, shift_wanted_id;
     private String request_id, current_id_user, current_id_shift_reg, current_id_shift_wanted, next_id_user, current_date, phone_number;
     private List<String> shifts_reg = new ArrayList<>();
@@ -64,7 +67,7 @@ public class WorkerScreen extends AppCompatActivity {
     private DFS dfs;
     private Vetrex v_worker_id, v_wanted_shift, v_reg_shift;
     private Shift new_shift;
-    private int  num_of_requests;
+    private int num_of_requests;
     private Button ok_button;
     private Request request;
     private Stack<Vetrex> path;
@@ -114,7 +117,7 @@ public class WorkerScreen extends AppCompatActivity {
                             @Override
                             public void onSuccess(DocumentSnapshot documentSnapshot) {
                                 if (documentSnapshot.getString("role").equals("Manager"))
-                                    phone_number=documentSnapshot.getString("phone_number");
+                                    phone_number = documentSnapshot.getString("phone_number");
                             }
                         });
                     }
@@ -131,7 +134,7 @@ public class WorkerScreen extends AppCompatActivity {
         });
 
 
-     //add worker shifts to list
+        //add worker shifts to list
 
         db.collection("workers").document(user_id).collection("shifts").get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -144,11 +147,10 @@ public class WorkerScreen extends AppCompatActivity {
                             List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
                             for (DocumentSnapshot d : list) {
                                 Date shift_date = d.getDate("date");
-                                if(shift_date.after(calendar.getTime()) && d.get("delete").equals(false)){
+                                if (shift_date.after(calendar.getTime()) && d.get("delete").equals(false)) {
                                     id_shifts_reg.add(d.getId());
                                     shifts_reg.add(sfd.format(shift_date) + "  " + d.getString("type"));
-                                }
-                                else if(d.get("delete").equals(true) && !sfd.format(shift_date).equals(current_date)){
+                                } else if (d.get("delete").equals(true) && !sfd.format(shift_date).equals(current_date)) {
                                     db.collection("workers").document(user_id).collection("shifts")
                                             .document(d.getId()).delete();
                                 }
@@ -172,7 +174,7 @@ public class WorkerScreen extends AppCompatActivity {
                 shifts_wanted.add("");
                 if (task.isSuccessful()) {
                     for (DocumentSnapshot doc : task.getResult()) {
-                        if(!doc.getId().equals(user_id)) {
+                        if (!doc.getId().equals(user_id)) {
                             final String name = doc.getString("first_name");
                             final String id = doc.getId();
                             db.collection("workers").document(doc.getId()).collection("shifts").get()
@@ -184,13 +186,12 @@ public class WorkerScreen extends AppCompatActivity {
                                                 List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
                                                 for (DocumentSnapshot d : list) {
                                                     if (!shifts_reg.contains(d.getId())) {
-                                                        if(d.getString("role").equals(worker_role)){
+                                                        if (d.getString("role").equals(worker_role)) {
                                                             Date shift_date = d.getDate("date");
-                                                            if(shift_date.after(calendar.getTime()) && d.get("delete").equals(false)){
+                                                            if (shift_date.after(calendar.getTime()) && d.get("delete").equals(false)) {
                                                                 id_shifts_wanted.add(d.getId());
                                                                 shifts_wanted.add(sfd.format(shift_date) + "  " + d.getString("type") + " -" + name);
-                                                            }
-                                                            else if(d.get("delete").equals(true) && !sfd.format(shift_date).equals(current_date)) {
+                                                            } else if (d.get("delete").equals(true) && !sfd.format(shift_date).equals(current_date)) {
                                                                 db.collection("workers").document(id).collection("shifts")
                                                                         .document(d.getId()).delete();
                                                             }
@@ -322,7 +323,7 @@ public class WorkerScreen extends AppCompatActivity {
                                                                               v_wanted_shift = new Vetrex(false, d.getString("shift_wanted_id"));
                                                                               graph.add_edge(v_reg_shift, v_worker_id, v_wanted_shift);
                                                                               num_of_requests++;
-                                                                              if (num_of_requests > 1){
+                                                                              if (num_of_requests > 1) {
                                                                                   start_dfs();
                                                                               }
                                                                           }
@@ -386,8 +387,9 @@ public class WorkerScreen extends AppCompatActivity {
             }
         }
     }
-// switch shifts
-    public void switch_shift(String next_id_user, final String current_id_user, final String current_id_shift_wanted){
+
+    // switch shifts
+    public void switch_shift(String next_id_user, final String current_id_user, final String current_id_shift_wanted) {
 
         db.collection("workers").document(next_id_user).collection("shifts").document(current_id_shift_wanted).get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -442,10 +444,10 @@ public class WorkerScreen extends AppCompatActivity {
 
             Collections.sort(shifts_reg);
 
-            for(String s: shifts_reg) {
+            for (String s : shifts_reg) {
                 shifts_to_show = shifts_to_show + s + "\n";
             }
-            intent.putExtra("shifts_to_show",  shifts_to_show);
+            intent.putExtra("shifts_to_show", shifts_to_show);
             startActivity(intent);
         }
         if (id == R.id.personal_info) {
