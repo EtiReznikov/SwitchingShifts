@@ -119,8 +119,7 @@ public class Login extends AppCompatActivity {
                                                     if (worker_role.equals("Manager")) {
 
                                                         if(first_login){
-                                                            /* print welcome message to the manager, change first_login to false and go to ChangePass activity */
-                                                            Toast.makeText(Login.this, "מנהל, התחברת בהצלחה ", Toast.LENGTH_LONG).show();
+                                                            /*change first_login to false and go to ChangePass activity */
                                                             Map<String, Object> data = new HashMap<>();
                                                             data.put("first_login", false);
 
@@ -130,7 +129,6 @@ public class Login extends AppCompatActivity {
                                                         }
                                                         else{
                                                             /* print welcome message to the manager and go the the manager screen */
-                                                            Toast.makeText(Login.this, "מנהל, התחברת בהצלחה ", Toast.LENGTH_LONG).show();
                                                             startActivity(new Intent(Login.this, ManagerScreen.class));
                                                         }
 
@@ -140,8 +138,7 @@ public class Login extends AppCompatActivity {
 
 
                                                         if(first_login){
-                                                            /* print welcome message to the worker, change first_login to false and go to ChangePass activity */
-                                                            Toast.makeText(Login.this, " התחברת בהצלחה " + first_name + " " + last_name, Toast.LENGTH_LONG).show();
+                                                            /*change first_login to false and go to ChangePass activity */
                                                             Map<String, Object> data = new HashMap<>();
                                                             data.put("first_login", false);
 
@@ -151,8 +148,7 @@ public class Login extends AppCompatActivity {
                                                         }
 
                                                         else{//first_login = false
-                                                            /* print welcome message and go to the regular worker screen */
-                                                            Toast.makeText(Login.this, " התחברת בהצלחה " + first_name + " " + last_name, Toast.LENGTH_LONG).show();
+                                                            /*go to the regular worker screen */
                                                             startActivity(new Intent(Login.this, WorkerScreen.class));
                                                         }
 

@@ -61,7 +61,6 @@ public class ManagerShifts extends AppCompatActivity {
                 if (parent.getItemAtPosition(position).equals("בחר תפקיד")) {}
                 else {
                     role = parent.getItemAtPosition(position).toString();
-                    Toast.makeText(getBaseContext(), "selected " + parent.getItemAtPosition(position) , Toast.LENGTH_LONG).show();
                     shifts = "";
                     db.collection("workers").whereEqualTo("role", role).get()
                             .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {

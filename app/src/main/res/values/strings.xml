@@ -22,7 +22,7 @@
 
     <string name="worker_number">מספר עובד</string>
     <string name="personPic">personPic</string>
-    <string name="welcome_string">!ברוכים הבאים</string>
+    <string name="welcome_string">ברוכים הבאים!</string>
 
     <string name="new_pess">איפוס סיסמא</string>
     <string name="first_new_pess">הזן סיסמא חדשה</string>

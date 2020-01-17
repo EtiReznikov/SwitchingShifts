@@ -225,7 +225,6 @@ public class WorkerScreen extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 if (!parentView.getItemAtPosition(position).equals("")) {
-                    Toast.makeText(getBaseContext(), ("selected " + parentView.getItemAtPosition(position)), Toast.LENGTH_LONG).show();
                     shift_reg_selcted = parentView.getItemAtPosition(position).toString();
                     shift_reg_id = id_shifts_reg.get(position - 1);
                 }
@@ -242,7 +241,6 @@ public class WorkerScreen extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 if (!parentView.getItemAtPosition(position).equals("")) {
-                    Toast.makeText(getBaseContext(), ("selected " + parentView.getItemAtPosition(position)), Toast.LENGTH_LONG).show();
                     shift_wanted_selcted = parentView.getItemAtPosition(position).toString();
                     shift_wanted_id = id_shifts_wanted.get(position - 1);
                 }
@@ -313,8 +311,6 @@ public class WorkerScreen extends AppCompatActivity {
                                                                               v_wanted_shift = new Vetrex(false, d.getString("shift_wanted_id"));
                                                                               graph.add_edge(v_reg_shift, v_worker_id, v_wanted_shift);
                                                                               size = graph.graph_size();
-//                                                                              Toast.makeText(getBaseContext(), graph.graph_size()+"", Toast.LENGTH_LONG).show();
-//                                                                             Toast.makeText(getBaseContext(), v_worker_id.getId(), Toast.LENGTH_LONG).show();
                                                                               num_of_requests++;
                                                                               if (num_of_requests > 1){
                                                                                   start_dfs();

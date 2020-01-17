@@ -61,7 +61,6 @@ public class RemoveWorker extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (parent.getItemAtPosition(position).equals("בחר תפקיד")) {}
                 else {
-                    Toast.makeText(getBaseContext(), parent.getItemAtPosition(position) + " selected ", Toast.LENGTH_LONG).show();
                     worker_role = parent.getItemAtPosition(position).toString();
                     db.collection("workers").whereEqualTo("role",worker_role).get()
                             .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -100,7 +99,6 @@ public class RemoveWorker extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(parent.getItemAtPosition(position).equals("בחר שם")){}
                 else {
-                    Toast.makeText(getBaseContext(), (" selected " + parent.getItemAtPosition(position)), Toast.LENGTH_LONG).show();
                     worker_name = parent.getItemAtPosition(position).toString();
                     worker_id = id_names.get(position-1);
                     DocumentReference documentReference = db.collection("workers").document(worker_id);
