@@ -145,60 +145,11 @@ public class RemoveWorker extends AppCompatActivity {
                 }
                 if(!flag){
 
-//                    /* Changes role to "פוטר" */
-//                    Map<String, Object> data = new HashMap<>();
-//                    data.put("role", "פוטר");
                     db.collection("workers").document(worker_id).delete();
 
                     /* write a toasts to the screen and go to manager screen */
                     Toast.makeText(RemoveWorker.this, " נמחק בהצלחה " + worker_name + " " + worker_last_name, Toast.LENGTH_LONG).show();
                     startActivity(new Intent(RemoveWorker.this, ManagerScreen.class));
-
-//                    /* remove requests from database */
-//                    db.collection("workers").document(worker_id)
-//                            .collection("requests")
-//                            .get()
-//                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                                @Override
-//                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                                    if(task.isSuccessful()){
-//                                        /* go over all document in requests collection and remove them */
-//                                        for (QueryDocumentSnapshot document : task.getResult()) {
-//                                          db.collection("workers").document(worker_id)
-//                                                  .collection("requests")
-//                                                  .document(document.getId())
-//                                                  .delete();
-//                                        }
-//
-//                                    }else{
-//                                        Toast.makeText(RemoveWorker.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
-//                                    }
-//                                }
-//                            });
-
-
-//                    /* remove shifts from database */
-//                    db.collection("workers").document(worker_id)
-//                            .collection("shifts")
-//                            .get()
-//                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                                @Override
-//                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//
-//                                    if(task.isSuccessful()){
-//                                        /* go over all document in shifts collection and remove them */
-//                                        for (QueryDocumentSnapshot document : task.getResult()) {
-//                                            db.collection("workers").document(worker_id)
-//                                                    .collection("shifts")
-//                                                    .document(document.getId())
-//                                                    .delete();
-//                                        }
-//                                    }else{
-//                                        Toast.makeText(RemoveWorker.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
-//                                    }
-//
-//                                }
-//                            });
 
 
                 }

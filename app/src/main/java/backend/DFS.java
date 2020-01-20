@@ -105,44 +105,14 @@ public class DFS {
         Vetrex SM2=new Vetrex(false,"9.1.2020EveningChef");
         Vetrex MM2= new Vetrex(false, "10.1.2020MorningChef");
 
-
-//        System.out.println("before remove SM--> eti:");
         G.add_edge(SM, eti, MM);
         G.add_edge(MM2,yaara,SM2);
 
         System.out.println("graph size:"+G.graph_size());
         G.printGraph();
 
-//        DFS dfs=new DFS(G);
-//        Stack <Vetrex> s= dfs.dfsCycle();
-//        while (!s.empty()){
-//            Vetrex u=s.pop();
-//            System.out.println(u.getId());
-//        }
-//        s.add(0,yaara);
-//        u=s.pop();
-//        System.out.println(u.getId());
-//        G.printGraph();
-//        System.out.println("after remove SM--> eti:");
-//        G.remove_edge(SM, eti);
-//        G.printGraph();
 
-      //  G.printGraph();
-//        DFS dfs=new DFS(G);
-//       // dfs.graph.printGraph();
-//        Stack<Vetrex> s=dfs.dfsCycle();
-//        while (!s.empty()){
-//            Vetrex u=s.pop();
-//            System.out.println(u.id);
-//        }
    }
 
-//    public void print() {
-//
-//        System.out.println("colors:  " + Arrays.toString(color));
-//        System.out.println("pred:  " + Arrays.toString(pred));
-//        System.out.println("first:  " + Arrays.toString(first));
-//        System.out.println("last:  " + Arrays.toString(last));
-//        System.out.println("cycle:  " + hasCycle);
-//    }
+
 }
